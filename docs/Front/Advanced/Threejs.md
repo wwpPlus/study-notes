@@ -1,0 +1,415 @@
+# Three.js
+
+## 练习案例
+
+[练习案例](https://gitee.com/star_wwp/threejs-practice-case)
+
+## 基础
+
+### three.js应用结构
+
+![图片](./imgs/threejs/three.js%20struct.jpg)
+
+- Renderer：three.js的主要对象。它会将摄像机视椎体中的三维场景渲染成一个二维图片显示在画布上。
+- Scene：定义场景图最基本的要素，并包含了背景色和雾等属性。这些对象通过一个层级关系明确的树状结构来展示出各自的位置和方向。子对象的位置和方向总是相对于父对象而言的。
+- Camera：不一定要在场景图中才能起作用。
+- Mesh：用Geometry和 Material绘制图像。
+- Geometry：几何体，存放几何体的顶点信息。
+- Material：几何体的表面属性，包括使用的颜色，和光亮程度。
+- Texture：应用到几何体表面。
+- Light：不同种类的光。
+
+### 基本使用流程
+
+基本流程：
+
+1. 创建一个场景
+
+用于放置物体、灯光和摄像机
+2. 创建一个摄像机
+`const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);`
+![图片](./imgs/threejs/camera%20init.jpg)
+
+- fov：视野范围。
+- aspect：画布的宽高比。
+- near和far代表近平面和远平面，它们限制了摄像机面朝方向的可绘区域。 任何距离小于或超过这个范围的物体都将被裁剪掉(不绘制)。
+
+> 这四个参数定义了一个 "视椎(frustum)"。 视椎(frustum)是指一个像被削去顶部的金字塔形状。
+
+可以借助position属性调节摄像机的位置`camera.position.z = 2`
+![图片](./imgs/threejs/camer%20position.jpg)
+3. 创建一个渲染器
+
+渲染器负责将提供的所有数据渲染绘制到页面上。
+4. 创建场景中的各部分
+
+创建网格(Mesh)对象，其中包含几何体(Geometry)(物体的形状)、材质(Material)(如何绘制物体，光滑还是平整，什么颜色，什么贴图等等)
+5. 将网格(Mesh)放到场景中，最后进行渲染展示
+
+基础样例：
+
+```js
+// create a scene, that will hold all our elements such as objects, cameras and lights.
+var scene = new THREE.Scene();
+
+// create a camera, which defines where we're looking at.
+var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1);
+
+// create a render and set the size
+var renderer = new THREE.WebGLRenderer();
+renderer.setClearColorHex();
+renderer.setClearColor(new THREE.Color(0xEEEEEE));
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+// show axes in the screen
+var axes = new THREE.AxisHelper(20);
+scene.add(axes);
+
+// create the ground plane
+var planeGeometry = new THREE.PlaneGeometry(60, 20);
+var planeMaterial = new THREE.MeshBasicMaterial({color: 0x707070});
+var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+
+// rotate and position the plane
+plane.rotation.x = -0.5 * Math.PI;
+plane.position.x = 15;
+plane.position.y = 0;
+plane.position.z = 0;
+
+// add the plane to the scene
+scene.add(plane);
+
+// create a cube
+var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
+var cubeMaterial = new THREE.MeshPhongMaterial({color: 0x44aa88});
+var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
+// position the cube
+cube.position.x = -4;
+cube.position.y = 3;
+cube.position.z = 0;
+
+// add the cube to the scene
+scene.add(cube);
+
+// create a sphere
+var sphereGeometry = new THREE.SphereGeometry(5, 20, 20);
+var sphereMaterial = new THREE.MeshBasicMaterial({color: 0x7777ff, wireframe: true});
+var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+
+// position the sphere
+sphere.position.x = 20;
+sphere.position.y = 4;
+sphere.position.z = 2;
+
+// add the sphere to the scene
+scene.add(sphere);
+
+// position and point the camera to the center of the scene
+camera.position.x = -30;
+camera.position.y = 40;
+camera.position.z = 30;
+// camera.up.x = 10;
+// camera.up.y = 10;
+// camera.up.z = 10;
+camera.lookAt(scene.position);
+
+// add the output of the renderer to the html element
+document.getElementById("WebGL-output").appendChild(renderer.domElement);
+
+// add the light
+const color = 0xFFFFFF;
+const intensity = 1;
+const light = new THREE.DirectionalLight(color, intensity);
+light.position.set(-1, 2, 4);
+scene.add(light);
+
+// requestAnimationFrame 动画旋转
+var durationRender = function (time) {
+        time *= 0.001;  // 将时间单位变为秒
+        sphere.rotation.x= time;
+        sphere.rotation.y = time;
+        cube.rotation.x = time;
+        cube.rotation.y = time;
+        renderer.render(scene, camera);    
+        requestAnimationFrame(durationRender);
+}
+// render the scene
+renderer.render(scene, camera);
+requestAnimationFrame(durationRender);
+```
+
+![图片](./imgs/threejs/demo1.jpg)
+
+> lookAt 函数让摄像机从它的位置“看向”我们传递 lookAt 的位置。
+> 渲染循环函数 requestAnimationFrame：可以使几何体进行旋转，requestAnimationFrame函数会告诉浏览器需要显示动画。传入一个函数作为回调函数。
+> MeshBasicMaterial材质不会受到灯光的影响。将他改成会受灯光影响的MeshPhongMaterial材质。添加灯光。
+> AxesHelper 。它画了 3 条线，分别代表本地的 X， Y， 以及 Z轴。
+
+## 图元
+
+图元就是一些 3D 的形状，在运行时根据大量参数生成。
+官网案例（参数可调）：**<https://threejs.org/manual/#zh/primitives>**
+
+## 场景图
+
+场景图在 3D 引擎是一个图中节点的层次结构，其中每个节点代表了一个局部空间。
+
+**节点中的元素只需要关注自身围绕这个局部空间的操作。**
+
+复杂场景图（太阳、地球、月球自转系统）的层次结构：
+![图片](./imgs/threejs/scene%20hierarchical.jpg)
+
+## 材质
+
+材质定义了对象在场景中的外型。
+
+| 材质 | 特点 |
+| ---- | ---- |
+| MeshBasicMaterial | 不受光照的影响。 |
+| MeshLambertMaterial | 只在顶点计算光照  |
+| MeshPhongMaterial | 则在每个像素计算光照，支持镜面高光。 |
+| ShadowMaterial | 用于获取阴影创建的数据。 |
+| MeshDepthMaterial | 渲染每个像素的深度。 |
+| MeshNormalMaterial | 会显示几何体的法线。 |
+
+> 各种标准材质的构建速度从最快到最慢：MeshBasicMaterial ➡ MeshLambertMaterial ➡ MeshPhongMaterial ➡ MeshStandardMaterial ➡ MeshPhysicalMaterial
+
+## 纹理
+
+在three.js中，当纹理绘制的尺寸大于其原始尺寸时，或者绘制的尺寸小于其原始尺寸时，可以使用过滤和mips处理纹理
+
+为了在绘制的纹理小于其原始尺寸时设置过滤器，可以将 texture.minFilter 属性设置为下面6个值之一。
+
+| 属性 | 描述|
+| ---- | ---- |
+| THREE.NearestFilter | 同上，在纹理中选择最近的像素。 |
+| THREE.LinearFilter | 和上面一样，从纹理中选择4个像素，然后混合它们 |
+| THREE.NearestMipmapNearestFilter | 选择合适的mip，然后选择一个像素。 |
+| THREE.NearestMipmapLinearFilter | 选择2个mips，从每个mips中选择一个像素，混合这2个像素。 |
+| THREE.LinearMipmapNearestFilter | 选择合适的mip，然后选择4个像素并将它们混合。 |
+| THREE.LinearMipmapLinearFilter | 选择2个mips，从每个mips中选择4个像素，然后将所有8个像素混合成1个像素。 |
+
+纹理有重复、偏移和旋转纹理的设置。
+
+- 重复：wrapS 用于水平包裹，wrapT 用于垂直包裹。
+- 偏移：offset，1个单位=1个纹理大小
+- 旋转：rotation，center用于选择旋转中心，默认值是0,0，从左下角开始旋转
+
+| 属性 | 描述|
+| ---- | ---- |
+| THREE.ClampToEdgeWrapping | 每条边上的最后一个像素无限重复。 |
+| THREE.RepeatWrapping | 纹理重复 |
+| THREE.MirroredRepeatWrapping | 在每次重复时将进行镜像 |
+
+## 光照
+
+OrbitControls 让我们可以围绕某一个点旋转控制相机
+
+| 灯光 | 描述|
+| ---- | ---- |
+| 环境光 （AmbientLight） | 只是简单地将材质的颜色与光照颜色进行叠加。通常的作用是提亮场景，让暗部不要太暗。 |
+| 半球光（HemisphereLight） | 的颜色是从天空到地面两个颜色之间的渐变，与物体材质的颜色作叠加后得到最终的颜色效果。 |
+| 方向光（DirectionalLight） | 常常用来表现太阳光照的效果。需要设置灯光的位置和target照向目标点的位置。 |
+| 点光源（PointLight） | 表示的是从一个点朝各个方向发射出光线的一种光照效果。 |
+| 聚光灯（SpotLight） | 可以看成是一个点光源被一个圆锥体限制住了光照的范围。 |
+| 矩形区域光（RectAreaLight） | 表示一个矩形区域的发射出来的光照。 |
+
+> WebGLRenderer 中有一个设置项 physicallyCorrectLights。这个设置会影响（随着离光源的距离增加）光照如何减弱。这个设置会影响点光源（PointLight）和聚光灯（SpotLight），矩形区域光（RectAreaLight）会自动应用这个特性。
+>
+> 在设置光照时，基本思路是不要设置 distance 来表现光照的衰减，也不要设置 intensity。而是设置光照的 power 属性，以流明为单位，three.js 会进行物理计算，从而表现出接近真实的光照效果。
+
+## 摄像机
+
+- PerspectiveCamera通过四个属性来定义一个视锥。near定义了视锥的前端，far定义了后端，fov是视野，通过计算正确的高度来从摄像机的位置获得指定的以near为单位的视野，定义的是视锥的前端和后端的高度。aspect间接地定义了视锥前端和后端的宽度，实际上视锥的宽度是通过高度乘以 aspect 来得到的。
+
+- 正交摄像机 OrthographicCamera，和指定一个视锥不同的是，它需要设置left，right top，bottom，near，和far指定一个长方体，使得视野是平行的而不是透视的。可以用来展示模型的三视图
+
+## 阴影
+
+Three.js 默认使用shadow maps（阴影贴图），阴影贴图的工作方式就是具有投射阴影的光能对所有能被投射阴影的物体从光源渲染阴影。
+
+## 雾
+
+在3D引擎里，雾通常是基于离摄像机的距离褪色至某种特定颜色的方式。在three.js中添加雾是通过创建 Fog 或者 FogExp2 实例并设定scene的fog 属性。
+
+fog 在材料上有个布尔属性，用来设置渲染物体的材料是否会受到雾的影响。
+
+`scene.fog = new THREE.Fog(color, near, far);`near 数值大于 far 是无效的
+
+> 需要注意的是雾是作用在 *渲染的物体* 上的，是物体颜色中每个像素计算的一部分。这意味着如果你想让你的场景褪色到某种颜色，你需要设定雾 和 场景的背景颜色为同一种颜色。
+
+## 渲染目标
+
+在three.js中，渲染目标大体上指的是可以被渲染的纹理。当它被渲染之后，可以像使用其他纹理一样使用它。
+
+默认情况下 WebGLRenderTarget 会创建两个纹理。 颜色纹理（stencilBuffer）和深度/模版纹理（depthBuffer）。
+
+```js
+const renderTarget = new THREE.WebGLRenderTarget(rtWidth, rtHeight);
+const rtCamera = new THREE.PerspectiveCamera(rtFov, rtAspect, rtNear, rtFar);
+const rtScene = new THREE.Scene();
+// 添加使用了渲染目标纹理的方块。
+const material = new THREE.MeshPhongMaterial({
+  map: renderTarget.texture,
+});
+renderer.setRenderTarget(renderTarget);
+renderer.render(rtScene, rtCamera);
+renderer.render(scene, camera);
+```
+
+## 自定义缓冲几何体
+
+ BufferGeometry 是用来代表所有几何体的一种方式。 BufferGeometry 本质上是一系列 BufferAttributes 的 名称 。每一个 BufferAttribute 代表一种类型数据的数组：位置，法线，颜色，uv，等等…… 这些合起来， BufferAttributes 代表每个顶点所有数据的 并行数组 。
+
+ 使用案例
+
+ ```js
+ const vertices = [
+  // front
+  { pos: [-1, -1,  1], norm: [ 0,  0,  1], uv: [0, 0], }, // 0
+  // right、back、left、top、bottom
+  ...
+];
+const positions = [];
+const normals = [];
+const uvs = [];
+for (const vertex of vertices) {
+  positions.push(...vertex.pos);
+  normals.push(...vertex.norm);
+  uvs.push(...vertex.uv);
+}
+const geometry = new THREE.BufferGeometry();
+const positionNumComponents = 3;
+const normalNumComponents = 3;
+const uvNumComponents = 2;
+geometry.setAttribute(
+    'position',
+    new THREE.BufferAttribute(new Float32Array(positions), positionNumComponents));
+geometry.setAttribute(
+    'normal',
+    new THREE.BufferAttribute(new Float32Array(normals), normalNumComponents));
+geometry.setAttribute(
+    'uv',
+    new THREE.BufferAttribute(new Float32Array(uvs), uvNumComponents));
+geometry.setIndex([
+   0,  1,  2,   2,  1,  3,  // front
+  // right、back、left、top、bottom
+  ...
+]);
+```
+
+- BufferAttribute 是类型数组而不是原生数组。同时 BufferAttribute 需要你设定每个顶点有多少组成成分。对于位置和法线，每个顶点我们需要3个组成成分，x、y和z。对于UVs我们需要2个，u和v。
+- 如果没有提供法线数据的话， BufferGeometry 有个方法computeVertexNormals可以用来计算法线。
+- 通过调用 BufferGeometry.setIndex 并传入索引数组来创建图形可以避免使用重复参数。
+- positionAttribute.setUsage(THREE.DynamicDrawUsage)：标记位置属性为动态。这是提示THREE.js我们将会经常改变属性的内容。positionAttribute.needsUpdate = true; 使THREE.js响应属性的改变。
+
+## 设计技巧
+
+### 按需渲染
+
+requestAnimationFrame循环或者写成rAF loop进行连续渲染
+
+针对不需要连续渲染的场景：例如
+  
+- 移动摄像机时渲染OrbitControls提供了一个change事件来监听变化`controls.addEventListener('change', render);`
+- 在需要一个新帧的时候才执行
+
+```js
+let renderRequested = false;
+function render() {
+  renderRequested = false;
+  if (resizeRendererToDisplaySize(renderer)) {
+    const canvas = renderer.domElement;
+    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+    camera.updateProjectionMatrix();
+  }
+  renderer.render(scene, camera);
+}
+render();
+// 增加某种惯性避免change事件进入死循环做法：需要一个新帧的时候才执行
+function requestRenderIfNotRequested() {
+  if (!renderRequested) {
+    renderRequested = true;
+    requestAnimationFrame(render);
+  }
+}
+// controls.addEventListener('change', render);
+controls.addEventListener('change', requestRenderIfNotRequested);
+```
+
+### canvas截图
+
+canvas.toBlob
+基于性能和兼容性的考量，默认情况下浏览器会在绘制完成后清除WebGL canvas的缓存。导致截到的是一张纯黑的图片。
+
+解决方案
+
+- 在捕获截图前调用一次渲染代码。
+
+```js
+render();
+canvas.toBlob((blob) => {
+  saveBlob(blob, `screencapture-${canvas.width}x${canvas.height}.png`);
+});
+```
+
+- 创建WebGLRenderer时传入 preserveDrawingBuffer: true。这将阻止浏览器清理canvas。类似的，也需要告诉three.js不要自动清理canvas。
+
+### 获取键盘输入
+
+通常会将事件监听器绑定到canvas上。 虽然许多事件都能生效，但是默认情况下键盘事件不会正常响应。为了获取键盘事件，我们将canvas的 tabindex 属性设置为0或更高。
+这将导致一个新的问题，任何设置了 tabindex 的元素会在聚焦的时候突出显示。为了解决这个问题，我们在CSS中将它focus状态下的outline属性设置为none
+
+### 透明化canvas
+
+需要让canvas变得透明可以在创建 WebGLRenderer 的时候传入 alpha:true
+
+### 使用three.js动画作为背景
+
+一个常见的问题是如何使用three.js动画作为网站的背景。
+这有两种显而易见的方法：
+
+1. 将canvas的CSS position 属性如下设置为 fixed，只需要将 z-index 设为 -1 就可以看到立方体们显示到文字后面。
+
+2. 使用 iframe，然后修改样式使其填满窗口，并且处于背景中，因为iframe存在默认边框，需要额外将 border 设为 none 。
+
+## 优化
+
+### 大量对象的优化
+
+- 合并几何体：一次画多个
+- 优化对象的同时保持动画效果：变形目标morphtargets是一种给每个顶点提供多个值, 以及使他们进行变形或者说lerp(线性插值)的方法，给每一个数据集做一个几何体, 可以提取属性, 把他们作为morphtargets。
+
+### 离屏渲染
+
+目前仅在Chrome可用，允许使用Web Worker去渲染画布，避免减慢浏览器的响应速度。
+
+```js
+const canvas = document.querySelector('#c');
+if (!canvas.transferControlToOffscreen) {
+  canvas.style.display = 'none';
+  document.querySelector('#noOffscreenCanvas').style.display = '';
+  return;
+}
+const offscreen = canvas.transferControlToOffscreen();
+const worker = new Worker('offscreencanvas-picking.js', {type: 'module'});
+worker.postMessage({type: 'main', canvas: offscreen}, [offscreen]);
+```
+
+[案例](https://threejs.org/manual/zh/offscreencanvas.html)
+
+## 解决方案
+
+- [加载 .OBJ 文件](https://threejs.org/manual/#zh/load-obj)
+- [加载 .GLTF 文件](https://threejs.org/manual/#zh/load-gltf)
+- [添加背景或天空盒](https://threejs.org/manual/#zh/backgrounds)
+- [如何绘制透明的物体](https://threejs.org/manual/#zh/transparency)
+- [多个画布, 多个场景](https://threejs.org/manual/#zh/multiple-scenes)
+- [鼠标选取对象](https://threejs.org/manual/#zh/picking)
+- [后期处理](https://threejs.org/manual/#zh/post-processing)
+- [对齐HTML元素到3D对象](https://threejs.org/manual/#zh/align-html-elements-to-3d)
+- [使用纹理索引来拾取和着色](https://threejs.org/manual/#zh/indexed-textures)
+- [使用Canvas生成动态纹理](https://threejs.org/manual/#zh/canvas-textures)
+- [广告牌(Billboards)](https://threejs.org/manual/#zh/billboards)
+- [释放资源](https://threejs.org/manual/#zh/cleanup)

@@ -1,0 +1,1091 @@
+# CSS
+
+## CSS 知识点
+
+### 选择器
+
+| 选择器类型     | 语法                  | 描述                                                                |
+| -------------- | --------------------- | ------------------------------------------------------------------- |
+| 通用选择器     | `*`                   | 选择所有元素。可以根据需要限制特定的名称空间或所有名称空间。        |
+| 元素选择器     | `elementname`         | 按照给定的节点名称选择所有匹配的元素。                              |
+| 类选择器       | `.classname`          | 按照给定的 class 属性的值选择所有匹配的元素。                       |
+| ID 选择器      | `#idname`             | 按照给定的 id 属性选择一个与之匹配的元素。注意，id 在文档中应唯一。 |
+| 属性选择器     | `[attr] [attr=value]` | 选择所有具有指定属性、等于指定值的元素的元素。                      |
+| 分组选择器     | `A, B `               | 将不同的选择器组合在一起，选择被任意一个选择器选中的节点。          |
+| 后代组合器     | `A B`                 | 选择前一个元素的后代节点。                                          |
+| 直接子代组合器 | `A > B`               | 选择前一个元素的直接子代节点。                                      |
+| 一般兄弟组合器 | `A ~ B`               | 选择共享同一个父节点的兄弟元素，并且后一个节点在前一个节点后面。    |
+| 紧邻兄弟组合器 | `A + B`               | 选择共享同一个父节点的相邻元素，并且后一个元素紧跟在前一个之后。    |
+
+### 伪元素
+
+| 属性            | 示例           | 描述                                             |
+| --------------- | -------------- | ------------------------------------------------ |
+| :link           | a:link         | 选择所有未访问链接                               |
+| :visited        | a:visited      | 选择所有访问过的链接                             |
+| :active         | a:active       | 选择正在活动链接                                 |
+| :hover          | a:hover        | 把鼠标放在链接上的状态                           |
+| :focus          | input:focus    | 选择元素输入后具有焦点                           |
+| :first-letter   | p:first-letter | 选择每个`<p>` 元素的第一个字母                   |
+| :first-line     | p:first-line   | 选择每个`<p>` 元素的第一行                       |
+| :first-child    | p:first-child  | 选择器匹配属于任意元素的第一个子元素的`<p>` 元素 |
+| :before         | p:before       | 在每个`<p>` 元素之前插入内容                     |
+| :after          | p:after        | 在每个`<p>` 元素之后插入内容                     |
+| :lang(language) | p:lang(it)     | 为`<p>` 元素的 lang 属性选择一个开始值           |
+
+### 层叠
+
+声明冲突：同一个样式，多次应用到同一个元素
+
+层叠：解决声明冲突的过程，浏览器自动处理（权重计算）
+
+比较重要性，重要性从高到底：
+
+> 作者样式表：开发者书写的样式
+
+1. 作者样式表中的!important 样式
+2. 作者样式表中的普通样式
+3. 浏览器默认样式表中的样式
+
+**应用**
+
+1. 重置样式表
+
+书写一些作者样式，覆盖浏览器的默认样式
+
+重置样式表 -> 浏览器的默认样式
+
+常见的重置样式表：normalize.css、reset.css、meyer.css
+
+2. 爱恨法则
+
+link > visited > hover > active
+
+### 继承
+
+子元素会继承父元素的某些 CSS 属性
+
+通常，跟文字内容相关的属性都能被继承
+
+### 属性值的计算过程
+
+一个元素一个元素依次渲染，顺序按照页面文档的树形目录结构进行
+
+渲染每个元素的前提条件：该元素的所有 CSS 属性必须有值
+
+特殊的两个 CSS 取值：
+
+- inherit：手动（强制）继承，将父元素的值取出应用到该元素
+- initial：初始值，将该属性设置为默认值
+
+### 盒模型
+
+box：盒子，每个元素在页面中都会生成一个矩形区域（盒子）
+
+盒子类型：
+
+1. 行盒，display 等于 inline 的元素
+2. 块盒，display 等于 block 的元素
+
+行盒在页面中不换行、块盒独占一行
+
+display 默认值为 inline
+
+浏览器默认样式表设置的块盒：容器元素、h1~h6、p
+
+常见的行盒：span、a、img、video、audio
+
+#### 盒子的组成部分
+
+无论是行盒、还是块盒，都由下面几个部分组成，从内到外分别是：
+
+1. 内容 content
+
+width、height，设置的是盒子内容的宽高
+
+内容部分通常叫做整个盒子的**内容盒 content-box**
+
+2. 填充(内边距) padding
+
+盒子边框到盒子内容的距离
+
+padding-left、padding-right、padding-top、padding-bottom
+
+padding: 简写属性
+
+padding: 上 右 下 左
+
+填充区+内容区 = **填充盒 padding-box**
+
+3. 边框 border
+
+边框 = 边框样式 + 边框宽度 + 边框颜色
+
+边框样式：border-style
+边框宽度：border-width
+边框颜色：border-color
+
+边框+填充区+内容区 = **边框盒 border-box**
+
+4. 外边距 margin
+
+### 盒模型应用
+
+#### 改变宽高范围
+
+默认情况下，width 和 height 设置的是内容盒宽高。
+
+> 页面重构师：将 psd 文件（设计稿）制作为静态页面
+
+衡量设计稿尺寸的时候，往往使用的是边框盒，但设置 width 和 height，则设置的是内容盒
+
+1. 精确计算
+2. CSS3：box-sizing
+
+#### 改变背景覆盖范围
+
+默认情况下，背景覆盖边框盒
+
+可以通过 background-clip 进行修改
+
+#### 溢出处理
+
+overflow，控制内容溢出边框盒后的处理方式
+
+#### 断词规则
+
+word-break，会影响文字在什么位置被截断换行
+
+normal：普通。CJK 字符（文字位置截断），非 CJK 字符（单词位置截断）
+
+break-all：截断所有。所有字符都在文字处截断
+
+keep-all：保持所有。所有文字都在单词之间截断
+
+#### 空白处理
+
+white-space: nowrap
+
+### 行盒的盒模型
+
+常见的行盒：包含具体内容的元素
+
+span、strong、em、i、img、video、audio
+
+#### 显著特点
+
+1. 盒子沿着内容沿伸
+2. 行盒不能设置宽高
+
+调整行盒的宽高，应该使用字体大小、行高、字体类型，间接调整。
+
+3. 内边距（填充区）
+
+水平方向有效，垂直方向不会实际占据空间。
+
+4. 边框
+
+水平方向有效，垂直方向不会实际占据空间。
+
+5. 外边距
+
+水平方向有效，垂直方向不会实际占据空间。
+
+#### 行块盒
+
+display：inline-block 的盒子
+
+1. 不独占一行
+2. 盒模型中所有尺寸都有效
+
+#### 空白折叠
+
+空白折叠，发生在行盒（行块盒）内部 或 行盒（行块盒）之间
+
+#### 可替换元素 和 非可替换元素
+
+大部分元素，页面上显示的结果，取决于元素内容，称为**非可替换元素**
+
+少部分元素，页面上显示的结果，取决于元素属性，称为**可替换元素**
+
+可替换元素：img、video、audio
+
+绝大部分可替换元素均为行盒。
+
+可替换元素类似于行块盒，盒模型中所有尺寸都有效。
+
+### 常规流
+
+盒模型：规定单个盒子的规则
+
+视觉格式化模型（布局规则）：页面中的多个盒子排列规则
+
+视觉格式化模型，大体上将页面中盒子的排列分为三种方式：
+
+1. 常规流
+2. 浮动
+3. 定位
+
+#### 常规流布局
+
+常规流、文档流、普通文档流、常规文档流
+
+所有元素，默认情况下，都属于常规流布局
+
+总体规则：块盒独占一行，行盒水平依次排列
+
+包含块（containing block）：每个盒子都有它的包含块，包含块决定了盒子的排列区域。
+
+绝大部分情况下：盒子的包含块，为其父元素的内容盒
+
+**块盒**
+
+1. 每个块盒的总宽度，必须刚好等于包含块的宽度
+
+宽度的默认值是 auto
+
+margin 的取值也可以是 auto，默认值 0
+
+auto：将剩余空间吸收掉
+
+width 吸收能力强于 margin
+
+若宽度、边框、内边距、外边距计算后，仍然有剩余空间，该剩余空间被 margin-right 全部吸收
+
+在常规流中，块盒在其包含快中居中，可以定宽、然后左右 margin 设置为 auto。
+
+2. 每个块盒垂直方向上的 auto 值
+
+height:auto， 适应内容的高度
+
+margin:auto， 表示 0
+
+3. 百分比取值
+
+padding、宽、margin 可以取值为百分比
+
+以上的所有百分比相对于包含块的宽度。
+
+高度的百分比：
+
+1）. 包含块的高度是否取决于子元素的高度，设置百分比无效
+2）. 包含块的高度不取决于子元素的高度，百分比相对于父元素高度
+
+4. 上下外边距的合并
+
+两个常规流块盒，上下外边距相邻，会进行合并。
+
+两个外边距取最大值。
+
+### 浮动
+
+视觉格式化模型，大体上将页面中盒子的排列分为三种方式：
+
+1. 常规流
+2. 浮动
+3. 定位
+
+#### 应用场景
+
+1. 文字环绕
+2. 横向排列
+
+#### 浮动的基本特点
+
+修改 float 属性值为：
+
+- left：左浮动，元素靠上靠左
+- right：右浮动，元素靠上靠右
+
+默认值为 none
+
+1. 当一个元素浮动后，元素必定为块盒(更改 display 属性为 block)
+2. 浮动元素的包含块，和常规流一样，为父元素的内容盒
+
+#### 盒子尺寸
+
+1. 宽度为 auto 时，适应内容宽度
+2. 高度为 auto 时，与常规流一致，适应内容的高度
+3. margin 为 auto，为 0.
+4. 边框、内边距、百分比设置与常规流一样
+
+#### 盒子排列
+
+1. 左浮动的盒子靠上靠左排列
+2. 右浮动的盒子考上靠右排列
+3. 浮动盒子在包含块中排列时，会避开常规流块盒
+4. 常规流块盒在排列时，无视浮动盒子
+5. 行盒在排列时，会避开浮动盒子
+6. 外边距合并不会发生
+
+> 如果文字没有在行盒中，浏览器会自动生成一个行盒包裹文字，该行盒叫做匿名行盒。
+
+#### 高度坍塌
+
+高度坍塌的根源：常规流盒子的自动高度，在计算时，不会考虑浮动盒子
+
+清除浮动，涉及 css 属性：clear
+
+- 默认值：none
+- left：清除左浮动，该元素必须出现在前面所有左浮动盒子的下方
+- right：清除右浮动，该元素必须出现在前面所有右浮动盒子的下方
+- both：清除左右浮动，该元素必须出现在前面所有浮动盒子的下方
+
+### 定位
+
+视觉格式化模型，大体上将页面中盒子的排列分为三种方式：
+
+1. 常规流
+2. 浮动：float
+3. 定位：position
+
+定位：手动控制元素在包含块中的精准位置
+
+涉及的 CSS 属性：position
+
+#### position 属性
+
+- 默认值：static，静态定位（不定位）
+- relative：相对定位
+- absolute：绝对定位
+- fixed：固定定位
+
+一个元素，只要 position 的取值不是 static，认为该元素是一个定位元素。
+
+定位元素会脱离文档流（相对定位除外）
+
+一个脱离了文档流的元素：
+
+1. 文档流中的元素摆放时，会忽略脱离了文档流的元素
+2. 文档流中元素计算自动高度时，会忽略脱离了文档流的元素
+
+#### 相对定位
+
+不会导致元素脱离文档流，只是让元素在原来位置上进行偏移。
+
+可以通过四个 CSS 属性对设置其位置：
+
+- left
+- right
+- top
+- bottom
+
+盒子的偏移不会对其他盒子造成任何影响。
+
+#### 绝对定位
+
+1. 宽高为 auto，适应内容
+2. 包含块变化：找祖先中第一个定位元素，该元素的填充盒为其包含块。若找不到，则它的包含块为整个网页（初始化包含块）
+
+#### 固定定位
+
+其他情况和绝对定位完全一样。
+
+包含块不同：固定为视口（浏览器的可视窗口）
+
+#### 定位下的居中
+
+某个方向居中：
+
+1. 定宽（高）
+2. 将左右（上下）距离设置为 0
+3. 将左右（上下）margin 设置为 auto
+
+绝对定位和固定定位中，margin 为 auto 时，会自动吸收剩余空间
+
+#### 多个定位元素重叠时
+
+堆叠上下文
+
+设置 z-index，通常情况下，该值越大，越靠近用户
+
+只有定位元素设置 z-index 有效
+
+z-index 可以是负数，如果是负数，则遇到常规流、浮动元素，则会被其覆盖
+
+#### 补充
+
+- 绝对定位、固定定位元素一定是块盒
+- 绝对定位、固定定位元素一定不是浮动
+- 没有外边距合并
+
+### 更多的样式
+
+#### 透明度
+
+1. opacity，它设置的是整个元素的透明，它的取值是 0 ~ 1
+2. 在颜色位置设置 alpha 通道(rgba )
+
+```css
+.alpha {
+  /* 一个完全透明的颜色，等同于 transparent */
+  color: rgba(0, 0, 0, 0);
+  /* 一个完全不透明的颜色，等同于rgb */
+  color: rgba(0, 0, 0, 1);
+  /* 一个半透明的颜色 */
+  color: rgba(0, 0, 0, 0.5);
+}
+```
+
+#### 鼠标
+
+使用 cursor 设置
+
+#### 盒子隐藏
+
+1. display:none，不生成盒子
+2. visibility:hidden，生成盒子，只是从视觉上移除盒子，盒子仍然占据空间。
+
+#### 背景图
+
+##### 和 img 元素的区别
+
+img 元素是属于 HTML 的概念
+
+背景图属于 css 的概念
+
+1. 当图片属于网页内容时，必须使用 img 元素
+2. 当图片仅用于美化页面时，必须使用背景图
+
+##### 涉及的 css 属性
+
+1. background-image
+
+2. background-repeat
+
+默认情况下，背景图会在横坐标和纵坐标中进行重复
+
+3. background-size
+
+预设值：contain、cover，类似于 object-fit
+数值或百分比
+
+4. background-position
+
+设置背景图的位置。
+
+预设值：left、bottom、right、top、center
+
+数值或百分比
+
+**雪碧图（精灵图）（spirit）**
+
+CSS Sprite，一般称为雪碧图或精灵图，它是一种图像拼合技术。该方法是将小图标和背景图像合并到一张图片上，然后利用 css 的背景定位来显示需要显示的图片部分。
+雪碧图的使用有以下几个优点：
+
+1. 减少图片的字节。
+2. 减少网页的 http 请求，从而大大的提高页面的性能。
+3. 解决了网页设计师在图片命名上的困扰，只需对一张集合的图片上命名就可以了，不需要对每一个小元素进行命名，从而提高了网页的制作效率。
+4. 更换风格方便，只需要在一张或少张图片上修改图片的颜色或样式，整个网页的风格就可以改变。维护起来更加方便。
+
+```js
+语法：background-position:npx npx;
+```
+
+第一个值是调左右的，当你需要将背景图向右调的时候用正值，向左则为负值 同理将背景图上下调动的时候上是用负值，下是正值
+<img src="https://xiejie-typora.oss-cn-chengdu.aliyuncs.com/2021-07-24-120427.png" alt="img" style="zoom:50%;" />
+
+通过设置 background-position 属性，来调整背景图的位置
+<img src="https://xiejie-typora.oss-cn-chengdu.aliyuncs.com/2021-07-24-121034.png" alt="image-20210724201034428" style="zoom:50%;" />
+
+5. background-attachment
+
+通常用它控制背景图是否固定。
+
+6. 背景图和背景颜色混用
+
+7. 速写（简写）background
+
+### 居中总结
+
+居中：盒子在其包含块中居中
+
+#### 行盒（行块盒）水平居中
+
+直接设置行盒（行块盒）父元素`text-align:center`
+
+#### 常规流块盒水平居中
+
+定宽，设置左右 margin 为 auto
+
+#### 绝对定位元素的水平居中
+
+定宽，设置左右的坐标为 0（left:0, right:0），将左右 margin 设置为 auto
+
+> 实际上，固定定位（fixed）是绝对定位（absolute）的特殊情况
+
+#### 单行文本的垂直居中
+
+设置文本所在元素的行高，为整个区域的高度
+
+#### 行块盒或块盒内多行文本的垂直居中
+
+没有完美方案
+
+设置盒子上下内边距相同，达到类似的效果。
+
+#### 绝对定位的垂直居中
+
+定高，设置上下的坐标为 0（top:0, bottom:0），将上下 margin 设置为 auto
+
+### Display - 块和内联元素
+
+块元素是一个元素，占用了全部宽度，在前后都是换行符。
+
+块元素的例子：`<h1> <p> <div>`
+
+内联元素只需要必要的宽度，不强制换行。
+内联元素的例子：`<span> <a>`
+
+### Position(定位)
+
+| 属性     | 描述                                                                                                        |
+| -------- | ----------------------------------------------------------------------------------------------------------- |
+| static   | HTML 元素的默认值，即没有定位，遵循正常的文档流对象。静态定位的元素不会受到 top, bottom, left, right 影响。 |
+| relative | 相对定位元素的定位是相对其正常位置。                                                                        |
+| fixed    | 元素的位置相对于浏览器窗口是固定位置。即使窗口是滚动的它也不会移动。                                        |
+| absolute | 绝对定位的元素的位置相对于最近的已定位父元素，如果元素没有已定位的父元素，那么它的位置相对于`<html>`。      |
+| sticky   | 基于用户的滚动位置来定位。                                                                                  |
+| z-index  | 属性指定了一个元素的堆叠顺序。                                                                              |
+
+### Overflow
+
+| 属性    | 描述                                                     |
+| ------- | -------------------------------------------------------- |
+| visible | 默认值。内容不会被修剪，会呈现在元素框之外。             |
+| hidden  | 内容会被修剪，并且其余内容是不可见的。                   |
+| scroll  | 内容会被修剪，但是浏览器会显示滚动条以便查看其余的内容。 |
+| auto    | 如果内容被修剪，则浏览器会显示滚动条以便查看其余的内容。 |
+| inherit | 规定应该从父元素继承 overflow 属性的值。                 |
+
+### Float(浮动)
+
+CSS 的 Float（浮动），会使元素向左或向右移动，其周围的元素也会重新排列。
+
+### 布局 - 水平 & 垂直对齐
+
+direction 属性
+
+- ltr：默认。文本方向从左到右。
+- rtl：文本方向从右到左。
+- inherit：规定应该从父元素继承 direction 属性的值。
+
+width(宽) + padding(内边距) + border(边框) = 元素实际宽度
+height(高) + padding(内边距) + border(边框) = 元素实际高度
+
+元素居中对齐，要水平居中对齐一个元素(如 `<div>`), 可以使用 `margin: auto;`。
+
+> 当使用 `position` 来对齐元素时, 通常 `<body>` 元素会设置 margin 和 padding 。 这样可以避免在不同的浏览器中出现可见的差异。
+>
+> 如果子元素的高度大于父元素，且子元素设置了浮动，那么子元素将溢出，这时候你可以使用 "`clearfix`(清除浮动)" 来解决该问题。
+
+```css
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+```
+
+### 图像
+
+图像透明度：`opacity:0.4;`
+
+### !important 规则
+
+使用一个 !important 规则时，此声明将覆盖任何其他声明。
+
+### 实例
+
+<https://www.runoob.com/css/css-examples.html>
+
+## CSS3
+
+### 布局
+
+![image-20210511102549096](http://mdrs.yuanjin.tech/img/20210511102802.png)
+
+**浮动**：做文字环绕效果
+
+**弹性盒**：单行或单列布局
+
+**网格**：多行多列布局
+
+#### 弹性盒
+
+> 详细文档见[MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flexible_Box_Layout)
+>
+> [弹性盒小游戏](https://flexboxfroggy.com/)
+
+##### 生成弹性容器和弹性项目
+
+![image-20210511112624876](http://mdrs.yuanjin.tech/img/20210511112624.png)
+
+**默认情况下，**弹性项目沿着主轴依次排列，侧轴拉伸
+
+##### 更改方向
+
+通过`flex-direction`可更改主轴方向
+
+![image-20210511112510632](http://mdrs.yuanjin.tech/img/20210511112510.png)
+
+##### 主轴排列
+
+通过`justify-content`属性，可以影响主轴的排列方式
+
+![image-20210511113617325](http://mdrs.yuanjin.tech/img/20210511113617.png)
+
+##### 侧轴排列
+
+通过`align-items`属性，可以影响侧轴的排列方式
+
+![image-20210511114016304](http://mdrs.yuanjin.tech/img/20210511114016.png)
+
+##### 弹性项目伸缩
+
+所谓伸缩，是指在**主轴方向**上，当**弹性容器**有**额外空间**时，是否需要拉伸，当**空间不足**时，是否需要**压缩**
+
+在**弹性项目**上使用`flex`属性，可设置拉伸和压缩比例：`flex: 拉伸比例 压缩比例 初始尺寸`
+
+拉伸示例：
+
+![image-20210511120916571](http://mdrs.yuanjin.tech/img/20210511120916.png)
+
+压缩示例：
+
+![image-20210511121459341](http://mdrs.yuanjin.tech/img/20210511121459.png)
+
+默认情况下，`flex: 0 1 auto`
+
+##### 主轴换行
+
+默认情况，当主轴剩余空间不足时，按照压缩比例进行压缩，但如果设置了主轴换行，则不会压缩，直接换行显示
+
+给**弹性容器**设置`flex-wrap: wrap`，即可主轴换行
+
+<img src="http://mdrs.yuanjin.tech/img/20210511123310.png" alt="image-20210511123310673" style="zoom:50%;" />
+
+> 尽管如此，多行多列仍然推荐使用网格布局
+
+#### 网格
+
+> [MDN 详细文档](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout)
+>
+> [阮一峰网格布局教程](http://www.ruanyifeng.com/blog/2019/03/grid-layout-tutorial.html)
+>
+> [网格布局小游戏](https://cssgridgarden.com/)
+
+**网格布局是多行多列布局的终极解决方案**
+
+##### 生成网格布局
+
+<img src="http://mdrs.yuanjin.tech/img/20210511165317.png" alt="image-20210511165317363" style="zoom:50%;" />
+
+容器生成网格布局后，其所有子元素为**网格项目**
+
+##### 定义行和列
+
+`grid-template-rows`：定义行
+
+`grid-template-columns`：定义列
+
+**它们的语法是相同的**
+
+![image-20210511172305100](http://mdrs.yuanjin.tech/img/20210511172305.png)
+
+##### 改变排列方向
+
+使用属性`grid-auto-flow: column`，可使子元素按列排放
+
+<img src="http://mdrs.yuanjin.tech/img/20210511173447.png" alt="image-20210511173447321" style="zoom:50%;" />
+
+##### 单元格之间的间隙
+
+```css
+row-gap: 10px; /* 行间隙为10px */
+column-gap: 20px; /* 列间隙为20px */
+gap: 10px 20px; /* 行间隙为10px，列间隙为20px */
+```
+
+![image-20210512132025687](http://mdrs.yuanjin.tech/img/20210512132025.png)
+
+##### 单元格内部的对齐
+
+默认情况下，网格项目在单元格内部水平和垂直拉伸，以撑满单元格
+
+可以使用属性`justify-items`设置**水平方向**的排列方式
+
+可以使用属性`align-items`设置**垂直方向**的排列方式
+
+它们的可取值是相同的：
+
+```css
+justify-items: start 左 | end 右 | center 中 | stretch 拉伸;
+align-items: start 上 | end 下 | center 中 | stretch 拉伸;
+```
+
+<img src="http://mdrs.yuanjin.tech/img/20210511174450.png" alt="image-20210511174450356" style="zoom:50%;" />
+
+可以使用速写属性`place-items: 垂直对齐方式 水平对齐方式`同时设置这两个值
+
+```css
+place-items: start center; /* 垂直靠上，水平居中 */
+```
+
+##### 网格项目定位
+
+默认情况下，网格项目依次排列到单元格中，每个网格占据一个单元格
+
+但可以对网格项目设置`grid-area`属性来改变这一行为
+
+使用方式为：
+
+```css
+grid-area: 起始行线编号/起始列线编号/结束行线编号/结束列线编号;
+```
+
+<img src="http://mdrs.yuanjin.tech/img/20210511180028.png" alt="image-20210511180027983" style="zoom:50%;" />
+
+### 视觉
+
+> 所谓视觉类样式，是指不影响盒子位置、尺寸的样式，例如文字颜色、背景颜色、背景图片等
+
+#### 阴影
+
+##### 盒子阴影
+
+> [MDN 详细文档](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-shadow)
+
+通过`box-shadow`属性可以设置整个盒子的阴影
+
+下面是一些示例
+
+```iframe
+height="900"
+width="100%"
+scrolling="no"
+title="box-shadow"
+src="http://mdrs.yuanjin.tech/html/css-manual/box-shadow.html?v=2"
+frameborder="no"
+loading="lazy"
+allowtransparency="true"
+allowfullscreen="true"
+textContent="See the Pen"
+```
+
+<!-- <iframe src="http://mdrs.yuanjin.tech/html/css-manual/box-shadow.html?v=2" style="height:900px;"> -->
+
+##### 文字阴影
+
+> [MDN 详细文档](https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-shadow)
+
+通过`text-shadow`可以设置文字阴影
+
+下面是一些示例
+
+```iframe
+height="500"
+width="100%"
+scrolling="no"
+title="text-shadow"
+src="http://mdrs.yuanjin.tech/html/css-manual/text-shadow.html?v=3"
+frameborder="no"
+loading="lazy"
+allowtransparency="true"
+allowfullscreen="true"
+textContent="See the Pen"
+```
+
+<!-- <iframe src="http://mdrs.yuanjin.tech/html/css-manual/text-shadow.html?v=3" style="height:500px;"> -->
+
+#### 圆角
+
+> [MDN 详细文档](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-radius)
+
+通过设置`border-radius`，可以设置盒子的圆角
+
+![image-20210512131026084](http://mdrs.yuanjin.tech/img/20210512131026.png)
+
+`border-radius`可以有很多灵活的用法，将下面的代码依次粘贴到页面中测试一下
+
+```css
+border-radius: 10px; /* 同时设置4个角的圆角，半径为10px */
+border-radius: 50%; /* 同时设置4个角的圆角，圆的横向半径为宽度一半，纵向半径为高度一半 */
+border-radius: 10px 20px 30px 40px; /* 分别设置左上、右上、右下、左下的圆角 */
+```
+
+```iframe
+height="550"
+width="100%"
+scrolling="no"
+title="border-radius"
+src="http://mdrs.yuanjin.tech/html/css-manual/border-raduis.html?v=5"
+frameborder="no"
+loading="lazy"
+allowtransparency="true"
+allowfullscreen="true"
+textContent="See the Pen"
+```
+
+<!-- <iframe src="http://mdrs.yuanjin.tech/html/css-manual/border-raduis.html?v=5" style="height:550px;"> -->
+
+#### 背景渐变
+
+> [MDN 详细文档](<https://developer.mozilla.org/zh-CN/docs/Web/CSS/linear-gradient()>)
+
+在设置**背景图片**时，除了可以使用`url()`加载一张背景图，还可以使用`linear-gradient()`函数设置背景渐变
+
+`linear-gradient()`用于创建一张渐变的图片，语法为：
+
+```css
+/* 设置渐变背景，方向：从上到下，颜色：从#e66465渐变到#9198e5 */
+background: linear-gradient(to bottom, #e66465, #9198e5);
+```
+
+![image-20210512135024676](http://mdrs.yuanjin.tech/img/20210512135028.png)
+
+#### 变形
+
+> [MDN 详细文档](https://developer.mozilla.org/zh-CN/docs/Web/CSS/transform)
+
+通过`transform`属性，可以使盒子的形态发生变化
+
+该属性支持多种变形方案，常见的有:
+
+- translate，平移
+- scale，缩放
+- rotate，旋转
+
+**无论是哪一种 transform，都只是视觉效果的变化，不会影响盒子的布局**
+
+**transform 不会导致浏览器 reflow 和 rerender，因此效率极高**
+
+##### translate 平移
+
+使用`translate`可以让盒子在原来位置上产生位移，类似于相对定位
+
+![image-20210512140622630](http://mdrs.yuanjin.tech/img/20210512140643.png)
+
+##### scale 缩放
+
+使用`translate`可以让盒子在基于原来的尺寸发生缩放
+
+![image-20210512141500499](http://mdrs.yuanjin.tech/img/20210512141500.png)
+
+##### rotate 旋转
+
+使用`rotate`属性可以在原图基础上进行旋转
+
+```css
+/* 在原图的基础上，顺时针旋转45度角 */
+transform: rotate(45deg);
+/* 在原图的基础上，顺时针旋转半圈 */
+transform: rotate(0.5turn);
+```
+
+可以点击下面的按钮试一下旋转效果
+
+```iframe
+height="400"
+width="100%"
+scrolling="no"
+title="transform"
+src="http://mdrs.yuanjin.tech/html/css-manual/rotate.html"
+frameborder="no"
+loading="lazy"
+allowtransparency="true"
+allowfullscreen="true"
+textContent="See the Pen"
+```
+
+<!-- <iframe src="http://mdrs.yuanjin.tech/html/css-manual/rotate.html" style="height:400px;"> -->
+
+##### 改变变形原点
+
+> [MDN 详细文档](https://developer.mozilla.org/zh-CN/docs/Web/CSS/transform-origin)
+
+变形原点的位置，会影响到具体的变形行为
+
+默认情况下，变形的原点在盒子中心，你可以通过`transform-origin`来改变它
+
+```css
+transform-origin: center; /* 设置原点在盒子中心 */
+transform-origin: left top; /* 设置原点在盒子左上角 */
+transform-origin: right bottom; /* 设置原点在盒子右下角 */
+transform-origin: 30px 60px; /* 设置原点在盒子坐标 (30, 60) 位置 */
+```
+
+试一试，先点击设置原点的按钮来设置原点(已在图片中使用红色小点标记)，然后点击变形按钮进行变形
+
+```iframe
+height="600"
+width="100%"
+scrolling="no"
+title="transform-origin"
+src="http://mdrs.yuanjin.tech/html/css-manual/transform-origin.html?v2"
+frameborder="no"
+loading="lazy"
+allowtransparency="true"
+allowfullscreen="true"
+textContent="See the Pen"
+```
+
+<!-- <iframe src="http://mdrs.yuanjin.tech/html/css-manual/transform-origin.html?v2" style="height:600px;"> -->
+
+##### 多种变形叠加
+
+可以一次性设置多种变形效果
+
+```css
+/* 先旋转45度，再平移(100,100) */
+transform: rotate(45deg) translate(100px, 100px);
+/* 先平移(100, 100)，再旋转45度 */
+transform: translate(100px, 100px) rotate(45deg);
+```
+
+注意：旋转会导致坐标系也跟着旋转，从而可能影响到后续的变形效果
+
+下面的例子可以很好的说明这一点
+
+http://mdrs.yuanjin.tech/html/css-manual/multi-transform.html
+
+> 本来打算把这个效果嵌入到 markdown，但由于嵌入后出现一些未知的 bug，因此只能粘贴效果地址了
+
+### 过渡和动画
+
+使用过渡和动画，可以让 css 属性变化更加丝滑
+
+**过渡和动画无法对所有的 CSS 属性产生影响，能够产生影响的只有数值类属性**，例如：颜色、宽高、字体大小等等
+
+#### 过渡
+
+> [MDN 详细文档](https://developer.mozilla.org/zh-CN/docs/Web/CSS/transition)
+
+```css
+transition: 过渡属性 持续时间 过渡函数 过渡延迟;
+```
+
+- **过渡属性**
+
+  针对哪个 css 属性应用过渡。例如填写`transform`，则表示仅针对**transform**属性应用过渡。
+
+  若填写`all`或不填写，则表示针对所有 css 属性都应用过渡
+
+- **持续时间**
+
+  css 属性变化所持续的时间，需要带上单位。例如`3s`表示 3 秒，`0.5s`或`500ms`均表示 500 毫秒
+
+- **过渡函数**
+
+  本质是 css 属性变化的贝塞尔曲线函数，通常直接使用预设值：
+
+  `ease-in-out`：平滑开始，平滑结束
+
+  `linear`：线性变化
+
+  `ease-in`：仅平滑开始
+
+  `ease-out`：仅平滑结束
+
+- **过渡延迟**
+
+  书写规则和持续时间一样，表示过渡效果延迟多久后触发，不填则无延迟
+
+**在 JS 中，可以监听元素的`transitionstart`和`transitionend`事件，从而在过渡开始和过渡结束时做一些别的事情**
+
+#### 动画
+
+> [MDN 详细文档](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Animations)
+
+**动画的本质是预先定义的一套 css 变化规则，然后给该规则取个名字**
+
+![image-20210513172902413](http://mdrs.yuanjin.tech/img/20210513172902.png)
+
+然后，其他元素即可使用这样的规则：
+
+```css
+animation: 规则名 持续时间;
+```
+
+在应用规则时，还可以指定更多的信息
+
+```css
+animation: 规则名 持续时间 重复次数 时间函数 动画方向 延迟时间;
+```
+
+一些细节：
+
+- 定义规则时，`0%`可以书写为`from`
+- 定义规则时，`100%`可以书写为`to`
+- 重复次数为`infinite`时，表示无限重复
+- 动画方向为`alternate`时，表示交替反向，第 1 次正向，第 2 次反向，第 3 次正向，第 4 次方向，以此类推
+
+**在 JS 中，可以监听元素的`animationstart`和`animationnend`事件，从而在过渡开始和过渡结束时做一些别的事情**
+
+### 其他
+
+#### box-sizing
+
+一图胜千言
+
+![image-20210514150015660](http://mdrs.yuanjin.tech/img/20210514150015.png)
+
+使用`border-box`控制尺寸更加直观，因此，很多网站都会加入下面的代码
+
+```css
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+```
+
+#### 字体图标
+
+> [MDN font-face 指令](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@font-face)
+
+css3 新增了`font-face`指令，该指令可以让我们加载网络字体
+
+其最常见的应用就是字体图标
+
+**字体图标本质上是文字，即通过`color`设置颜色，通过`font-size`设置尺寸**
+
+国内使用最多的字体图标平台是[阿里巴巴矢量图标库](https://www.iconfont.cn/)
+
+登录平台后即可免费使用其所有字体图标
+
+#### 图像内容适应
+
+> [MDN 详细文档](https://developer.mozilla.org/zh-CN/docs/Web/CSS/object-fit)
+
+css3 属性`object-fit`可以控制**多媒体内容和与元素**的适应方式，通常应用在`img`或`video`元素中
+
+一图胜千言
+
+下图中的所有`img`元素均被固定了宽高，溢出 img 的部分实际上均不会显示
+
+![image-20210514134908778](http://mdrs.yuanjin.tech/img/20210514134908.png)
+
+#### 视口单位
+
+css3 支持使用`vw`和`vh`作为单位，分别表示`视口宽度`和`视口高度`
+
+例如`1vh`表示视口高度的`1%`，`100vw`表示视口宽度的`100%`
+
+#### 伪元素选择器
+
+通过`::before`和`::after`选择器，可以通过 css 给元素生成两个子元素
+
+<img src="http://mdrs.yuanjin.tech/img/20210514140049.png" alt="image-20210514140049244" style="zoom:50%;" />
+
+使用伪元素可以避免在 HTML 中使用过多的空元素
+
+**伪元素必须要有`content`属性，否则不能生效，如果不需要有元素内容，设置`content:''`**
+
+#### 平滑滚动
+
+> [MDN 详细文档](https://developer.mozilla.org/zh-CN/docs/Web/CSS/scroll-behavior)
+
+使用`scroll-behavior: smooth`，可以让滚动更加丝滑
+
+参见 MDN 效果即可
