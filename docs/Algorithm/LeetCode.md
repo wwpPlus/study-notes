@@ -384,6 +384,35 @@ class Solution {
 }
 ```
 
+### 2342. 数位和相等数对的最大和
+
+给你一个下标从 **0** 开始的数组 `nums` ，数组中的元素都是 **正** 整数。请你选出两个下标 `i` 和 `j`（`i != j`），且 `nums[i]` 的数位和 与 `nums[j]` 的数位和相等。
+
+请你找出所有满足条件的下标 `i` 和 `j` ，找出并返回 `nums[i] + nums[j]` 可以得到的 **最大值** *。*
+
+![2342](imgs/leetcode/2342.jpg)
+
+```java
+class Solution {
+    public int maximumSum(int[] nums) {
+        int ans = -1;
+        int[] mx = new int[82];
+        for (int x : nums) {
+            int s = 0, t = x;
+            while (t > 0) {
+                s += t % 10;
+                t /= 10;
+            }
+            if (mx[s] > 0) {
+                ans = Math.max(ans, mx[s] + x);
+            }
+            mx[s] = Math.max(mx[s], x);
+        }
+        return ans;
+    }
+}
+```
+
 ### 2441. 与对应负数同时存在的最大正整数
 
 给你一个 不包含 任何零的整数数组 nums ，找出自身与对应的负数都在数组中存在的最大正整数 k 。
