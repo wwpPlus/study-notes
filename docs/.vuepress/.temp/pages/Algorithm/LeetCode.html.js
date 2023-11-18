@@ -88,6 +88,12 @@ export const data = {
         },
         {
           "level": 3,
+          "title": "2342. 数位和相等数对的最大和",
+          "slug": "_2342-数位和相等数对的最大和",
+          "children": []
+        },
+        {
+          "level": 3,
           "title": "2441. 与对应负数同时存在的最大正整数",
           "slug": "_2441-与对应负数同时存在的最大正整数",
           "children": []
@@ -564,7 +570,13 @@ export const data = {
     }
   ],
   "git": {
-    "contributors": []
+    "contributors": [
+      {
+        "name": "wwp",
+        "email": "3249364788@qq.com",
+        "commits": 2
+      }
+    ]
   },
   "filePathRelative": "Algorithm/LeetCode.md"
 }

@@ -1,12 +1,6 @@
 export const pagesData = {
   // path: /
   "v-8daa1a0e": () => import(/* webpackChunkName: "v-8daa1a0e" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/index.html.js").then(({ data }) => data),
-  // path: /AI/Colossal-AI.html
-  "v-ee18bf28": () => import(/* webpackChunkName: "v-ee18bf28" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/AI/Colossal-AI.html.js").then(({ data }) => data),
-  // path: /AI/EfficientNet.html
-  "v-e793e262": () => import(/* webpackChunkName: "v-e793e262" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/AI/EfficientNet.html.js").then(({ data }) => data),
-  // path: /AI/YOLO.html
-  "v-3eb821b2": () => import(/* webpackChunkName: "v-3eb821b2" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/AI/YOLO.html.js").then(({ data }) => data),
   // path: /Algorithm/Acwing.html
   "v-6c1df2da": () => import(/* webpackChunkName: "v-6c1df2da" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Algorithm/Acwing.html.js").then(({ data }) => data),
   // path: /Algorithm/LeetCode.html
@@ -15,6 +9,12 @@ export const pagesData = {
   "v-6a9b6d2a": () => import(/* webpackChunkName: "v-6a9b6d2a" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Algorithm/Offer1.html.js").then(({ data }) => data),
   // path: /Algorithm/
   "v-30e3f50e": () => import(/* webpackChunkName: "v-30e3f50e" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Algorithm/index.html.js").then(({ data }) => data),
+  // path: /AI/Colossal-AI.html
+  "v-ee18bf28": () => import(/* webpackChunkName: "v-ee18bf28" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/AI/Colossal-AI.html.js").then(({ data }) => data),
+  // path: /AI/EfficientNet.html
+  "v-e793e262": () => import(/* webpackChunkName: "v-e793e262" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/AI/EfficientNet.html.js").then(({ data }) => data),
+  // path: /AI/YOLO.html
+  "v-3eb821b2": () => import(/* webpackChunkName: "v-3eb821b2" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/AI/YOLO.html.js").then(({ data }) => data),
   // path: /Back/Design-Pattern.html
   "v-ed64942e": () => import(/* webpackChunkName: "v-ed64942e" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Back/Design-Pattern.html.js").then(({ data }) => data),
   // path: /Back/Docker.html
@@ -29,6 +29,22 @@ export const pagesData = {
   "v-e011c81c": () => import(/* webpackChunkName: "v-e011c81c" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Back/RocketMQ.html.js").then(({ data }) => data),
   // path: /Back/Spring.html
   "v-0aaa8abd": () => import(/* webpackChunkName: "v-0aaa8abd" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Back/Spring.html.js").then(({ data }) => data),
+  // path: /Project/experimental-platform.html
+  "v-46e45ca0": () => import(/* webpackChunkName: "v-46e45ca0" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Project/experimental-platform.html.js").then(({ data }) => data),
+  // path: /Project/house-rent.html
+  "v-4010d6b8": () => import(/* webpackChunkName: "v-4010d6b8" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Project/house-rent.html.js").then(({ data }) => data),
+  // path: /Project/Resume.html
+  "v-2193d206": () => import(/* webpackChunkName: "v-2193d206" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Project/Resume.html.js").then(({ data }) => data),
+  // path: /Project/Resume1.html
+  "v-0d16b4b8": () => import(/* webpackChunkName: "v-0d16b4b8" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Project/Resume1.html.js").then(({ data }) => data),
+  // path: /Project/web-app.html
+  "v-064cdd00": () => import(/* webpackChunkName: "v-064cdd00" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Project/web-app.html.js").then(({ data }) => data),
+  // path: /Project/%E8%BD%AF%E4%BB%B6%E6%9D%AF.html
+  "v-3846f925": () => import(/* webpackChunkName: "v-3846f925" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Project/软件杯.html.js").then(({ data }) => data),
+  // path: /Tools/git.html
+  "v-22ded954": () => import(/* webpackChunkName: "v-22ded954" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Tools/git.html.js").then(({ data }) => data),
+  // path: /Tools/Shortcut.html
+  "v-2e714974": () => import(/* webpackChunkName: "v-2e714974" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Tools/Shortcut.html.js").then(({ data }) => data),
   // path: /Front/Advanced/Browser.html
   "v-46f9dd42": () => import(/* webpackChunkName: "v-46f9dd42" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Front/Advanced/Browser.html.js").then(({ data }) => data),
   // path: /Front/Advanced/Engineering.html
@@ -79,22 +95,6 @@ export const pagesData = {
   "v-de0372ea": () => import(/* webpackChunkName: "v-de0372ea" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Front/Interview/浏览器.html.js").then(({ data }) => data),
   // path: /Front/Interview/%E7%BD%91%E7%BB%9C.html
   "v-4fb4e5d0": () => import(/* webpackChunkName: "v-4fb4e5d0" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Front/Interview/网络.html.js").then(({ data }) => data),
-  // path: /Project/experimental-platform.html
-  "v-46e45ca0": () => import(/* webpackChunkName: "v-46e45ca0" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Project/experimental-platform.html.js").then(({ data }) => data),
-  // path: /Project/house-rent.html
-  "v-4010d6b8": () => import(/* webpackChunkName: "v-4010d6b8" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Project/house-rent.html.js").then(({ data }) => data),
-  // path: /Project/Resume.html
-  "v-2193d206": () => import(/* webpackChunkName: "v-2193d206" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Project/Resume.html.js").then(({ data }) => data),
-  // path: /Project/Resume1.html
-  "v-0d16b4b8": () => import(/* webpackChunkName: "v-0d16b4b8" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Project/Resume1.html.js").then(({ data }) => data),
-  // path: /Project/web-app.html
-  "v-064cdd00": () => import(/* webpackChunkName: "v-064cdd00" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Project/web-app.html.js").then(({ data }) => data),
-  // path: /Project/%E8%BD%AF%E4%BB%B6%E6%9D%AF.html
-  "v-3846f925": () => import(/* webpackChunkName: "v-3846f925" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Project/软件杯.html.js").then(({ data }) => data),
-  // path: /Tools/git.html
-  "v-22ded954": () => import(/* webpackChunkName: "v-22ded954" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Tools/git.html.js").then(({ data }) => data),
-  // path: /Tools/Shortcut.html
-  "v-2e714974": () => import(/* webpackChunkName: "v-2e714974" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Tools/Shortcut.html.js").then(({ data }) => data),
   // path: /404.html
   "v-3706649a": () => import(/* webpackChunkName: "v-3706649a" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/404.html.js").then(({ data }) => data),
 }

@@ -7,428 +7,6 @@ export const searchIndex = [
     "extraFields": []
   },
   {
-    "title": "Colossal简介",
-    "headers": [
-      {
-        "level": 2,
-        "title": "分布式训练",
-        "slug": "分布式训练",
-        "children": [
-          {
-            "level": 3,
-            "title": "为什么需要分布式训练",
-            "slug": "为什么需要分布式训练",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "分布式训练的基本概念",
-            "slug": "分布式训练的基本概念",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "关键技术：异构训练再升级",
-        "slug": "关键技术-异构训练再升级",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "模型训练优化方案",
-        "slug": "模型训练优化方案",
-        "children": [
-          {
-            "level": 3,
-            "title": "便捷高效并行扩展（多GPU）",
-            "slug": "便捷高效并行扩展-多gpu",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "其他优化方案",
-            "slug": "其他优化方案",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "Colossal-AI 的使用",
-        "slug": "colossal-ai-的使用",
-        "children": [
-          {
-            "level": 3,
-            "title": "Colossal-AI 的工作流",
-            "slug": "colossal-ai-的工作流",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "构建配置文件",
-            "slug": "构建配置文件",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "初始化",
-            "slug": "初始化",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "自动混合精度训练 (AMP)",
-            "slug": "自动混合精度训练-amp",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "并行配置",
-            "slug": "并行配置",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "基于Chunk内存管理的零冗余优化器 (ZeRO)",
-            "slug": "基于chunk内存管理的零冗余优化器-zero",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "NVMe offload（异步 Tensor I/O 库）",
-            "slug": "nvme-offload-异步-tensor-i-o-库",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "ColoTensor",
-            "slug": "colotensor",
-            "children": []
-          }
-        ]
-      }
-    ],
-    "path": "/AI/Colossal-AI.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
-    "title": "EfficientNet",
-    "headers": [
-      {
-        "level": 2,
-        "title": "名词解释",
-        "slug": "名词解释",
-        "children": [
-          {
-            "level": 3,
-            "title": "backbone",
-            "slug": "backbone",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "head",
-            "slug": "head",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "neck",
-            "slug": "neck",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "bottleneck",
-            "slug": "bottleneck",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "GAP",
-            "slug": "gap",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "Embedding",
-            "slug": "embedding",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "pretext/downstream task",
-            "slug": "pretext-downstream-task",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "temperature parameters",
-            "slug": "temperature-parameters",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "end to end",
-            "slug": "end-to-end",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "EfficientNet介绍",
-        "slug": "efficientnet介绍",
-        "children": [
-          {
-            "level": 3,
-            "title": "基本网络架构",
-            "slug": "基本网络架构",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "流程图",
-            "slug": "流程图",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "Depthwise卷积",
-            "slug": "depthwise卷积",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "SE模块",
-            "slug": "se模块",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "EfficientDet",
-        "slug": "efficientdet",
-        "children": [
-          {
-            "level": 3,
-            "title": "BiFPN",
-            "slug": "bifpn",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "CenterNet",
-        "slug": "centernet",
-        "children": [
-          {
-            "level": 3,
-            "title": "与其他经典算法的区别",
-            "slug": "与其他经典算法的区别",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "反卷积",
-            "slug": "反卷积",
-            "children": []
-          }
-        ]
-      }
-    ],
-    "path": "/AI/EfficientNet.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
-    "title": "YOLO系列算法",
-    "headers": [
-      {
-        "level": 2,
-        "title": "深度学习经典检测方法",
-        "slug": "深度学习经典检测方法",
-        "children": [
-          {
-            "level": 3,
-            "title": "one-stage",
-            "slug": "one-stage",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "two-stage",
-            "slug": "two-stage",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "指标分析",
-        "slug": "指标分析",
-        "children": [
-          {
-            "level": 3,
-            "title": "precision计算",
-            "slug": "precision计算",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "recall计算",
-            "slug": "recall计算",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "计算指标",
-            "slug": "计算指标",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "iou(交并比)计算",
-            "slug": "iou-交并比-计算",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "mAP计算",
-            "slug": "map计算",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "感受野",
-            "slug": "感受野",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "YOLOv1",
-        "slug": "yolov1",
-        "children": [
-          {
-            "level": 3,
-            "title": "核心思想",
-            "slug": "核心思想",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "YOLOv1网络架构",
-            "slug": "yolov1网络架构",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "损失函数",
-            "slug": "损失函数",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "NMS(非极大值抑制)",
-            "slug": "nms-非极大值抑制",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "YOLOv1中存在的问题",
-            "slug": "yolov1中存在的问题",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "YOLOv2",
-        "slug": "yolov2",
-        "children": [
-          {
-            "level": 3,
-            "title": "YOLOv2改进",
-            "slug": "yolov2改进",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "YOLOv2网络结构",
-            "slug": "yolov2网络结构",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "YOLOv3",
-        "slug": "yolov3",
-        "children": [
-          {
-            "level": 3,
-            "title": "YOLOv3改进",
-            "slug": "yolov3改进",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "YOLOv3网络架构",
-            "slug": "yolov3网络架构",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "YOLOv4",
-        "slug": "yolov4",
-        "children": [
-          {
-            "level": 3,
-            "title": "Bag of freebies(BOF)",
-            "slug": "bag-of-freebies-bof",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "Bag of specials(BOS)",
-            "slug": "bag-of-specials-bos",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "网络架构",
-            "slug": "网络架构",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "YOLOv5",
-        "slug": "yolov5",
-        "children": [
-          {
-            "level": 3,
-            "title": "Focus模块",
-            "slug": "focus模块",
-            "children": []
-          }
-        ]
-      }
-    ],
-    "path": "/AI/YOLO.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
     "title": "AcWing 算法学习",
     "headers": [
       {
@@ -627,6 +205,12 @@ export const searchIndex = [
             "level": 3,
             "title": "1726. 同积元组",
             "slug": "_1726-同积元组",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "2342. 数位和相等数对的最大和",
+            "slug": "_2342-数位和相等数对的最大和",
             "children": []
           },
           {
@@ -1655,6 +1239,428 @@ export const searchIndex = [
     "title": "前言",
     "headers": [],
     "path": "/Algorithm/",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
+    "title": "Colossal简介",
+    "headers": [
+      {
+        "level": 2,
+        "title": "分布式训练",
+        "slug": "分布式训练",
+        "children": [
+          {
+            "level": 3,
+            "title": "为什么需要分布式训练",
+            "slug": "为什么需要分布式训练",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "分布式训练的基本概念",
+            "slug": "分布式训练的基本概念",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "关键技术：异构训练再升级",
+        "slug": "关键技术-异构训练再升级",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "模型训练优化方案",
+        "slug": "模型训练优化方案",
+        "children": [
+          {
+            "level": 3,
+            "title": "便捷高效并行扩展（多GPU）",
+            "slug": "便捷高效并行扩展-多gpu",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "其他优化方案",
+            "slug": "其他优化方案",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "Colossal-AI 的使用",
+        "slug": "colossal-ai-的使用",
+        "children": [
+          {
+            "level": 3,
+            "title": "Colossal-AI 的工作流",
+            "slug": "colossal-ai-的工作流",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "构建配置文件",
+            "slug": "构建配置文件",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "初始化",
+            "slug": "初始化",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "自动混合精度训练 (AMP)",
+            "slug": "自动混合精度训练-amp",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "并行配置",
+            "slug": "并行配置",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "基于Chunk内存管理的零冗余优化器 (ZeRO)",
+            "slug": "基于chunk内存管理的零冗余优化器-zero",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "NVMe offload（异步 Tensor I/O 库）",
+            "slug": "nvme-offload-异步-tensor-i-o-库",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "ColoTensor",
+            "slug": "colotensor",
+            "children": []
+          }
+        ]
+      }
+    ],
+    "path": "/AI/Colossal-AI.html",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
+    "title": "EfficientNet",
+    "headers": [
+      {
+        "level": 2,
+        "title": "名词解释",
+        "slug": "名词解释",
+        "children": [
+          {
+            "level": 3,
+            "title": "backbone",
+            "slug": "backbone",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "head",
+            "slug": "head",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "neck",
+            "slug": "neck",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "bottleneck",
+            "slug": "bottleneck",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "GAP",
+            "slug": "gap",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "Embedding",
+            "slug": "embedding",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "pretext/downstream task",
+            "slug": "pretext-downstream-task",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "temperature parameters",
+            "slug": "temperature-parameters",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "end to end",
+            "slug": "end-to-end",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "EfficientNet介绍",
+        "slug": "efficientnet介绍",
+        "children": [
+          {
+            "level": 3,
+            "title": "基本网络架构",
+            "slug": "基本网络架构",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "流程图",
+            "slug": "流程图",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "Depthwise卷积",
+            "slug": "depthwise卷积",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "SE模块",
+            "slug": "se模块",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "EfficientDet",
+        "slug": "efficientdet",
+        "children": [
+          {
+            "level": 3,
+            "title": "BiFPN",
+            "slug": "bifpn",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "CenterNet",
+        "slug": "centernet",
+        "children": [
+          {
+            "level": 3,
+            "title": "与其他经典算法的区别",
+            "slug": "与其他经典算法的区别",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "反卷积",
+            "slug": "反卷积",
+            "children": []
+          }
+        ]
+      }
+    ],
+    "path": "/AI/EfficientNet.html",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
+    "title": "YOLO系列算法",
+    "headers": [
+      {
+        "level": 2,
+        "title": "深度学习经典检测方法",
+        "slug": "深度学习经典检测方法",
+        "children": [
+          {
+            "level": 3,
+            "title": "one-stage",
+            "slug": "one-stage",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "two-stage",
+            "slug": "two-stage",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "指标分析",
+        "slug": "指标分析",
+        "children": [
+          {
+            "level": 3,
+            "title": "precision计算",
+            "slug": "precision计算",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "recall计算",
+            "slug": "recall计算",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "计算指标",
+            "slug": "计算指标",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "iou(交并比)计算",
+            "slug": "iou-交并比-计算",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "mAP计算",
+            "slug": "map计算",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "感受野",
+            "slug": "感受野",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "YOLOv1",
+        "slug": "yolov1",
+        "children": [
+          {
+            "level": 3,
+            "title": "核心思想",
+            "slug": "核心思想",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "YOLOv1网络架构",
+            "slug": "yolov1网络架构",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "损失函数",
+            "slug": "损失函数",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "NMS(非极大值抑制)",
+            "slug": "nms-非极大值抑制",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "YOLOv1中存在的问题",
+            "slug": "yolov1中存在的问题",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "YOLOv2",
+        "slug": "yolov2",
+        "children": [
+          {
+            "level": 3,
+            "title": "YOLOv2改进",
+            "slug": "yolov2改进",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "YOLOv2网络结构",
+            "slug": "yolov2网络结构",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "YOLOv3",
+        "slug": "yolov3",
+        "children": [
+          {
+            "level": 3,
+            "title": "YOLOv3改进",
+            "slug": "yolov3改进",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "YOLOv3网络架构",
+            "slug": "yolov3网络架构",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "YOLOv4",
+        "slug": "yolov4",
+        "children": [
+          {
+            "level": 3,
+            "title": "Bag of freebies(BOF)",
+            "slug": "bag-of-freebies-bof",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "Bag of specials(BOS)",
+            "slug": "bag-of-specials-bos",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "网络架构",
+            "slug": "网络架构",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "YOLOv5",
+        "slug": "yolov5",
+        "children": [
+          {
+            "level": 3,
+            "title": "Focus模块",
+            "slug": "focus模块",
+            "children": []
+          }
+        ]
+      }
+    ],
+    "path": "/AI/YOLO.html",
     "pathLocale": "/",
     "extraFields": []
   },
@@ -2971,6 +2977,418 @@ export const searchIndex = [
     "title": "Spring",
     "headers": [],
     "path": "/Back/Spring.html",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
+    "title": "科研实践创新平台",
+    "headers": [
+      {
+        "level": 2,
+        "title": "教师端使用教程",
+        "slug": "教师端使用教程",
+        "children": [
+          {
+            "level": 3,
+            "title": "项目管理",
+            "slug": "项目管理",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "课题与版本",
+            "slug": "课题与版本",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "任务管理与发布",
+            "slug": "任务管理与发布",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "首页动态使用",
+            "slug": "首页动态使用",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "配置在线课题",
+            "slug": "配置在线课题",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "学生端使用教程",
+        "slug": "学生端使用教程",
+        "children": [
+          {
+            "level": 3,
+            "title": "自主实验",
+            "slug": "自主实验",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "实验环境（VS Code）",
+            "slug": "实验环境-vs-code",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "分享实验",
+            "slug": "分享实验",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "私有镜像",
+            "slug": "私有镜像",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "任务汇报",
+            "slug": "任务汇报",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "问题反馈",
+        "slug": "问题反馈",
+        "children": []
+      }
+    ],
+    "path": "/Project/experimental-platform.html",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
+    "title": "微服务房屋租赁系统",
+    "headers": [
+      {
+        "level": 2,
+        "title": "1.简介",
+        "slug": "_1-简介",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "2.需求分析",
+        "slug": "_2-需求分析",
+        "children": [
+          {
+            "level": 3,
+            "title": "2.1 总体需求概述",
+            "slug": "_2-1-总体需求概述",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "2.2 功能性需求分析",
+            "slug": "_2-2-功能性需求分析",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "3.系统功能详细设计与实现",
+        "slug": "_3-系统功能详细设计与实现",
+        "children": [
+          {
+            "level": 3,
+            "title": "3.1 基础服务",
+            "slug": "_3-1-基础服务",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "3.2 信息管理服务",
+            "slug": "_3-2-信息管理服务",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "3.3 租赁服务",
+            "slug": "_3-3-租赁服务",
+            "children": []
+          }
+        ]
+      }
+    ],
+    "path": "/Project/house-rent.html",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
+    "title": "简历",
+    "headers": [
+      {
+        "level": 2,
+        "title": "基本信息",
+        "slug": "基本信息",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "教育背景",
+        "slug": "教育背景",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "荣誉与奖项",
+        "slug": "荣誉与奖项",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "项目与研究经历",
+        "slug": "项目与研究经历",
+        "children": [
+          {
+            "level": 3,
+            "title": "安全预警管控平台",
+            "slug": "安全预警管控平台",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "风电大数据监控管理平台",
+            "slug": "风电大数据监控管理平台",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "科研创新综合实践平台",
+            "slug": "科研创新综合实践平台",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "智慧寻迹系统—密切接触人员挖掘分析",
+            "slug": "智慧寻迹系统—密切接触人员挖掘分析",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "全国高校大数据应用创新赛",
+            "slug": "全国高校大数据应用创新赛",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "技能",
+        "slug": "技能",
+        "children": []
+      }
+    ],
+    "path": "/Project/Resume.html",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
+    "title": "简历",
+    "headers": [
+      {
+        "level": 2,
+        "title": "基本信息",
+        "slug": "基本信息",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "项目与研究经历",
+        "slug": "项目与研究经历",
+        "children": [
+          {
+            "level": 3,
+            "title": "安全预警管控平台",
+            "slug": "安全预警管控平台",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "风电大数据监控管理平台",
+            "slug": "风电大数据监控管理平台",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "科研创新综合实践平台",
+            "slug": "科研创新综合实践平台",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "title": "技能",
+        "slug": "技能",
+        "children": []
+      }
+    ],
+    "path": "/Project/Resume1.html",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
+    "title": "微应用平台",
+    "headers": [],
+    "path": "/Project/web-app.html",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
+    "title": "软件杯",
+    "headers": [
+      {
+        "level": 2,
+        "title": "作品简介",
+        "slug": "作品简介",
+        "children": [
+          {
+            "level": 3,
+            "title": "概述",
+            "slug": "概述",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "算法部分",
+            "slug": "算法部分",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "系统部分",
+            "slug": "系统部分",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "数据流图",
+            "slug": "数据流图",
+            "children": []
+          }
+        ]
+      }
+    ],
+    "path": "/Project/%E8%BD%AF%E4%BB%B6%E6%9D%AF.html",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
+    "title": "git 常用命令",
+    "headers": [
+      {
+        "level": 2,
+        "title": "创建SSH Key",
+        "slug": "创建ssh-key",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "配置用户信息",
+        "slug": "配置用户信息",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "仓库",
+        "slug": "仓库",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "增加/删除文件",
+        "slug": "增加-删除文件",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "代码提交",
+        "slug": "代码提交",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "查看信息",
+        "slug": "查看信息",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "分支",
+        "slug": "分支",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "标签",
+        "slug": "标签",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "远程同步",
+        "slug": "远程同步",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "撤销",
+        "slug": "撤销",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "忽略文件配置（.gitignore)",
+        "slug": "忽略文件配置-gitignore",
+        "children": []
+      }
+    ],
+    "path": "/Tools/git.html",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
+    "title": "快捷键",
+    "headers": [
+      {
+        "level": 2,
+        "title": "Windows快捷键",
+        "slug": "windows快捷键",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "VScode快捷键",
+        "slug": "vscode快捷键",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "IntelliJ IDEA 快捷键",
+        "slug": "intellij-idea-快捷键",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "Snipaste 快捷键",
+        "slug": "snipaste-快捷键",
+        "children": []
+      }
+    ],
+    "path": "/Tools/Shortcut.html",
     "pathLocale": "/",
     "extraFields": []
   },
@@ -9152,418 +9570,6 @@ export const searchIndex = [
       }
     ],
     "path": "/Front/Interview/%E7%BD%91%E7%BB%9C.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
-    "title": "科研实践创新平台",
-    "headers": [
-      {
-        "level": 2,
-        "title": "教师端使用教程",
-        "slug": "教师端使用教程",
-        "children": [
-          {
-            "level": 3,
-            "title": "项目管理",
-            "slug": "项目管理",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "课题与版本",
-            "slug": "课题与版本",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "任务管理与发布",
-            "slug": "任务管理与发布",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "首页动态使用",
-            "slug": "首页动态使用",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "配置在线课题",
-            "slug": "配置在线课题",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "学生端使用教程",
-        "slug": "学生端使用教程",
-        "children": [
-          {
-            "level": 3,
-            "title": "自主实验",
-            "slug": "自主实验",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "实验环境（VS Code）",
-            "slug": "实验环境-vs-code",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "分享实验",
-            "slug": "分享实验",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "私有镜像",
-            "slug": "私有镜像",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "任务汇报",
-            "slug": "任务汇报",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "问题反馈",
-        "slug": "问题反馈",
-        "children": []
-      }
-    ],
-    "path": "/Project/experimental-platform.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
-    "title": "微服务房屋租赁系统",
-    "headers": [
-      {
-        "level": 2,
-        "title": "1.简介",
-        "slug": "_1-简介",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "2.需求分析",
-        "slug": "_2-需求分析",
-        "children": [
-          {
-            "level": 3,
-            "title": "2.1 总体需求概述",
-            "slug": "_2-1-总体需求概述",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "2.2 功能性需求分析",
-            "slug": "_2-2-功能性需求分析",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "3.系统功能详细设计与实现",
-        "slug": "_3-系统功能详细设计与实现",
-        "children": [
-          {
-            "level": 3,
-            "title": "3.1 基础服务",
-            "slug": "_3-1-基础服务",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "3.2 信息管理服务",
-            "slug": "_3-2-信息管理服务",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "3.3 租赁服务",
-            "slug": "_3-3-租赁服务",
-            "children": []
-          }
-        ]
-      }
-    ],
-    "path": "/Project/house-rent.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
-    "title": "简历",
-    "headers": [
-      {
-        "level": 2,
-        "title": "基本信息",
-        "slug": "基本信息",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "教育背景",
-        "slug": "教育背景",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "荣誉与奖项",
-        "slug": "荣誉与奖项",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "项目与研究经历",
-        "slug": "项目与研究经历",
-        "children": [
-          {
-            "level": 3,
-            "title": "安全预警管控平台",
-            "slug": "安全预警管控平台",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "风电大数据监控管理平台",
-            "slug": "风电大数据监控管理平台",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "科研创新综合实践平台",
-            "slug": "科研创新综合实践平台",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "智慧寻迹系统—密切接触人员挖掘分析",
-            "slug": "智慧寻迹系统—密切接触人员挖掘分析",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "全国高校大数据应用创新赛",
-            "slug": "全国高校大数据应用创新赛",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "技能",
-        "slug": "技能",
-        "children": []
-      }
-    ],
-    "path": "/Project/Resume.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
-    "title": "简历",
-    "headers": [
-      {
-        "level": 2,
-        "title": "基本信息",
-        "slug": "基本信息",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "项目与研究经历",
-        "slug": "项目与研究经历",
-        "children": [
-          {
-            "level": 3,
-            "title": "安全预警管控平台",
-            "slug": "安全预警管控平台",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "风电大数据监控管理平台",
-            "slug": "风电大数据监控管理平台",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "科研创新综合实践平台",
-            "slug": "科研创新综合实践平台",
-            "children": []
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "title": "技能",
-        "slug": "技能",
-        "children": []
-      }
-    ],
-    "path": "/Project/Resume1.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
-    "title": "微应用平台",
-    "headers": [],
-    "path": "/Project/web-app.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
-    "title": "软件杯",
-    "headers": [
-      {
-        "level": 2,
-        "title": "作品简介",
-        "slug": "作品简介",
-        "children": [
-          {
-            "level": 3,
-            "title": "概述",
-            "slug": "概述",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "算法部分",
-            "slug": "算法部分",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "系统部分",
-            "slug": "系统部分",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "数据流图",
-            "slug": "数据流图",
-            "children": []
-          }
-        ]
-      }
-    ],
-    "path": "/Project/%E8%BD%AF%E4%BB%B6%E6%9D%AF.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
-    "title": "git 常用命令",
-    "headers": [
-      {
-        "level": 2,
-        "title": "创建SSH Key",
-        "slug": "创建ssh-key",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "配置用户信息",
-        "slug": "配置用户信息",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "仓库",
-        "slug": "仓库",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "增加/删除文件",
-        "slug": "增加-删除文件",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "代码提交",
-        "slug": "代码提交",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "查看信息",
-        "slug": "查看信息",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "分支",
-        "slug": "分支",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "标签",
-        "slug": "标签",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "远程同步",
-        "slug": "远程同步",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "撤销",
-        "slug": "撤销",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "忽略文件配置（.gitignore)",
-        "slug": "忽略文件配置-gitignore",
-        "children": []
-      }
-    ],
-    "path": "/Tools/git.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
-    "title": "快捷键",
-    "headers": [
-      {
-        "level": 2,
-        "title": "Windows快捷键",
-        "slug": "windows快捷键",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "VScode快捷键",
-        "slug": "vscode快捷键",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "IntelliJ IDEA 快捷键",
-        "slug": "intellij-idea-快捷键",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "Snipaste 快捷键",
-        "slug": "snipaste-快捷键",
-        "children": []
-      }
-    ],
-    "path": "/Tools/Shortcut.html",
     "pathLocale": "/",
     "extraFields": []
   },

@@ -38,7 +38,13 @@ export const data = {
   "excerpt": "",
   "headers": [],
   "git": {
-    "contributors": []
+    "contributors": [
+      {
+        "name": "wwp",
+        "email": "3249364788@qq.com",
+        "commits": 1
+      }
+    ]
   },
   "filePathRelative": "README.md"
 }

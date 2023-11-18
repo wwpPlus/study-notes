@@ -32,7 +32,13 @@ export const data = {
     }
   ],
   "git": {
-    "contributors": []
+    "contributors": [
+      {
+        "name": "wwp",
+        "email": "3249364788@qq.com",
+        "commits": 1
+      }
+    ]
   },
   "filePathRelative": "Tools/Shortcut.md"
 }
