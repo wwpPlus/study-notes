@@ -2,10 +2,6 @@ import { Vuepress } from '@vuepress/client/lib/components/Vuepress'
 
 const routeItems = [
   ["v-8daa1a0e","/",{"title":"首页"},["/index.html","/README.md"]],
-  ["v-6c1df2da","/Algorithm/Acwing.html",{"title":"AcWing 算法学习"},["/Algorithm/Acwing","/Algorithm/Acwing.md"]],
-  ["v-41fc89ea","/Algorithm/LeetCode.html",{"title":"LeetCode 刷题"},["/Algorithm/LeetCode","/Algorithm/LeetCode.md"]],
-  ["v-6a9b6d2a","/Algorithm/Offer1.html",{"title":"剑指Offer Ⅰ"},["/Algorithm/Offer1","/Algorithm/Offer1.md"]],
-  ["v-30e3f50e","/Algorithm/",{"title":"前言"},["/Algorithm/index.html","/Algorithm/README.md"]],
   ["v-ee18bf28","/AI/Colossal-AI.html",{"title":"Colossal简介"},["/AI/Colossal-AI","/AI/Colossal-AI.md"]],
   ["v-e793e262","/AI/EfficientNet.html",{"title":"EfficientNet"},["/AI/EfficientNet","/AI/EfficientNet.md"]],
   ["v-3eb821b2","/AI/YOLO.html",{"title":"YOLO系列算法"},["/AI/YOLO","/AI/YOLO.md"]],
@@ -16,6 +12,11 @@ const routeItems = [
   ["v-2d97464d","/Back/Redis.html",{"title":"Redis"},["/Back/Redis","/Back/Redis.md"]],
   ["v-e011c81c","/Back/RocketMQ.html",{"title":"RocketMQ"},["/Back/RocketMQ","/Back/RocketMQ.md"]],
   ["v-0aaa8abd","/Back/Spring.html",{"title":"Spring"},["/Back/Spring","/Back/Spring.md"]],
+  ["v-6c1df2da","/Algorithm/Acwing.html",{"title":"AcWing 算法学习"},["/Algorithm/Acwing","/Algorithm/Acwing.md"]],
+  ["v-41fc89ea","/Algorithm/LeetCode.html",{"title":"LeetCode 刷题"},["/Algorithm/LeetCode","/Algorithm/LeetCode.md"]],
+  ["v-6a9b6d2a","/Algorithm/Offer1.html",{"title":"剑指Offer Ⅰ"},["/Algorithm/Offer1","/Algorithm/Offer1.md"]],
+  ["v-6731bbec","/Algorithm/Offer2.html",{"title":"剑指Offer Ⅱ"},["/Algorithm/Offer2","/Algorithm/Offer2.md"]],
+  ["v-30e3f50e","/Algorithm/",{"title":"前言"},["/Algorithm/index.html","/Algorithm/README.md"]],
   ["v-46e45ca0","/Project/experimental-platform.html",{"title":"科研实践创新平台"},["/Project/experimental-platform","/Project/experimental-platform.md"]],
   ["v-4010d6b8","/Project/house-rent.html",{"title":"微服务房屋租赁系统"},["/Project/house-rent","/Project/house-rent.md"]],
   ["v-2193d206","/Project/Resume.html",{"title":"简历"},["/Project/Resume","/Project/Resume.md"]],

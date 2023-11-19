@@ -1,14 +1,6 @@
 export const pagesData = {
   // path: /
   "v-8daa1a0e": () => import(/* webpackChunkName: "v-8daa1a0e" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/index.html.js").then(({ data }) => data),
-  // path: /Algorithm/Acwing.html
-  "v-6c1df2da": () => import(/* webpackChunkName: "v-6c1df2da" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Algorithm/Acwing.html.js").then(({ data }) => data),
-  // path: /Algorithm/LeetCode.html
-  "v-41fc89ea": () => import(/* webpackChunkName: "v-41fc89ea" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Algorithm/LeetCode.html.js").then(({ data }) => data),
-  // path: /Algorithm/Offer1.html
-  "v-6a9b6d2a": () => import(/* webpackChunkName: "v-6a9b6d2a" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Algorithm/Offer1.html.js").then(({ data }) => data),
-  // path: /Algorithm/
-  "v-30e3f50e": () => import(/* webpackChunkName: "v-30e3f50e" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Algorithm/index.html.js").then(({ data }) => data),
   // path: /AI/Colossal-AI.html
   "v-ee18bf28": () => import(/* webpackChunkName: "v-ee18bf28" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/AI/Colossal-AI.html.js").then(({ data }) => data),
   // path: /AI/EfficientNet.html
@@ -29,6 +21,16 @@ export const pagesData = {
   "v-e011c81c": () => import(/* webpackChunkName: "v-e011c81c" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Back/RocketMQ.html.js").then(({ data }) => data),
   // path: /Back/Spring.html
   "v-0aaa8abd": () => import(/* webpackChunkName: "v-0aaa8abd" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Back/Spring.html.js").then(({ data }) => data),
+  // path: /Algorithm/Acwing.html
+  "v-6c1df2da": () => import(/* webpackChunkName: "v-6c1df2da" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Algorithm/Acwing.html.js").then(({ data }) => data),
+  // path: /Algorithm/LeetCode.html
+  "v-41fc89ea": () => import(/* webpackChunkName: "v-41fc89ea" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Algorithm/LeetCode.html.js").then(({ data }) => data),
+  // path: /Algorithm/Offer1.html
+  "v-6a9b6d2a": () => import(/* webpackChunkName: "v-6a9b6d2a" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Algorithm/Offer1.html.js").then(({ data }) => data),
+  // path: /Algorithm/Offer2.html
+  "v-6731bbec": () => import(/* webpackChunkName: "v-6731bbec" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Algorithm/Offer2.html.js").then(({ data }) => data),
+  // path: /Algorithm/
+  "v-30e3f50e": () => import(/* webpackChunkName: "v-30e3f50e" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Algorithm/index.html.js").then(({ data }) => data),
   // path: /Project/experimental-platform.html
   "v-46e45ca0": () => import(/* webpackChunkName: "v-46e45ca0" */"D:/develop/docs/study-notes/docs/.vuepress/.temp/pages/Project/experimental-platform.html.js").then(({ data }) => data),
   // path: /Project/house-rent.html

@@ -819,8 +819,23 @@ export const data = {
       ]
     }
   ],
-  "git": {},
-  "filePathRelative": "Algorithm/剑指Offer Ⅱ.md"
+  "git": {
+    "contributors": []
+  },
+  "filePathRelative": "Algorithm/剑指Offer Ⅱ.md",
+  "rightAnchor": {
+    "showDepth": 4,
+    "ignore": [
+      "/",
+      "/api/"
+    ],
+    "expand": {
+      "trigger": "hover",
+      "clickModeDefaultOpen": true
+    },
+    "customClass": "your-customClass",
+    "isIgnore": false
+  }
 }
 
 if (import.meta.webpackHot) {

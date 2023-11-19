@@ -819,7 +819,9 @@ export const data = {
       ]
     }
   ],
-  "git": {},
+  "git": {
+    "contributors": []
+  },
   "filePathRelative": "Algorithm/Offer2.md"
 }
 
