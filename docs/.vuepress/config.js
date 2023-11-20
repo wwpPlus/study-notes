@@ -36,13 +36,14 @@ module.exports = {
       },
       {
         text: "项目经历",
-        children: [
-          { text: "简历", link: "/Project/Resume.md" },
-          { text: "软件杯", link: "/Project/软件杯.md" },
-          { text: "科研创新实践平台", link: "/Project/experimental-platform.md" },
-          { text: "微应用设计平台", link: "/Project/web-app.md" },
-          { text: "微服务房屋租赁系统", link: "/Project/house-rent.md" }
-        ]
+        link: "/Project/软件杯.md"
+        // children: [
+        //   { text: "简历", link: "/Project/Resume.md" },
+        //   { text: "软件杯", link: "/Project/软件杯.md" },
+        //   { text: "科研创新实践平台", link: "/Project/experimental-platform.md" },
+        //   { text: "微应用设计平台", link: "/Project/web-app.md" },
+        //   { text: "微服务房屋租赁系统", link: "/Project/house-rent.md" }
+        // ]
       },
       { 
         text: "工具", 

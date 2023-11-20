@@ -1,7 +1,15 @@
 .theme-default-content:not(.custom) {
-  max-width: 150vh !important;
+  max-width: 140vh !important;
 }
 
 .copy-code-pure-button {
   z-index: 19 !important;
+}
+
+.page-nav {
+  max-width: 120vh;
+}
+
+.page-meta {
+  max-width: 120vh;
 }
