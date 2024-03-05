@@ -6,7 +6,7 @@
 
 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
 
-![42](./imgs/leetcode/42.jpg)
+![42](imgs/leetcode/42.jpg)
 
 ```java
 class Solution {
@@ -17,7 +17,7 @@ class Solution {
             int last = 0;
             while (!st.isEmpty() && height[st.peek()] <= height[i]) {
                 ans += (i - st.peek() - 1) * (height[st.peek()] - last);
-                last = height[st.pop()]; 
+                last = height[st.pop()];
             }
             if (!st.isEmpty()) {
                 ans += (i - st.peek() - 1) * (height[i] - last);
@@ -25,6 +25,60 @@ class Solution {
             st.push(i);
         }
         return ans;
+    }
+}
+```
+
+### 365. 水壶问题
+
+有两个水壶，容量分别为 `jug1Capacity` 和 `jug2Capacity` 升。水的供应是无限的。确定是否有可能使用这两个壶准确得到 `targetCapacity` 升。
+
+如果可以得到 `targetCapacity` 升水，最后请用以上水壶中的一或两个来盛放取得的 `targetCapacity` 升水。
+
+你可以：
+
+- 装满任意一个水壶
+- 清空任意一个水壶
+- 从一个水壶向另外一个水壶倒水，直到装满或者倒空
+
+![365](./imgs/leetcode/365.jpg)
+
+```java
+class Solution {
+    public boolean canMeasureWater(int x, int y, int z) {
+        Deque<int[]> stk = new LinkedList<int[]>();
+        stk.push(new int[]{0, 0});
+        Set<Long> seen = new HashSet<>();
+        while (!stk.isEmpty()) {
+            if (seen.contains(hash(stk.peek()))) {
+                stk.pop();
+                continue;
+            }
+            seen.add(hash(stk.peek()));
+
+            int[] state = stk.pop();
+            int rx = state[0], ry = state[1];
+            if (rx == z || ry == z || rx + ry == z) {
+                return true;
+            }
+            // 把 X 壶灌满。
+            stk.push(new int[]{x, ry});
+            // 把 Y 壶灌满。
+            stk.push(new int[]{rx, y});
+            // 把 X 壶倒空。
+            stk.push(new int[]{0, ry});
+            // 把 Y 壶倒空。
+            stk.push(new int[]{rx, 0});
+            // 把 X 壶的水灌进 Y 壶，直至灌满或倒空。
+            stk.push(new int[]{rx - Math.min(rx, y - ry), ry + Math.min(rx, y - ry)});
+            // 把 Y 壶的水灌进 X 壶，直至灌满或倒空。
+            stk.push(new int[]{rx + Math.min(ry, x - rx), ry - Math.min(ry, x - rx)});
+        }
+        return false;
+    }
+
+    long hash(int[] state) {
+        return (long) state[0] * 1000001 + state[1];
     }
 }
 ```
@@ -39,7 +93,7 @@ class Solution {
 
 此外，你可以认为原始数据不包含数字，所有的数字只表示重复的次数 k ，例如不会出现像 3a 或 2[4] 的输入。
 
-![394. 字符串解码](./imgs/leetcode/394.jpg)
+![394. 字符串解码](imgs/leetcode/394.jpg)
 
 ```java
 class Solution {
@@ -48,10 +102,10 @@ class Solution {
         Stack<Integer> countStack = new Stack<>();
         Stack<StringBuilder> strStack = new Stack<>();
         int index = 0;
-        
+
         while (index < s.length()) {
             char c = s.charAt(index);
-            
+
             if (Character.isDigit(c)) {
                 // 获取重复次数
                 int count = 0;
@@ -80,7 +134,7 @@ class Solution {
                 index++;
             }
         }
-        
+
         return result.toString();
     }
 }
@@ -99,7 +153,7 @@ class Solution {
 - `StockSpanner()` 初始化类对象。
 - `int next(int price)` 给出今天的股价 `price` ，返回该股票当日价格的 **跨度** 。
 
-![901](./imgs/leetcode/901.jpg)
+![901](imgs/leetcode/901.jpg)
 
 ```java
 class StockSpanner {
@@ -109,7 +163,7 @@ class StockSpanner {
         stk = new Stack<int[]>();
         stk.push(new int[]{-1, Integer.MAX_VALUE / 2});
     }
-    
+
     public int next(int price) {
         top ++;
         while (price >= stk.peek()[1]) {
@@ -128,7 +182,399 @@ class StockSpanner {
  */
 ```
 
+### 907. 子数组的最小值之和
+
+给定一个整数数组 `arr`，找到 `min(b)` 的总和，其中 `b` 的范围为 `arr` 的每个（连续）子数组。
+
+由于答案可能很大，因此 **返回答案模 `10^9 + 7`** 。
+
+![907](imgs/leetcode/907.jpg)
+
+```java
+class Solution {
+    public int sumSubarrayMins(int[] arr) {
+        int n = arr.length;
+        int[] l = new int[n], r = new int[n];
+        Stack<Integer> stk = new Stack<>();
+        for (int i = 0; i < n; i ++) {
+            while (!stk.isEmpty() && arr[stk.peek()] > arr[i]) stk.pop();
+            if (stk.isEmpty()) l[i] = -1;
+            else l[i] = stk.peek();
+            stk.push(i);
+        }
+        stk = new Stack<>();
+        for (int i = n - 1; i >= 0; i --) {
+            while (!stk.isEmpty() && arr[stk.peek()] >= arr[i]) stk.pop();
+            if (stk.isEmpty()) r[i] = n;
+            else r[i] = stk.peek();
+            stk.push(i);
+        }
+        final int mod = (int)1e9 + 7;
+        long res = 0L;
+        for (int i = 0; i < n; i ++) {
+            res = (res + (long)arr[i] * (i - l[i]) * (r[i] - i)) % mod;
+        }
+        return (int)res;
+    }
+}
+```
+
+### 2454. 下一个更大元素 IV
+
+给你一个下标从 **0** 开始的非负整数数组 `nums` 。对于 `nums` 中每一个整数，你必须找到对应元素的 **第二大** 整数。
+
+如果 `nums[j]` 满足以下条件，那么我们称它为 `nums[i]` 的 **第二大** 整数：
+
+- `j > i`
+- `nums[j] > nums[i]`
+- 恰好存在 **一个** `k` 满足 `i < k < j` 且 `nums[k] > nums[i]` 。
+
+如果不存在 `nums[j]` ，那么第二大整数为 `-1` 。
+
+- 比方说，数组 `[1, 2, 4, 3]` 中，`1` 的第二大整数是 `4` ，`2` 的第二大整数是 `3` ，`3` 和 `4` 的第二大整数是 `-1` 。
+
+请你返回一个整数数组 `answer` ，其中 `answer[i]`是 `nums[i]` 的第二大整数。
+
+![2454](imgs/leetcode/2454.jpg)
+
+**思路**
+![思路](imgs/leetcode/2454_1.jpg)
+
+```java
+class Solution {
+    public int[] secondGreaterElement(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[n];
+        Arrays.fill(ans, -1);
+        List<Integer> t = new ArrayList<>();
+        List<Integer> s = new ArrayList<>();
+        for (int i = 0; i < n; i ++) {
+            while (!t.isEmpty() && nums[t.get(t.size() - 1)] < nums[i]) {
+                ans[t.get(t.size() - 1)] = nums[i];
+                t.remove(t.size() - 1);
+            }
+            int j = s.size();
+            while (j > 0 && nums[s.get(j - 1)] < nums[i]) {
+                j --;
+            }
+            List<Integer> popped = s.subList(j, s.size());
+            t.addAll(popped); // 把从 s 弹出的这一整段元素加到 t
+            popped.clear(); // 弹出一整段元素
+            s.add(i); // 当前元素（的下标）加到 s 栈顶
+        }
+        return ans;
+    }
+}
+```
+
+### 2865. 美丽塔 I
+
+给你一个长度为 `n` 下标从 **0** 开始的整数数组 `maxHeights` 。
+
+你的任务是在坐标轴上建 `n` 座塔。第 `i` 座塔的下标为 `i` ，高度为 `heights[i]` 。
+
+如果以下条件满足，我们称这些塔是 **美丽** 的：
+
+1. `1 <= heights[i] <= maxHeights[i]`
+2. `heights` 是一个 **山脉** 数组。
+
+如果存在下标 `i` 满足以下条件，那么我们称数组 `heights` 是一个 **山脉** 数组：
+
+- 对于所有 `0 < j <= i` ，都有 `heights[j - 1] <= heights[j]`
+- 对于所有 `i <= k < n - 1` ，都有 `heights[k + 1] <= heights[k]`
+
+请你返回满足 **美丽塔** 要求的方案中，**高度和的最大值** 。
+
+![2865](./imgs/leetcode/2865.jpg)
+
+```java
+class Solution {
+    // 枚举
+    // public long maximumSumOfHeights(List<Integer> maxHeights) {
+    //     int n = maxHeights.size();
+    //     long res = 0L;
+    //     for (int i = 0; i < n; i ++) {
+    //         int pre = maxHeights.get(i);
+    //         long sum = pre;
+    //         for (int j = i - 1; j >= 0; j --) {
+    //             pre = Math.min(pre, maxHeights.get(j));
+    //             sum += pre;
+    //         }
+    //         int suf = maxHeights.get(i);
+    //         for (int j = i + 1; j < n; j ++) {
+    //             suf = Math.min(suf, maxHeights.get(j));
+    //             sum += suf;
+    //         }
+    //         res = Math.max(res, sum);
+    //     }
+    //     return res;
+    // }
+    // 单调栈
+    public long maximumSumOfHeights(List<Integer> maxHeights) {
+        int n = maxHeights.size();
+        long res = 0L;
+        long[] prefix = new long[n], suffix = new long[n];
+        Deque<Integer> stk1 = new ArrayDeque<>(), stk2 = new ArrayDeque<>();
+
+        for (int i = 0; i < n; i++) {
+            while (!stk1.isEmpty() && maxHeights.get(i) < maxHeights.get(stk1.peek())) {
+                stk1.pop();
+            }
+            if (stk1.isEmpty()) {
+                prefix[i] = (long) (i + 1) * maxHeights.get(i);
+            } else {
+                prefix[i] = prefix[stk1.peek()] + (long) (i - stk1.peek()) * maxHeights.get(i);
+            }
+            stk1.push(i);
+        }
+        for (int i = n - 1; i >= 0; i--) {
+            while (!stk2.isEmpty() && maxHeights.get(i) < maxHeights.get(stk2.peek())) {
+                stk2.pop();
+            }
+            if (stk2.isEmpty()) {
+                suffix[i] = (long) (n - i) * maxHeights.get(i);
+            } else {
+                suffix[i] = suffix[stk2.peek()] + (long) (stk2.peek() - i) * maxHeights.get(i);
+            }
+            stk2.push(i);
+            res = Math.max(res, prefix[i] + suffix[i] - maxHeights.get(i));
+        }
+        return res;
+    }
+}
+```
+
+## 队列
+
+**双端队列**
+
+`Deque`是一个双端队列接口，继承自`Queue`接口，`Deque`的实现类是`LinkedList、ArrayDeque、LinkedBlockingDeque`，其中`LinkedList`是最常用的。
+
+Deque 有三种用途：
+
+```java
+// 普通队列(一端进另一端出):
+Queue queue = new LinkedList();
+// 或者
+Deque deque = new LinkedList();
+// 双端队列(两端都可进出)
+Deque deque = new LinkedList();
+// 堆栈
+Deque deque = new LinkedList();
+```
+
+| 操作          | 描述                                              |
+| ------------- | ------------------------------------------------- |
+| addFirst(e)   | 在队列的头部插入元素 e                            |
+| offerFirst(e) | 在队列的头部插入元素 e，如果队列已满则返回 false  |
+| addLast(e)    | 在队列的尾部插入元素 e                            |
+| offerLast(e)  | 在队列的尾部插入元素 e，如果队列已满则返回 false  |
+| removeFirst() | 移除并返回队列头部的元素，如果队列为空则抛出异常  |
+| pollFirst()   | 移除并返回队列头部的元素，如果队列为空则返回 null |
+| removeLast()  | 移除并返回队列尾部的元素，如果队列为空则抛出异常  |
+| pollLast()    | 移除并返回队列尾部的元素，如果队列为空则返回 null |
+| getFirst()    | 返回队列头部的元素，但不移除                      |
+| peekFirst()   | 返回队列头部的元素，但不移除                      |
+| getLast()     | 返回队列尾部的元素，但不移除                      |
+| peekLast()    | 返回队列尾部的元素，但不移除                      |
+
+Deque 接口扩展(继承)了 Queue 接口。在将双端队列用作队列时，将得到 FIFO（先进先出）行为。将元素添加到双端队列的末尾，从双端队列的开头移除元素。从 Queue 接口继承的方法完全等效于 Deque 方法，如下表所示：
+
+| Queue 方法 | 等效 Deque 方法 |
+| ---------- | --------------- |
+| add(e)     | addLast(e)      |
+| offer(e)   | offerLast(e)    |
+| remove()   | removeFirst()   |
+| poll()     | pollFirst()     |
+| element()  | getFirst()      |
+| peek()     | peekFirst()     |
+
+双端队列也可用作 LIFO（后进先出）堆栈。应优先使用此接口而不是遗留 Stack 类。在将双端队列用作堆栈时，元素被推入双端队列的开头并从双端队列开头弹出。堆栈方法完全等效于 Deque 方法，如下表所示：
+
+| 堆栈方法 | 等效 Deque 方法 |
+| -------- | --------------- |
+| push(e)  | addFirst(e)     |
+| pop()    | removeFirst()   |
+| peek()   | peekFirst()     |
+
+### 1670. 设计前中后队列
+
+请你设计一个队列，支持在前，中，后三个位置的 `push` 和 `pop` 操作。
+
+请你完成 `FrontMiddleBack` 类：
+
+- `FrontMiddleBack()` 初始化队列。
+- `void pushFront(int val)` 将 `val` 添加到队列的 **最前面** 。
+- `void pushMiddle(int val)` 将 `val` 添加到队列的 **正中间** 。
+- `void pushBack(int val)` 将 `val` 添加到队里的 **最后面** 。
+- `int popFront()` 将 **最前面** 的元素从队列中删除并返回值，如果删除之前队列为空，那么返回 `-1` 。
+- `int popMiddle()` 将 **正中间** 的元素从队列中删除并返回值，如果删除之前队列为空，那么返回 `-1` 。
+- `int popBack()` 将 **最后面** 的元素从队列中删除并返回值，如果删除之前队列为空，那么返回 `-1` 。
+
+请注意当有 **两个** 中间位置的时候，选择靠前面的位置进行操作。比方说：
+
+- 将 `6` 添加到 `[1, 2, 3, 4, 5]` 的中间位置，结果数组为 `[1, 2, **6**, 3, 4, 5]` 。
+- 从 `[1, 2, **3**, 4, 5, 6]` 的中间位置弹出元素，返回 `3` ，数组变为 `[1, 2, 4, 5, 6]` 。
+
+![1670](imgs/leetcode/1670.jpg)
+
+```java
+class FrontMiddleBackQueue {
+    Deque<Integer> left = new ArrayDeque<>();
+    Deque<Integer> right = new ArrayDeque<>();
+
+    void balance() {
+        if (left.size() > right.size()) {
+            right.addFirst(left.pollLast());
+        } else if (right.size() > left.size() + 1) {
+            left.addLast(right.pollFirst());
+        }
+    }
+    public FrontMiddleBackQueue() {
+
+    }
+
+    public void pushFront(int val) {
+        left.addFirst(val);
+        balance();
+    }
+
+    public void pushMiddle(int val) {
+        if (left.size() < right.size()) {
+            left.addLast(val);
+        } else {
+            right.addFirst(val);
+        }
+    }
+
+    public void pushBack(int val) {
+        right.addLast(val);
+        balance();
+    }
+
+    public int popFront() {
+        if (right.isEmpty()) {
+            return -1;
+        }
+        int val = left.isEmpty() ? right.pollFirst() : left.pollFirst();
+        balance();
+        return val;
+    }
+
+    public int popMiddle() {
+        if (right.isEmpty()) {
+            return -1;
+        }
+        if (left.size() == right.size()) {
+            return left.pollLast();
+        }
+        return right.pollFirst();
+    }
+
+    public int popBack() {
+        if (right.isEmpty()) {
+            return -1;
+        }
+        int val = right.pollLast();
+        balance();
+        return val;
+    }
+}
+
+/**
+ * Your FrontMiddleBackQueue object will be instantiated and called as such:
+ * FrontMiddleBackQueue obj = new FrontMiddleBackQueue();
+ * obj.pushFront(val);
+ * obj.pushMiddle(val);
+ * obj.pushBack(val);
+ * int param_4 = obj.popFront();
+ * int param_5 = obj.popMiddle();
+ * int param_6 = obj.popBack();
+ */
+```
+
+## 滑动窗口
+
+### 1423. 可获得的最大点数
+
+几张卡牌 **排成一行**，每张卡牌都有一个对应的点数。点数由整数数组 `cardPoints` 给出。
+
+每次行动，你可以从行的开头或者末尾拿一张卡牌，最终你必须正好拿 `k` 张卡牌。
+
+你的点数就是你拿到手中的所有卡牌的点数之和。
+
+给你一个整数数组 `cardPoints` 和整数 `k`，请你返回可以获得的最大点数。
+
+**思路**
+
+记数组 `cardPoints` 的长度为 `n`，由于只能从开头和末尾拿 `k` 张卡牌，所以最后剩下的必然是连续的 `n−k` 张卡牌。
+
+我们可以通过求出剩余卡牌点数之和的最小值，来求出拿走卡牌点数之和的最大值。
+
+![1423](imgs/leetcode/1423.jpg)
+
+```java
+class Solution {
+    public int maxScore(int[] cardPoints, int k) {
+        int n = cardPoints.length;
+        int ws = n - k;
+        int sum = 0;
+        for (int i = 0; i < ws; i ++) {
+            sum += cardPoints[i];
+        }
+        int minSum = sum;
+        for (int i = ws; i < n; i ++) {
+            sum += cardPoints[i] - cardPoints[i - ws];
+            minSum = Math.min(minSum, sum);
+        }
+        return Arrays.stream(cardPoints).sum() - minSum;
+    }
+}
+```
+
 ## 模拟
+
+### 1041. 困于环中的机器人
+
+在无限的平面上，机器人最初位于 `(0, 0)` 处，面朝北方。注意:
+
+- **北方向** 是 y 轴的正方向。
+- **南方向** 是 y 轴的负方向。
+- **东方向** 是 x 轴的正方向。
+- **西方向** 是 x 轴的负方向。
+
+机器人可以接受下列三条指令之一：
+
+- `"G"`：直走 1 个单位
+- `"L"`：左转 90 度
+- `"R"`：右转 90 度
+
+机器人按顺序执行指令 `instructions`，并一直重复它们。
+
+只有在平面中存在环使得机器人永远无法离开时，返回 `true`。否则，返回 `false`。
+
+![1041](imgs/leetcode/1041.jpg)
+
+```java
+class Solution {
+    public boolean isRobotBounded(String instructions) {
+        int[][] dir = {{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
+        int[] cur = {0, 0};
+        int k = 0;
+        for (char c : instructions.toCharArray()) {
+            if (c == 'G') {
+                cur[0] += dir[k][0];
+                cur[1] += dir[k][1];
+            } else if (c == 'L') {
+                k = (k + 1) % 4;
+            } else {
+                k = (-- k + 4) % 4;
+            }
+        }
+        return k != 0 || (cur[0] == 0 && cur[1] == 0);
+    }
+}
+```
 
 ### 1222. 可以攻击国王的皇后
 
@@ -136,7 +582,7 @@ class StockSpanner {
 
 给定一个由整数坐标组成的数组 queens ，表示黑皇后的位置；以及一对坐标 king ，表示白国王的位置，返回所有可以攻击国王的皇后的坐标(任意顺序)。
 
-![1222. 可以攻击国王的皇后](./imgs/leetcode/1222.jpg)
+![1222. 可以攻击国王的皇后](imgs/leetcode/1222.jpg)
 
 ```java
 class Solution {
@@ -178,7 +624,7 @@ class Solution {
 
 注意，骑士行动时可以垂直移动两个格子且水平移动一个格子，或水平移动两个格子且垂直移动一个格子。下图展示了骑士从某个格子出发可能的八种行动路线。
 
-![2596. 检查骑士巡视方案](./imgs/leetcode/2596.jpg)
+![2596. 检查骑士巡视方案](imgs/leetcode/2596.jpg)
 
 ```java
 class Solution {
@@ -241,15 +687,40 @@ class Solution {
 
 ## 计数
 
+### 1010. 总持续时间可被 60 整除的歌曲
+
+在歌曲列表中，第 i 首歌曲的持续时间为 time[i] 秒。
+
+返回其总持续时间（以秒为单位）可被 60 整除的歌曲对的数量。形式上，我们希望下标数字 i 和 j 满足 i < j 且有 `(time[i] + time[j]) % 60 == 0`。
+
+![总持续时间可被 60 整除的歌曲](imgs/leetcode/1010.jpg)
+
+```java
+class Solution {
+    public int numPairsDivisibleBy60(int[] time) {
+    int[] cnt = new int[60];
+        for (int t : time) {
+            cnt[t % 60] ++;
+        }
+        long res = 0;
+        for (int i = 1; i < 30; i ++) {
+            res += cnt[i] * cnt[60 - i];
+        }
+        res += (long)cnt[0] * (cnt[0] - 1) / 2 + (long)cnt[30] * (cnt[30] - 1) / 2;
+        return (int)res;
+    }
+}
+```
+
 ### 1267. 统计参与通信的服务器
 
-这里有一幅服务器分布图，服务器的位置标识在 m * n 的整数矩阵网格 grid 中，1 表示单元格上有服务器，0 表示没有。
+这里有一幅服务器分布图，服务器的位置标识在 m \* n 的整数矩阵网格 grid 中，1 表示单元格上有服务器，0 表示没有。
 
 如果两台服务器位于同一行或者同一列，我们就认为它们之间可以进行通信。
 
 请你统计并返回能够与至少一台其他服务器进行通信的服务器的数量。
 
-![1267. 统计参与通信的服务器](./imgs/leetcode/1267.jpg)
+![1267. 统计参与通信的服务器](imgs/leetcode/1267.jpg)
 
 ```java
 class Solution {
@@ -287,7 +758,7 @@ class Solution {
 
 要想发出蛙鸣 "croak"，青蛙必须 依序 输出 ‘c’, ’r’, ’o’, ’a’, ’k’ 这 5 个字母。如果没有输出全部五个字母，那么它就不会发出声音。如果字符串 croakOfFrogs 不是由若干有效的 "croak" 字符混合而成，请返回 -1 。
 
-![数青蛙](./imgs/leetcode/1419.jpg)
+![数青蛙](imgs/leetcode/1419.jpg)
 
 ```java
 class Solution {
@@ -329,118 +800,111 @@ class Solution {
 }
 ```
 
-### 1010. 总持续时间可被 60 整除的歌曲
+### 1657. 确定两个字符串是否接近
 
-在歌曲列表中，第 i 首歌曲的持续时间为 time[i] 秒。
+如果可以使用以下操作从一个字符串得到另一个字符串，则认为两个字符串 **接近** ：
 
-返回其总持续时间（以秒为单位）可被 60 整除的歌曲对的数量。形式上，我们希望下标数字 i 和 j 满足  i < j 且有 `(time[i] + time[j]) % 60 == 0`。
+- 操作 1：交换任意两个现有字符。
+  - 例如，`a**b**cd**e** -> a**e**cd**b**`
+- 操作 2：将一个现有字符的每次出现转换为另一个 现有字符，并对另一个字符执行相同的操作。
+  - 例如，`**aa**c**abb** -> **bb**c**baa**`（所有 `a` 转化为 `b` ，而所有的 `b` 转换为 `a` ）
 
-![总持续时间可被 60 整除的歌曲](./imgs/leetcode/1010.jpg)
+你可以根据需要对任意一个字符串多次使用这两种操作。
+
+给你两个字符串，`word1` 和 `word2` 。如果 `word1` 和 `word2` **接近** ，就返回 `true` ；否则，返回 `false` 。
+
+![1657](imgs/leetcode/1657.jpg)
 
 ```java
 class Solution {
-    public int numPairsDivisibleBy60(int[] time) {
-    int[] cnt = new int[60];
-        for (int t : time) {
-            cnt[t % 60] ++;
+    public boolean closeStrings(String word1, String word2) {
+        int[] hash1 = new int[26];
+        int[] hash2 = new int[26];
+        for (int i = 0; i < word1.length(); i ++) {
+            hash1[word1.charAt(i) - 'a'] ++;
         }
-        long res = 0;
-        for (int i = 1; i < 30; i ++) {
-            res += cnt[i] * cnt[60 - i];
+        for (int i = 0; i < word2.length(); i ++) {
+            hash2[word2.charAt(i) - 'a'] ++;
         }
-        res += (long)cnt[0] * (cnt[0] - 1) / 2 + (long)cnt[30] * (cnt[30] - 1) / 2;
-        return (int)res;
+        for (int i = 0; i < 26; i ++) {
+            int a = hash1[i], b = hash2[i];
+            if (a == 0 && b != 0 || a != 0 && b == 0) {
+                return false;
+            }
+        }
+        Arrays.sort(hash1);
+        Arrays.sort(hash2);
+        return Arrays.equals(hash1, hash2);
     }
 }
 ```
 
-## 哈希 
+## 哈希
 
-### 1726. 同积元组
+### 447. 回旋镖的数量
 
-给你一个由 **不同** 正整数组成的数组 `nums` ，请你返回满足 `a * b = c * d` 的元组 `(a, b, c, d)` 的数量。其中 `a`、`b`、`c` 和 `d` 都是 `nums` 中的元素，且 `a != b != c != d` 。
+给定平面上 `n` 对 **互不相同** 的点 `points` ，其中 `points[i] = [xi, yi]` 。**回旋镖** 是由点 `(i, j, k)` 表示的元组 ，其中 `i` 和 `j` 之间的距离和 `i` 和 `k` 之间的欧式距离相等（**需要考虑元组的顺序**）。
 
-![1726](./imgs/leetcode/1726.jpg)
+返回平面上所有回旋镖的数量。
 
-**思路与算法：**统计数组中所有不同元素的乘积组合数目，然后计算在相同乘积的**数对**可以构成**同积元组**的数目，并求和即可得到最终的结果。
+![447](imgs/leetcode/447.jpg)
 
 ```java
 class Solution {
-    public int tupleSameProduct(int[] nums) {
-        int n = nums.length;
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < nums.length; i ++) {
-            for (int j = i + 1; j < nums.length; j ++) {
-                int x = nums[i] * nums[j];
-                map.put(x, map.getOrDefault(x, 0) + 1);
+    public int numberOfBoomerangs(int[][] points) {
+        int res = 0;
+        for (int[] p : points) {
+            Map<Integer, Integer> hash = new HashMap<>();
+            for (int[] q : points) {
+                int dis = (p[0] - q[0]) * (p[0] - q[0]) + (p[1] - q[1]) * (p[1] - q[1]);
+                hash.put(dis, hash.getOrDefault(dis, 0) + 1);
             }
+            for (Map.Entry<Integer, Integer> entry : hash.entrySet()) {
+                int m = entry.getValue();
+                res += m * (m - 1);
+            }
+        }
+        return res;
+    }
+}
+```
+
+### 828. 统计子串中的唯一字符
+
+我们定义了一个函数 `countUniqueChars(s)` 来统计字符串 `s` 中的唯一字符，并返回唯一字符的个数。
+
+例如：`s = "LEETCODE"` ，则其中 `"L"`, `"T"`,`"C"`,`"O"`,`"D"` 都是唯一字符，因为它们只出现一次，所以 `countUniqueChars(s) = 5` 。
+
+本题将会给你一个字符串 `s` ，我们需要返回 `countUniqueChars(t)` 的总和，其中 `t` 是 `s` 的子字符串。输入用例保证返回值为 32 位整数。
+
+注意，某些子字符串可能是重复的，但你统计时也必须算上这些重复的子字符串（也就是说，你必须统计 `s` 的所有子字符串中的唯一字符）。
+
+![828](imgs/leetcode/828.jpg)
+
+```java
+class Solution {
+    public int uniqueLetterString(String s) {
+        Map<Character, List<Integer>> index = new HashMap<Character, List<Integer>>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!index.containsKey(c)) {
+                index.put(c, new ArrayList<Integer>());
+                index.get(c).add(-1);
+            }
+            index.get(c).add(i);
         }
         int res = 0;
-        for (int x : map.values()) {
-            res += x * (x - 1) * 4;
-        }
-        return res;
-    }
-}
-```
-
-### 2342. 数位和相等数对的最大和
-
-给你一个下标从 **0** 开始的数组 `nums` ，数组中的元素都是 **正** 整数。请你选出两个下标 `i` 和 `j`（`i != j`），且 `nums[i]` 的数位和 与 `nums[j]` 的数位和相等。
-
-请你找出所有满足条件的下标 `i` 和 `j` ，找出并返回 `nums[i] + nums[j]` 可以得到的 **最大值** *。*
-
-![2342](imgs/leetcode/2342.jpg)
-
-```java
-class Solution {
-    public int maximumSum(int[] nums) {
-        int ans = -1;
-        int[] mx = new int[82];
-        for (int x : nums) {
-            int s = 0, t = x;
-            while (t > 0) {
-                s += t % 10;
-                t /= 10;
-            }
-            if (mx[s] > 0) {
-                ans = Math.max(ans, mx[s] + x);
-            }
-            mx[s] = Math.max(mx[s], x);
-        }
-        return ans;
-    }
-}
-```
-
-### 2441. 与对应负数同时存在的最大正整数
-
-给你一个 不包含 任何零的整数数组 nums ，找出自身与对应的负数都在数组中存在的最大正整数 k 。
-
-返回正整数 k ，如果不存在这样的整数，返回 -1 。
-
-![与对应负数同时存在的最大正整数](./imgs/leetcode/2441.jpg)
-
-> `[-9,-43,24,-23,-16,-30,-38,-30]`
->
-> `-1`
-
-```java
-class Solution {
-    public int findMaxK(int[] nums) {
-        Set<Integer> set = new HashSet<>();
-        for (int i = 0; i < nums.length; i ++ ) {
-            set.add(nums[i]);
-        }
-        int res = -1;
-        for (int i = 0; i < nums.length; i ++) {
-            if (set.contains(-nums[i])) {
-                res = Math.max(Math.abs(nums[i]), res);
+        for (Map.Entry<Character, List<Integer>> entry : index.entrySet()) {
+            List<Integer> arr = entry.getValue();
+            arr.add(s.length());
+            for (int i = 1; i < arr.size() - 1; i++) {
+                res += (arr.get(i) - arr.get(i - 1)) * (arr.get(i + 1) - arr.get(i));
             }
         }
         return res;
     }
 }
+
 ```
 
 ### 874. 模拟行走机器人
@@ -451,12 +915,12 @@ class Solution {
 - -1 ：向右转 90 度
 - 1 <= x <= 9 ：向前移动 x 个单位长度
 
-在网格上有一些格子被视为障碍物 obstacles 。第 i 个障碍物位于网格点  obstacles[i] = (xi, yi) 。
+在网格上有一些格子被视为障碍物 obstacles 。第 i 个障碍物位于网格点 obstacles[i] = (xi, yi) 。
 
 机器人无法走到障碍物上，它将会停留在障碍物的前一个网格方块上，但仍然可以继续尝试进行该路线的其余部分。
 
 返回从原点到机器人所有经过的路径点（坐标为整数）的最大欧式距离的平方。（即，如果距离为 5 ，则返回 25 ）
- 
+
 注意：
 
 - 北表示 +Y 方向。
@@ -464,7 +928,7 @@ class Solution {
 - 南表示 -Y 方向。
 - 西表示 -X 方向。
 
-![模拟行走机器人](./imgs/leetcode/874.jpg)
+![模拟行走机器人](imgs/leetcode/874.jpg)
 
 ```java
 class Solution {
@@ -497,6 +961,205 @@ class Solution {
 }
 ```
 
+### 1726. 同积元组
+
+给你一个由 **不同** 正整数组成的数组 `nums` ，请你返回满足 `a * b = c * d` 的元组 `(a, b, c, d)` 的数量。其中 `a`、`b`、`c` 和 `d` 都是 `nums` 中的元素，且 `a != b != c != d` 。
+
+![1726](imgs/leetcode/1726.jpg)
+
+**思路与算法：**统计数组中所有不同元素的乘积组合数目，然后计算在相同乘积的**数对**可以构成**同积元组**的数目，并求和即可得到最终的结果。
+
+```java
+class Solution {
+    public int tupleSameProduct(int[] nums) {
+        int n = nums.length;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i ++) {
+            for (int j = i + 1; j < nums.length; j ++) {
+                int x = nums[i] * nums[j];
+                map.put(x, map.getOrDefault(x, 0) + 1);
+            }
+        }
+        int res = 0;
+        for (int x : map.values()) {
+            res += x * (x - 1) * 4;
+        }
+        return res;
+    }
+}
+```
+
+### 2336. 无限集中的最小数字
+
+现有一个包含所有正整数的集合 `[1, 2, 3, 4, 5, ...]` 。
+
+实现 `SmallestInfiniteSet` 类：
+
+- `SmallestInfiniteSet()` 初始化 **SmallestInfiniteSet** 对象以包含 **所有** 正整数。
+- `int popSmallest()` **移除** 并返回该无限集中的最小整数。
+- `void addBack(int num)` 如果正整数 `num` **不** 存在于无限集中，则将一个 `num` **添加** 到该无限集中。
+
+![2336](imgs/leetcode/2336.jpg)
+
+```java
+class SmallestInfiniteSet {
+    int idx;
+    PriorityQueue<Integer> pq;
+    public SmallestInfiniteSet() {
+        idx = 1;
+        pq = new PriorityQueue<>();
+    }
+    
+    public int popSmallest() {
+        if (pq.isEmpty()) {
+            return idx ++;
+        }
+        return pq.poll();
+    }
+    
+    public void addBack(int num) {
+        if (num < idx && !pq.contains(num)) {
+            pq.offer(num);
+        }
+    }
+}
+
+/**
+ * Your SmallestInfiniteSet object will be instantiated and called as such:
+ * SmallestInfiniteSet obj = new SmallestInfiniteSet();
+ * int param_1 = obj.popSmallest();
+ * obj.addBack(num);
+ */
+```
+
+### 2342. 数位和相等数对的最大和
+
+给你一个下标从 **0** 开始的数组 `nums` ，数组中的元素都是 **正** 整数。请你选出两个下标 `i` 和 `j`（`i != j`），且 `nums[i]` 的数位和 与 `nums[j]` 的数位和相等。
+
+请你找出所有满足条件的下标 `i` 和 `j` ，找出并返回 `nums[i] + nums[j]` 可以得到的 **最大值** _。_
+
+![2342](imgs/leetcode/2342.jpg)
+
+```java
+class Solution {
+    public int maximumSum(int[] nums) {
+        int ans = -1;
+        int[] mx = new int[82];
+        for (int x : nums) {
+            int s = 0, t = x;
+            while (t > 0) {
+                s += t % 10;
+                t /= 10;
+            }
+            if (mx[s] > 0) {
+                ans = Math.max(ans, mx[s] + x);
+            }
+            mx[s] = Math.max(mx[s], x);
+        }
+        return ans;
+    }
+}
+```
+
+### 2441. 与对应负数同时存在的最大正整数
+
+给你一个 不包含 任何零的整数数组 nums ，找出自身与对应的负数都在数组中存在的最大正整数 k 。
+
+返回正整数 k ，如果不存在这样的整数，返回 -1 。
+
+![与对应负数同时存在的最大正整数](imgs/leetcode/2441.jpg)
+
+> `[-9,-43,24,-23,-16,-30,-38,-30]`
+>
+> `-1`
+
+```java
+class Solution {
+    public int findMaxK(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < nums.length; i ++ ) {
+            set.add(nums[i]);
+        }
+        int res = -1;
+        for (int i = 0; i < nums.length; i ++) {
+            if (set.contains(-nums[i])) {
+                res = Math.max(Math.abs(nums[i]), res);
+            }
+        }
+        return res;
+    }
+}
+```
+
+### 2661. 找出叠涂元素
+
+给你一个下标从 **0** 开始的整数数组 `arr` 和一个 `m x n` 的整数 **矩阵** `mat` 。`arr` 和 `mat` 都包含范围 `[1，m * n]` 内的 **所有** 整数。
+
+从下标 `0` 开始遍历 `arr` 中的每个下标 `i` ，并将包含整数 `arr[i]` 的 `mat` 单元格涂色。
+
+请你找出 `arr` 中在 `mat` 的某一行或某一列上都被涂色且下标最小的元素，并返回其下标 `i` 。
+ 
+![2661](imgs/leetcode/2661.jpg)
+
+```java
+class Solution {
+    public int firstCompleteIndex(int[] arr, int[][] mat) {
+        Map<Integer, int[]> map = new HashMap<>();
+        int n = mat.length, m = mat[0].length;
+        for (int i = 0; i < n; i ++) {
+            for (int j = 0; j < m; j ++) {
+                map.put(mat[i][j], new int[]{i, j});
+            }
+        }
+        int[] row = new int[n], col = new int[m];
+        for (int i = 0; i < arr.length; i ++) {
+            int[] cur = map.get(arr[i]);
+            row[cur[0]] ++;
+            if (row[cur[0]] == m) {
+                return i;
+            }
+            col[cur[1]] ++;
+            if (col[cur[1]] == n) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+```
+
+### 2670. 找出不同元素数目差数组
+
+给你一个下标从 **0** 开始的数组 `nums` ，数组长度为 `n` 。
+
+`nums` 的 **不同元素数目差** 数组可以用一个长度为 `n` 的数组 `diff` 表示，其中 `diff[i]` 等于前缀 `nums[0, ..., i]` 中不同元素的数目 **减去** 后缀 `nums[i + 1, ..., n - 1]` 中不同元素的数目。
+
+返回 `nums` 的 **不同元素数目差** 数组。
+
+注意 `nums[i, ..., j]` 表示 `nums` 的一个从下标 `i` 开始到下标 `j` 结束的子数组（包含下标 `i` 和 `j` 对应元素）。特别需要说明的是，如果 `i > j` ，则 `nums[i, ..., j]` 表示一个空子数组。
+
+![2670](./imgs/leetcode/2670.jpg)
+
+```java
+class Solution {
+    public int[] distinctDifferenceArray(int[] nums) {
+        int n = nums.length;
+        int[] diff = new int[n], suffix = new int[n + 1];
+        Set<Integer> set = new HashSet<>();
+        for (int i = n - 1; i > 0; i --) {
+            set.add(nums[i]);
+            suffix[i] = set.size();
+        }
+        set.clear();
+        for (int i = 0; i < n; i ++) {
+            set.add(nums[i]);
+            diff[i] = set.size() - suffix[i + 1];
+        }
+        return diff;
+    }
+}
+```
+
 ## 矩阵
 
 ### 1072. 按列翻转得到最大值等行数
@@ -507,7 +1170,7 @@ class Solution {
 
 返回 经过一些翻转后，行与行之间所有值都相等的最大行数 。
 
-![按列翻转得到最大值等行数](./imgs/leetcode/1072.png)
+![按列翻转得到最大值等行数](imgs/leetcode/1072.png)
 
 ```java
 class Solution {
@@ -515,7 +1178,7 @@ class Solution {
         int n = matrix.length, m = matrix[0].length, res = 1;
         Map<String, Integer> map = new HashMap<>();
         for (int i = 0; i < n; i ++) {
-            StringBuilder a = new StringBuilder(""), b = new StringBuilder(""); 
+            StringBuilder a = new StringBuilder(""), b = new StringBuilder("");
             for (int x : matrix[i]) {
                 a.append(x);
                 b.append(x ^ 1);
@@ -524,7 +1187,7 @@ class Solution {
             map.put(b.toString(), map.getOrDefault(b.toString(), 0) + 1);
             res = Math.max(res, Math.max(map.get(a.toString()), map.get(b.toString())));
         }
-        
+
         return res;
     }
 }
@@ -538,7 +1201,7 @@ class Solution {
 在步骤 1 删除的所有数字中找到最大的一个数字，将它添加到你的 分数 中。
 请你返回最后的 分数 。
 
-![2679. 矩阵中的和](./imgs/leetcode/2679.jpg)
+![2679. 矩阵中的和](imgs/leetcode/2679.jpg)
 
 **枚举**
 
@@ -592,6 +1255,42 @@ class Solution {
 
 ## 贪心
 
+### LCP 30. 魔塔游戏
+
+小扣当前位于魔塔游戏第一层，共有 `N` 个房间，编号为 `0 ~ N-1`。每个房间的补血道具/怪物对于血量影响记于数组 `nums`，其中正数表示道具补血数值，即血量增加对应数值；负数表示怪物造成伤害值，即血量减少对应数值；`0` 表示房间对血量无影响。
+
+**小扣初始血量为 1，且无上限**。假定小扣原计划按房间编号升序访问所有房间补血/打怪，**为保证血量始终为正值**，小扣需对房间访问顺序进行调整，**每次仅能将一个怪物房间（负数的房间）调整至访问顺序末尾**。请返回小扣最少需要调整几次，才能顺利访问所有房间。若调整顺序也无法访问完全部房间，请返回 -1。
+
+![LCP 30](./imgs/leetcode/lcp30.jpg)
+
+```java
+class Solution {
+    public int magicTower(int[] nums) {
+        long sum = 0;
+        for (int x : nums) {
+            sum += x;
+        }
+        if (sum < 0) {
+            return -1;
+        }
+        int ans = 0;
+        long cur = 1;
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        for (int x : nums) {
+            cur += x;
+            if (x < 0) {
+                minHeap.offer(x);
+            }
+            if (cur < 1) {
+                cur -= minHeap.poll();
+                ans ++;
+            }
+        }
+        return ans;
+    }
+}
+```
+
 ### 630. 课程表 III
 
 这里有 n 门不同的在线课程，按从 1 到 n 编号。给你一个数组 courses ，其中 `courses[i] = [durationi, lastDayi]` 表示第 i 门课将会 持续 上 durationi 天课，并且必须在不晚于 lastDayi 的时候完成。
@@ -600,12 +1299,12 @@ class Solution {
 
 返回你最多可以修读的课程数目。
 
-![630. 课程表 III](./imgs/leetcode/630.jpg)
+![630. 课程表 III](imgs/leetcode/630.jpg)
 
 ```java
 class Solution {
     /**
-     * f(i) 考虑前i 个任务的所有合法方案： 
+     * f(i) 考虑前i 个任务的所有合法方案：
      * 1. 选的课程个数最多
      * 2. 总用时最少（每种方案用时相同）
      * 加入第i 个任务后：
@@ -628,13 +1327,46 @@ class Solution {
 }
 ```
 
+### 670. 最大交换
+
+给定一个非负整数，你至多可以交换一次数字中的任意两位。返回你能得到的最大值。
+
+![670](./imgs/leetcode/670.jpg)
+
+```java
+class Solution {
+    public int maximumSwap(int num) {
+        char[] cs = String.valueOf(num).toCharArray();
+        int n = cs.length;
+        int maxIdx = n - 1;
+        int idx1 = -1, idx2 = -1;
+        for (int i = n - 1; i >= 0; i --) {
+            if (cs[i] > cs[maxIdx]) {
+                maxIdx = i;
+            } else if (cs[i] < cs[maxIdx]) {
+                idx1 = i;
+                idx2 = maxIdx;
+            }
+        }
+        if (idx1 >= 0) {
+            char temp = cs[idx1];
+            cs[idx1] = cs[idx2];
+            cs[idx2] = temp;
+            return Integer.parseInt(new String(cs));
+        } else {
+            return num;
+        }
+    }
+}
+```
+
 ### 1054. 距离相等的条形码
 
 在一个仓库里，有一排条形码，其中第 i 个条形码为 `barcodes[i]`。
 
 请你重新排列这些条形码，使其中任意两个相邻的条形码不能相等。 你可以返回任何满足该要求的答案，此题保证存在答案。
 
-![距离相等的条形码](./imgs/leetcode/1054.jpg)
+![距离相等的条形码](imgs/leetcode/1054.jpg)
 
 ```java
 class Solution {
@@ -671,13 +1403,13 @@ class Solution {
 
 一个厨师收集了他 `n` 道菜的满意程度 `satisfaction` ，这个厨师做出每道菜的时间都是 1 单位时间。
 
-一道菜的 「 **like-time 系数** 」定义为烹饪这道菜结束的时间（包含之前每道菜所花费的时间）乘以这道菜的满意程度，也就是 `time[i]`*`satisfaction[i]` 。
+一道菜的 「 **like-time 系数** 」定义为烹饪这道菜结束的时间（包含之前每道菜所花费的时间）乘以这道菜的满意程度，也就是 `time[i]`\*`satisfaction[i]` 。
 
 返回厨师在准备了一定数量的菜肴后可以获得的最大 **like-time 系数** 总和。
 
 你可以按 **任意** 顺序安排做菜的顺序，你也可以选择放弃做某些菜来获得更大的总和。
 
-![1402](./imgs/leetcode/1402.jpg)
+![1402](imgs/leetcode/1402.jpg)
 
 **思路：**可以任意顺序安排做菜的顺序，把 satisfaction 从大到小排序。f(k)=k⋅a[0]+(k−1)⋅a[1]+⋯+2⋅a[k−2]+a[k−1] -> f(k)=f(k−1)+(a[0]+a[1]+⋯+a[k−1])
 
@@ -717,7 +1449,7 @@ class Solution {
 
 请注意，如果你选择抽干一个装满水的湖泊，它会变成一个空的湖泊。但如果你选择抽干一个空的湖泊，那么将无事发生。
 
-![1488](./imgs/leetcode/1488.jpg)
+![1488](imgs/leetcode/1488.jpg)
 
 **思路**
 
@@ -760,12 +1492,12 @@ class Solution {
 
 矩形蛋糕的高度为 `h` 且宽度为 `w`，给你两个整数数组 `horizontalCuts` 和 `verticalCuts`，其中：
 
--  `horizontalCuts[i]` 是从矩形蛋糕顶部到第 `i` 个水平切口的距离
+- `horizontalCuts[i]` 是从矩形蛋糕顶部到第 `i` 个水平切口的距离
 - `verticalCuts[j]` 是从矩形蛋糕的左侧到第 `j` 个竖直切口的距离
 
-请你按数组 *`horizontalCuts`* 和 *`verticalCuts`* 中提供的水平和竖直位置切割后，请你找出 **面积最大** 的那份蛋糕，并返回其 **面积** 。由于答案可能是一个很大的数字，因此需要将结果 **对** `109 + 7` **取余** 后返回。
+请你按数组 _`horizontalCuts`_ 和 _`verticalCuts`_ 中提供的水平和竖直位置切割后，请你找出 **面积最大** 的那份蛋糕，并返回其 **面积** 。由于答案可能是一个很大的数字，因此需要将结果 **对** `109 + 7` **取余** 后返回。
 
-![1465](./imgs/leetcode/1465.jpg)
+![1465](imgs/leetcode/1465.jpg)
 
 **思路**
 
@@ -794,7 +1526,7 @@ class Solution {
 
 给你一个正整数 `num` ，请你将它分割成两个非负整数 `num1` 和 `num2` ，满足：
 
-- `num1` 和 `num2`  直接连起来，得到 `num` 各数位的一个排列。
+- `num1` 和 `num2` 直接连起来，得到 `num` 各数位的一个排列。
   - 换句话说，`num1` 和 `num2` 中所有数字出现的次数之和等于 `num` 中所有数字出现的次数。
 - `num1` 和 `num2` 可以包含前导 0 。
 
@@ -805,7 +1537,7 @@ class Solution {
 - `num` 保证没有前导 0 。
 - `num1` 和 `num2` 中数位顺序可以与 `num` 中数位顺序不同。
 
-![2578](./imgs/leetcode/2578.jpg)
+![2578](imgs/leetcode/2578.jpg)
 
 ```java
 class Solution {
@@ -839,7 +1571,7 @@ class Solution {
 
 现计划从这些物品中恰好选出 k 件物品。返回所有可行方案中，物品上所标记数字之和的最大值。
 
-![K 件物品的最大和](./imgs/leetcode/2600.jpg)
+![K 件物品的最大和](imgs/leetcode/2600.jpg)
 
 ```java
 class Solution {
@@ -848,16 +1580,17 @@ class Solution {
     }
 }
 ```
+
 ### 2178. 拆分成最多数目的正偶数之和
 
 给你一个整数 finalSum 。请你将它拆分成若干个 互不相同 的正偶数之和，且拆分出来的正偶数数目 最多 。
 
-- 比方说，给你` finalSum = 12 `，那么这些拆分是 符合要求 的（互不相同的正偶数且和为 `finalSum`）：`(2 + 10) ，(2 + 4 + 6) 和 (4 + 8)` 。它们中，`(2 + 4 + 6) `包含最多数目的整数。
+- 比方说，给你`finalSum = 12`，那么这些拆分是 符合要求 的（互不相同的正偶数且和为 `finalSum`）：`(2 + 10) ，(2 + 4 + 6) 和 (4 + 8)` 。它们中，`(2 + 4 + 6) `包含最多数目的整数。
 
 注意 `finalSum` 不能拆分成 `(2 + 2 + 4 + 4)` ，因为拆分出来的整数必须互不相同。
 请你返回一个整数数组，表示将整数拆分成 最多 数目的正偶数数组。如果没有办法将 `finalSum` 进行拆分，请你返回一个 空 数组。你可以按 任意 顺序返回这些整数。
 
-![拆分成最多数目的正偶数之和](./imgs/leetcode/2178.jpg)
+![拆分成最多数目的正偶数之和](imgs/leetcode/2178.jpg)
 
 ```java
 class Solution {
@@ -879,35 +1612,13 @@ class Solution {
 
 ## 字符串
 
-### 2446. 判断两个事件是否存在冲突
-
-给你两个字符串数组 event1 和 event2 ，表示发生在同一天的两个闭区间时间段事件，其中：
-
-- `event1 = [startTime1, endTime1]` 且
-- `event2 = [startTime2, endTime2]`
-事件的时间为有效的 24 小时制且按 HH:MM 格式给出。
-
-当两个事件存在某个非空的交集时（即，某些时刻是两个事件都包含的），则认为出现 冲突 。
-
-如果两个事件之间存在冲突，返回 true ；否则，返回 false 。
-
-![判断两个事件是否存在冲突](./imgs/leetcode/2446.jpg)
-
-```java
-class Solution {
-    public boolean haveConflict(String[] event1, String[] event2) {
-        return !(event1[1].compareTo(event2[0]) < 0 || event2[1].compareTo(event1[0]) < 0);
-    }
-}
-```
-
 ### 415. 字符串相加
 
-给定两个字符串形式的非负整数 num1 和num2 ，计算它们的和并同样以字符串形式返回。
+给定两个字符串形式的非负整数 num1 和 num2 ，计算它们的和并同样以字符串形式返回。
 
 你不能使用任何內建的用于处理大整数的库（比如 BigInteger）， 也不能直接将输入的字符串转换为整数形式。
 
-![字符串相加](./imgs/leetcode/415.jpg)
+![字符串相加](imgs/leetcode/415.jpg)
 
 ```java
 class Solution {
@@ -933,6 +1644,69 @@ class Solution {
 }
 ```
 
+### 2446. 判断两个事件是否存在冲突
+
+给你两个字符串数组 event1 和 event2 ，表示发生在同一天的两个闭区间时间段事件，其中：
+
+- `event1 = [startTime1, endTime1]` 且
+- `event2 = [startTime2, endTime2]`
+  事件的时间为有效的 24 小时制且按 HH:MM 格式给出。
+
+当两个事件存在某个非空的交集时（即，某些时刻是两个事件都包含的），则认为出现 冲突 。
+
+如果两个事件之间存在冲突，返回 true ；否则，返回 false 。
+
+![判断两个事件是否存在冲突](imgs/leetcode/2446.jpg)
+
+```java
+class Solution {
+    public boolean haveConflict(String[] event1, String[] event2) {
+        return !(event1[1].compareTo(event2[0]) < 0 || event2[1].compareTo(event1[0]) < 0);
+    }
+}
+```
+
+### 2788. 按分隔符拆分字符串
+
+给你一个字符串数组 `words` 和一个字符 `separator` ，请你按 `separator` 拆分 `words` 中的每个字符串。
+
+返回一个由拆分后的新字符串组成的字符串数组，**不包括空字符串** 。
+
+**注意**
+
+- `separator` 用于决定拆分发生的位置，但它不包含在结果字符串中。
+- 拆分可能形成两个以上的字符串。
+- 结果字符串必须保持初始相同的先后顺序。
+
+![2788](./imgs/leetcode/2788.jpg)
+
+```java
+class Solution {
+    public List<String> splitWordsBySeparator(List<String> words, char separator) {
+        List<String> ans = new ArrayList<>();
+        for (String s : words) {
+            ans.addAll(split_s(s, separator));
+        }
+        return ans;
+    }
+    List<String> split_s(String s, char separator) {
+        List<String> res = new ArrayList<>();
+        for (int i = 0, j = 0; i < s.length(); i ++) {
+            j = i;
+            StringBuilder sb = new StringBuilder();
+            while (j < s.length() && s.charAt(j) != separator) {
+                sb.append(s.charAt(j ++));
+            }
+            if (!"".equals(sb.toString().trim())) {
+                res.add(sb.toString());
+            }
+            i = j;
+        }
+        return res;
+    }
+}
+```
+
 ## 数组
 
 ### 57. 插入区间
@@ -941,7 +1715,7 @@ class Solution {
 
 在列表中插入一个新的区间，你需要确保列表中的区间仍然有序且不重叠（如果有必要的话，可以合并区间）。
 
-![57. 插入区间](./imgs/leetcode/57.jpg)
+![57. 插入区间](imgs/leetcode/57.jpg)
 
 ```java
 class Solution {
@@ -971,6 +1745,39 @@ class Solution {
 }
 ```
 
+### 1094. 拼车
+
+车上最初有 `capacity` 个空座位。车 **只能** 向一个方向行驶（也就是说，**不允许掉头或改变方向**）
+
+给定整数 `capacity` 和一个数组 `trips` ,  `trip[i] = [numPassengersi, fromi, toi]` 表示第 `i` 次旅行有 `numPassengersi` 乘客，接他们和放他们的位置分别是 `fromi` 和 `toi` 。这些位置是从汽车的初始位置向东的公里数。
+
+当且仅当你可以在所有给定的行程中接送所有乘客时，返回 `true`，否则请返回 `false`。
+
+![1094](imgs/leetcode/1094.jpg) 
+
+**使用差分数组的方法解决：使用`O(1)`时间复杂度实现，对数组中连续子数组的操作，转变成对差分数组 d 中两个数的操作**
+
+```java
+class Solution {
+    public boolean carPooling(int[][] trips, int capacity) {
+        int[] diff = new int[1001];
+        for (int[] trip : trips) {
+            int num = trip[0], from = trip[1], to = trip[2];
+            diff[from] += num;
+            diff[to] -= num;
+        }
+        int s = 0;
+        for (int x : diff) {
+            s += x;
+            if (s > capacity) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
 ### 2731. 移动机器人
 
 有一些机器人分布在一条无限长的数轴上，他们初始坐标用一个下标从 **0** 开始的整数数组 `nums` 表示。当你给机器人下达命令时，它们以每秒钟一单位的速度开始移动。
@@ -989,17 +1796,17 @@ class Solution {
   - 例如，如果一个机器人位于位置 0 并往右移动，另一个机器人位于位置 2 并往左移动，下一秒，它们都将占据位置 1，并改变方向。再下一秒钟后，第一个机器人位于位置 0 并往左移动，而另一个机器人位于位置 2 并往右移动。
   - 例如，如果一个机器人位于位置 0 并往右移动，另一个机器人位于位置 1 并往左移动，下一秒，第一个机器人位于位置 0 并往左行驶，而另一个机器人位于位置 1 并往右移动。
 
-![2731](./imgs/leetcode/2731.jpg)
+![2731](imgs/leetcode/2731.jpg)
 
 **思路**
 
-> 1. 两个机器人相互碰撞, 只进行方向交换, 并且机器人是视为无差别的, 那么可以看做所有机器人之间不存在碰撞, 可以相互穿过，只需要将机器人根据对应方向加上或减去d秒移动的距离(d个单位长度)。
+> 1. 两个机器人相互碰撞, 只进行方向交换, 并且机器人是视为无差别的, 那么可以看做所有机器人之间不存在碰撞, 可以相互穿过，只需要将机器人根据对应方向加上或减去 d 秒移动的距离(d 个单位长度)。
 >
 > 2. 然后将移动后的坐标点排序, 来计算两两之间的距离。
 
-下图 表示在O(n)复杂度, 求两两之间的距离和 (有序的)
+下图 表示在 O(n)复杂度, 求两两之间的距离和 (有序的)
 
-![2731_1](./imgs/leetcode/2731_1.jpg)
+![2731_1](imgs/leetcode/2731_1.jpg)
 
 ```java
 class Solution {
@@ -1022,13 +1829,84 @@ class Solution {
 }
 ```
 
+### 2735. 收集巧克力
+
+给你一个长度为 `n` 、下标从 **0** 开始的整数数组 `nums` ，表示收集不同巧克力的成本。每个巧克力都对应一个不同的类型，最初，位于下标 `i` 的巧克力就对应第 `i` 个类型。
+
+在一步操作中，你可以用成本 `x` 执行下述行为：
+
+- 同时修改所有巧克力的类型，将巧克力的类型 `ith` 修改为类型 `((i + 1) mod n)th`。
+
+假设你可以执行任意次操作，请返回收集所有类型巧克力所需的最小成本。
+
+![2735](imgs/leetcode/2735.jpg)
+
+```java
+class Solution {
+    public long minCost(int[] nums, int x) {
+        int n = nums.length;
+        int[] f = new int[n];
+        System.arraycopy(nums, 0, f, 0, n);
+        long ans = getSum(f);
+        for (int k = 1; k < n; k ++) {
+            for (int i = 0; i < n; i ++) {
+                f[i] = Math.min(f[i], nums[(i + k) % n]);
+            }
+            ans = Math.min(ans, (long) k * x + getSum(f));
+        }
+        return ans;
+    }
+    long getSum(int[] f) {
+        long sum = 0;
+        for (int x : f) {
+            sum += x;
+        }
+        return sum;
+    }
+}
+```
+
+### 2765. 最长交替子数组
+
+给你一个下标从 **0** 开始的整数数组 `nums` 。如果 `nums` 中长度为 `m` 的子数组 `s` 满足以下条件，我们称它是一个 **交替子数组** ：
+
+- `m` 大于 `1` 。
+- `s1 = s0 + 1` 。
+- 下标从 **0** 开始的子数组 `s` 与数组 `[s0, s1, s0, s1,...,s(m-1) % 2]` 一样。也就是说，`s1 - s0 = 1` ，`s2 - s1 = -1` ，`s3 - s2 = 1` ，`s4 - s3 = -1` ，以此类推，直到 `s[m - 1] - s[m - 2] = (-1)m` 。
+
+请你返回 `nums` 中所有 **交替** 子数组中，最长的长度，如果不存在交替子数组，请你返回 `-1` 。
+
+子数组是一个数组中一段连续 **非空** 的元素序列。
+
+![2765](./imgs/leetcode/2765.jpg)
+
+```java
+class Solution {
+    public int alternatingSubarray(int[] nums) {
+        int res = -1, n = nums.length;
+        for (int i = 0; i < n; i ++) {
+            int j = i;
+            int k = 1;
+            while (j + 1 < n && nums[j + 1] - nums[j] == k) {
+                j ++;
+                k *= -1;
+            }
+            if (j - i + 1 > 1) {
+                res = Math.max(res, j - i + 1);
+            }
+        }
+        return res;
+    }
+}
+```
+
 ### 2815. 数组中的最大数对和
 
 给你一个下标从 0 开始的整数数组 nums 。请你从 nums 中找出和 最大 的一对数，且这两个数数位上最大的数字相等。
 
 返回最大和，如果不存在满足题意的数字对，返回 -1 。
 
-![2815](./imgs/leetcode/2815.jpg)
+![2815](imgs/leetcode/2815.jpg)
 
 ```java
 class Solution {
@@ -1039,7 +1917,7 @@ class Solution {
         for (int x : nums) {
             int max_idx = getMax(x);
             ans = Math.max(ans, x + max_val[max_idx]);
-            max_val[max_idx] = Math.max(max_val[max_idx], x);    
+            max_val[max_idx] = Math.max(max_val[max_idx], x);
         }
         return ans;
     }
@@ -1056,13 +1934,60 @@ class Solution {
 
 ## 链表
 
+### 2487. 从链表中移除节点
+
+给你一个链表的头节点 `head` 。
+
+移除每个右侧有一个更大数值的节点。
+
+返回修改后链表的头节点 `head` 。
+
+![2487](imgs/leetcode/2487.jpg)
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNodes(ListNode head) {
+        head = reverse(head);
+        var p = head;
+        while(p.next != null) {
+            if (p.val > p.next.val) {
+                p.next = p.next.next;
+            } else {
+                p = p.next;
+            }
+        }
+        return reverse(head);
+    }
+    ListNode reverse(ListNode head) {
+        var dummy = new ListNode(-1);
+        while(head != null) {
+            var p = head.next;
+            head.next = dummy.next;
+            dummy.next = head;
+            head = p;
+        }
+        return dummy.next;
+    }
+}
+```
+
 ### 2816. 翻倍以链表形式表示的数字
 
 给你一个 非空 链表的头节点 head ，表示一个不含前导零的非负数整数。
 
 将链表 翻倍 后，返回头节点 head 。
 
-![2816. 翻倍以链表形式表示的数字](./imgs/leetcode/2816.jpg)
+![2816. 翻倍以链表形式表示的数字](imgs/leetcode/2816.jpg)
 
 **翻转链表**
 
@@ -1141,7 +2066,7 @@ class Solution {
 
 你必须设计并实现时间复杂度为 `O(log n)` 的算法解决此问题。
 
-![34. 在排序数组中查找元素的第一个和最后一个位置](./imgs/leetcode/34.jpg)
+![34. 在排序数组中查找元素的第一个和最后一个位置](imgs/leetcode/34.jpg)
 
 ```java
 class Solution {
@@ -1192,7 +2117,7 @@ class Solution {
 
 你必须设计一个时间复杂度为 O(log n) 的算法解决此问题。
 
-![153. 寻找旋转排序数组中的最小值](./imgs/leetcode/153.jpg)
+![153. 寻找旋转排序数组中的最小值](imgs/leetcode/153.jpg)
 
 ```java
 class Solution {
@@ -1216,7 +2141,7 @@ class Solution {
 
 ### 167. 两数之和 II - 输入有序数组
 
-给你一个下标从 1 开始的整数数组 numbers ，该数组已按 非递减顺序排列  ，请你从数组中找出满足相加之和等于目标数 target 的两个数。如果设这两个数分别是 numbers[index1] 和 numbers[index2] ，则 1 <= index1 < index2 <= numbers.length 。
+给你一个下标从 1 开始的整数数组 numbers ，该数组已按 非递减顺序排列 ，请你从数组中找出满足相加之和等于目标数 target 的两个数。如果设这两个数分别是 numbers[index1] 和 numbers[index2] ，则 1 <= index1 < index2 <= numbers.length 。
 
 以长度为 2 的整数数组 [index1, index2] 的形式返回这两个整数的下标 index1 和 index2。
 
@@ -1224,7 +2149,7 @@ class Solution {
 
 你所设计的解决方案必须只使用常量级的额外空间。
 
-![两数之和 II - 输入有序数组](./imgs/leetcode/167.jpg)
+![两数之和 II - 输入有序数组](imgs/leetcode/167.jpg)
 
 ```java
 class Solution {
@@ -1253,7 +2178,7 @@ class Solution {
 
 请你设计并实现对数时间复杂度的算法解决此问题。
 
-![275](./imgs/leetcode/275.jpg)
+![275](imgs/leetcode/275.jpg)
 
 ```java
 class Solution {
@@ -1279,7 +2204,7 @@ class Solution {
 
 请你返回一个大小为 `n` 的整数数组 `answer` ，其中 `answer[i]`是第 `i` 个人到达时在花期内花的 **数目** 。
 
-![2251](./imgs/leetcode/2251.jpg)
+![2251](imgs/leetcode/2251.jpg)
 
 ```java
 class Solution {
@@ -1331,7 +2256,7 @@ class Solution {
 
 返回小偷的 `最小` 窃取能力。
 
-![2560](./imgs/leetcode/2560.jpg)
+![2560](imgs/leetcode/2560.jpg)
 
 ```java
 class Solution {
@@ -1363,7 +2288,7 @@ class Solution {
 
 ### 2594. 修车的最少时间
 
-给你一个整数数组 ranks ，表示一些机械工的 能力值 。ranksi 是第 i 位机械工的能力值。能力值为 r 的机械工可以在 r * n2 分钟内修好 n 辆车。
+给你一个整数数组 ranks ，表示一些机械工的 能力值 。ranksi 是第 i 位机械工的能力值。能力值为 r 的机械工可以在 r \* n2 分钟内修好 n 辆车。
 
 同时给你一个整数 cars ，表示总共需要修理的汽车数目。
 
@@ -1371,7 +2296,7 @@ class Solution {
 
 注意：所有机械工可以同时修理汽车。
 
-![2594. 修车的最少时间](./imgs/leetcode/2594.jpg)
+![2594. 修车的最少时间](imgs/leetcode/2594.jpg)
 
 ```java
 class Solution {
@@ -1390,7 +2315,7 @@ class Solution {
     boolean check(int[] ranks, int cars, long k) {
         long cnt = 0;
         for (int x : ranks) {
-            cnt += (long) Math.sqrt(k / x); 
+            cnt += (long) Math.sqrt(k / x);
         }
         return cnt >= cars;
     }
@@ -1407,9 +2332,10 @@ class Solution {
 
 请你返回一个整数，表示下标距离至少为 x 的两个元素之间的差值绝对值的 最小值 。
 
-![2817](./imgs/leetcode/2817.jpg)
+![2817](imgs/leetcode/2817.jpg)
 
 **二分法**
+
 枚举 i 和 j ，其中 j = i + x，这样从 0 ~ i 范围内都是 nums[j] 可以配对的数字。 将 0 ~ i 的数字排序之后，就可以使用二分查找寻找其中最接近 nums[j] 的数字了。
 
 ```java
@@ -1426,7 +2352,7 @@ class Solution {
                 else r = mid;
             }
             ls.add(l, v);
-            
+
             // 使用二分查找寻找前面序列中最后一个<=nums[j]的元素
             l = 0;
             r = ls.size() - 1;
@@ -1445,11 +2371,11 @@ class Solution {
 }
 ```
 
-**使用API**
+**使用 API**
 TreeSet 会自动排序，关于 TreeSet 可见：https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/TreeSet.html#ceiling(E)
 
-- floor()：返回集合中小于或等于给定元素的最大元素，如果没有这样的元素，则返回null。
-- ceiling()：返回集合中大于或等于给定元素的最小元素，如果不存在这样的元素则返回null。
+- floor()：返回集合中小于或等于给定元素的最大元素，如果没有这样的元素，则返回 null。
+- ceiling()：返回集合中大于或等于给定元素的最小元素，如果不存在这样的元素则返回 null。
 
 ```java
 class Solution {
@@ -1479,7 +2405,7 @@ class Solution {
 
 > 注意：答案中不可以包含重复的三元组。
 
-![三数之和](./imgs/leetcode/15.jpg)
+![三数之和](imgs/leetcode/15.jpg)
 
 ```java
 class Solution {
@@ -1523,7 +2449,7 @@ class Solution {
 
 你可以按 任意顺序 返回答案 。
 
-![四数之和](./imgs/leetcode/18.jpg)
+![四数之和](imgs/leetcode/18.jpg)
 
 ```java
 class Solution {
@@ -1563,7 +2489,7 @@ class Solution {
 
 ### 228. 汇总区间
 
-给定一个  无重复元素 的 有序 整数数组 nums 。
+给定一个 无重复元素 的 有序 整数数组 nums 。
 
 返回 **恰好覆盖数组中所有数字** 的 最小有序 区间范围列表 。也就是说，nums 的每个元素都恰好被某个区间范围所覆盖，并且不存在属于某个范围但不属于 nums 的数字 x 。
 
@@ -1572,7 +2498,7 @@ class Solution {
 - `"a->b" ，如果 a != b`
 - `"a" ，如果 a == b`
 
-![228. 汇总区间](./imgs/leetcode/228.jpg)
+![228. 汇总区间](imgs/leetcode/228.jpg)
 
 ```java
 class Solution {
@@ -1580,7 +2506,7 @@ class Solution {
         int n = nums.length;
         List<String> res = new ArrayList<>();
         for (int i = 0; i < n; i ++) {
-            int j = i + 1;  
+            int j = i + 1;
             while (j < n && nums[j] == nums[j - 1] + 1) {
                 j ++;
             }
@@ -1595,6 +2521,7 @@ class Solution {
     }
 }
 ```
+
 ### 849. 到最近的人的最大距离
 
 给你一个数组 seats 表示一排座位，其中 seats[i] = 1 代表有人坐在第 i 个座位上，seats[i] = 0 代表座位 i 上是空的（下标从 0 开始）。
@@ -1605,7 +2532,7 @@ class Solution {
 
 返回他到离他最近的人的最大距离。
 
-![849. 到最近的人的最大距离](./imgs/leetcode/849.jpg)
+![849. 到最近的人的最大距离](imgs/leetcode/849.jpg)
 
 ```java
 class Solution {
@@ -1630,13 +2557,53 @@ class Solution {
 }
 ```
 
+### 2182. 构造限制重复的字符串
+
+给你一个字符串 `s` 和一个整数 `repeatLimit` ，用 `s` 中的字符构造一个新字符串 `repeatLimitedString` ，使任何字母 **连续** 出现的次数都不超过 `repeatLimit` 次。你不必使用 `s` 中的全部字符。
+
+返回 **字典序最大的** `repeatLimitedString` 。
+
+如果在字符串 `a` 和 `b` 不同的第一个位置，字符串 `a` 中的字母在字母表中出现时间比字符串 `b` 对应的字母晚，则认为字符串 `a` 比字符串 `b` **字典序更大** 。如果字符串中前 `min(a.length, b.length)` 个字符都相同，那么较长的字符串字典序更大。
+
+![2182](imgs/leetcode/2182.jpg)
+
+```java
+class Solution {
+    public String repeatLimitedString(String s, int repeatLimit) {
+        int[] hash = new int[26];
+        for (char c : s.toCharArray()) {
+            hash[c - 'a'] ++;
+        }
+        StringBuilder sb = new StringBuilder();
+        int n = hash.length;
+        for (int i = n - 1, j = n - 2, m = 0; i >= 0 && j >= 0;) {
+            if (hash[i] == 0) {
+                m = 0;
+                i --;
+            } else if (m < repeatLimit) {
+                hash[i] --;
+                sb.append((char)('a' + i));
+                m ++;
+            } else if (j >= i || hash[j] == 0) {
+                j --;
+            } else {
+                hash[j] --;
+                sb.append((char)('a' + j));
+                m = 0;
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
 ## 数学
 
 ### 453. 最小操作次数使数组元素相等
 
 给你一个长度为 n 的整数数组，每次操作将会使 n - 1 个元素增加 1 。返回让数组所有元素相等的最小操作次数。
 
-![453. 最小操作次数使数组元素相等](./imgs/leetcode/453.jpg)
+![453. 最小操作次数使数组元素相等](imgs/leetcode/453.jpg)
 
 ```java
 class Solution {
@@ -1655,6 +2622,39 @@ class Solution {
 }
 ```
 
+### 2171. 拿出最少数目的绿豆
+
+给定一个 **正整数** 数组 `beans` ，其中每个整数表示一个袋子里装的绿豆的数目。
+
+请你从每个袋子中 **拿出** 一些豆子（也可以 **不拿出**），使得剩下的 **非空** 袋子中（即 **至少还有一颗** 绿豆的袋子）绿豆的数目 **相等**。一旦把绿豆从袋子中取出，你不能再将它放到任何袋子中。
+
+请返回你需要拿出绿豆的 **最少数目**。
+
+![2171](imgs/leetcode/2171.jpg)
+
+**思路**
+
+![2171_1](imgs/leetcode/2171_1.jpg)
+
+```java
+class Solution {
+    public long minimumRemoval(int[] beans) {
+        Arrays.sort(beans);
+        long s = 0;
+        for (int x : beans) {
+            s += x;
+        }
+        long ans = s;
+        int n = beans.length;
+        for (int i = 0; i < n; ++i) {
+            ans = Math.min(ans, s - (long) beans[i] * (n - i));
+        }
+        return ans;
+    }
+}
+
+```
+
 ### 2544. 交替数字和
 
 给你一个正整数 n 。n 中的每一位数字都会按下述规则分配一个符号：
@@ -1664,7 +2664,7 @@ class Solution {
 
 返回所有数字及其对应符号的和。
 
-![交替数字和](./imgs/leetcode/2544.jpg)
+![交替数字和](imgs/leetcode/2544.jpg)
 
 ```java
 class Solution {
@@ -1680,6 +2680,48 @@ class Solution {
 }
 ```
 
+### 2807. 在链表中插入最大公约数
+
+给你一个链表的头 `head` ，每个结点包含一个整数值。
+
+在相邻结点之间，请你插入一个新的结点，结点值为这两个相邻结点值的 **最大公约数** 。
+
+请你返回插入之后的链表。
+
+两个数的 **最大公约数** 是可以被两个数字整除的最大正整数。
+
+![2807](imgs/leetcode/2807.jpg)
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode insertGreatestCommonDivisors(ListNode head) {
+        ListNode p = head, q = head.next;
+        while (q != null) {
+            int t = gcd(p.val, q.val);
+            ListNode insert = new ListNode(t);
+            insert.next = q;
+            p.next = insert;
+            p = q;
+            q = q.next;
+        }
+        return head;
+    }
+    int gcd(int a, int b) {
+        return b != 0 ? gcd(b, a % b) : a;
+    }
+}
+```
+
 ## 动态规划
 
 ### 53. 最大子数组和
@@ -1688,7 +2730,7 @@ class Solution {
 
 子数组 是数组中的一个连续部分。
 
-![最大子数组和](./imgs/leetcode/53.jpg)
+![最大子数组和](imgs/leetcode/53.jpg)
 
 ```java
 class Solution {
@@ -1709,7 +2751,7 @@ class Solution {
 
 返回符合要求的 最少分割次数 。
 
-![分割回文串 II](./imgs/leetcode/132.jpg)
+![分割回文串 II](imgs/leetcode/132.jpg)
 
 ```java
 class Solution {
@@ -1718,7 +2760,7 @@ class Solution {
         int n = s.length();
         int[] f = new int[n];
         boolean[][] g = new boolean[n][n];
-        
+
         Arrays.fill(f, Integer.MAX_VALUE);
         for (int i = 0; i < n; i ++) {
             Arrays.fill(g[i], true);
@@ -1751,7 +2793,7 @@ class Solution {
 
 **注意：**你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
 
-![188](./imgs/leetcode/188.jpg)
+![188](imgs/leetcode/188.jpg)
 
 ```java
 class Solution {
@@ -1787,7 +2829,7 @@ class Solution {
 
 **注意：**你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
 
-![309](./imgs/leetcode/309.jpg)
+![309](imgs/leetcode/309.jpg)
 
 ```java
 class Solution {
@@ -1834,7 +2876,7 @@ class Solution {
 
 给定二叉树的 root 。返回 `在不触动警报的情况下` ，小偷能够盗取的最高金额 。
 
-![337. 打家劫舍 III](./imgs/leetcode/337.jpg)
+![337. 打家劫舍 III](imgs/leetcode/337.jpg)
 
 ```java
 /**
@@ -1855,10 +2897,10 @@ class Solution {
 class Solution {
     Map<TreeNode, Integer> f = new HashMap<>();
     Map<TreeNode, Integer> g = new HashMap<>();
-    
+
     public int rob(TreeNode root) {
         dfs(root);
-        return Math.max(f.getOrDefault(root, 0), g.getOrDefault(root, 0)); 
+        return Math.max(f.getOrDefault(root, 0), g.getOrDefault(root, 0));
     }
     void dfs(TreeNode root) {
         if (root == null) {
@@ -1882,7 +2924,7 @@ class Solution {
 
 **注意：**这里的一笔交易指买入持有并卖出股票的整个过程，每笔交易你只需要为支付一次手续费。
 
-![714](./imgs/leetcode/714.jpg)
+![714](imgs/leetcode/714.jpg)
 
 ```java
 class Solution {
@@ -1921,7 +2963,7 @@ class Solution {
 
 满足条件的二叉树一共有多少个？答案可能很大，返回 对 109 + 7 取余 的结果。
 
-![823. 带因子的二叉树](./imgs/leetcode/823.jpg)
+![823. 带因子的二叉树](imgs/leetcode/823.jpg)
 
 ```java
 class Solution {
@@ -1970,7 +3012,7 @@ class Solution {
 
 子数组 最多只能包含固定缓冲区 nums 中的每个元素一次。形式上，对于子数组 nums[i], nums[i + 1], ..., nums[j] ，不存在 i <= k1, k2 <= j 其中 k1 % n == k2 % n 。
 
-![环形子数组的最大和](./imgs/leetcode/918.jpg)
+![环形子数组的最大和](imgs/leetcode/918.jpg)
 
 ```java
 class Solution {
@@ -1993,9 +3035,9 @@ class Solution {
 
 给你一个 n x n 的 方形 整数数组 matrix ，请你找出并返回通过 matrix 的下降路径 的 最小和 。
 
-下降路径 可以从第一行中的任何元素开始，并从每一行中选择一个元素。在下一行选择的元素和当前行所选元素最多相隔一列（即位于正下方或者沿对角线向左或者向右的第一个元素）。具体来说，位置` (row, col) `的下一个元素应当是 `(row + 1, col - 1)、(row + 1, col)` 或者` (row + 1, col + 1)` 。
+下降路径 可以从第一行中的任何元素开始，并从每一行中选择一个元素。在下一行选择的元素和当前行所选元素最多相隔一列（即位于正下方或者沿对角线向左或者向右的第一个元素）。具体来说，位置`(row, col)`的下一个元素应当是 `(row + 1, col - 1)、(row + 1, col)` 或者` (row + 1, col + 1)` 。
 
-![931. 下降路径最小和](./imgs/leetcode/931.jpg)
+![931. 下降路径最小和](imgs/leetcode/931.jpg)
 
 ```java
 class Solution {
@@ -2020,7 +3062,7 @@ class Solution {
 }
 ```
 
-![Java.lang.System.arraycopy() 方法](./imgs/leetcode/arraycopy().jpg)
+![Java.lang.System.arraycopy() 方法](<imgs/leetcode/arraycopy().jpg>)
 
 ### 1155. 掷骰子等于目标和的方法数
 
@@ -2030,7 +3072,7 @@ class Solution {
 
 答案可能很大，你需要对 `109 + 7` **取模** 。
 
-![1155](./imgs/leetcode/1155.jpg)
+![1155](imgs/leetcode/1155.jpg)
 
 ```java
 class Solution {
@@ -2056,9 +3098,182 @@ class Solution {
 }
 ```
 
+### 1696. 跳跃游戏 VI
 
+给你一个下标从 **0** 开始的整数数组 `nums` 和一个整数 `k` 。
 
-### 100107. 使数组变美的最小增量运算数
+一开始你在下标 `0` 处。每一步，你最多可以往前跳 `k` 步，但你不能跳出数组的边界。也就是说，你可以从下标 `i` 跳到 `[i + 1， min(n - 1, i + k)]` **包含** 两个端点的任意位置。
+
+你的目标是到达数组最后一个位置（下标为 `n - 1` ），你的 **得分** 为经过的所有数字之和。
+
+请你返回你能得到的 **最大得分** 。
+
+![1696](./imgs/leetcode/1696.jpg)
+
+**思路**
+
+当 `i<k` 时，我们计算的是 `f[0],f[1],⋯ ,f[i−1]` 的最大值。
+
+当 `i≥ki` 时，我们计算的是 `f[i−k],f[i−k+1],⋯ ,f[i−1]` 的最大值。这是一个长度固定为 k 的滑动窗口最大值问题。
+
+对于本题，我们维护一个 `f` 值从左到右严格递减的单调队列（双端队列）。在计算 `f[i] `时，需要保证队首就是转移来源最大值的下标，方法如下：
+
+**出**：如果队首小于`i−k`，则弹出队首。注意单调队列只需保存下标。
+**转移**：`f[i]=f[q[0]]+nums[i]`。其中 `q[0]` 表示单调队列 `q` 的队首，此时队首就是转移来源最大值的下标。
+**入**：不断弹出队尾，直到队列为空，或者 `f[i]` 小于队尾对应的 `f` 值为止。然后把 `i` 加到队尾。
+
+```java
+class Solution {
+    public int maxResult(int[] nums, int k) {
+        /**
+        f[i]表示到i处的最大得分
+        f[i] = max(f[j] + nums[i]) max(i - k, 0) <= j < i
+         */
+        int n = nums.length;
+        int[] f = new int[n];
+        f[0] = nums[0];
+        Deque<Integer> q = new ArrayDeque<>();
+        q.add(0);
+        for (int i = 1; i < n; i ++) {
+            if (q.peekFirst() < i - k) {
+                q.pollFirst();
+            }
+            f[i] = f[q.peekFirst()] + nums[i];
+            while (!q.isEmpty() && f[i] >= f[q.peekLast()]) {
+                q.pollLast();
+            }
+            q.add(i);
+        }
+        // for (int i = 1; i < n; i ++) {
+        //     int mx = Integer.MIN_VALUE;
+        //     for (int j = Math.max(i - k, 0); j < i; j ++) {
+        //         mx = Math.max(mx, f[j]);
+        //     }
+        //     f[i] = mx + nums[i];
+        // }
+        return f[n - 1];
+    }
+}
+```
+
+### 2008. 出租车的最大盈利
+
+你驾驶出租车行驶在一条有 `n` 个地点的路上。这 `n` 个地点从近到远编号为 `1` 到 `n` ，你想要从 `1` 开到 `n` ，通过接乘客订单盈利。你只能沿着编号递增的方向前进，不能改变方向。
+
+乘客信息用一个下标从 **0** 开始的二维数组 `rides` 表示，其中 `rides[i] = [starti, endi, tipi]` 表示第 `i` 位乘客需要从地点 `starti` 前往 `endi` ，愿意支付 `tipi` 元的小费。
+
+**每一位** 你选择接单的乘客 `i` ，你可以 **盈利** `endi - starti + tipi` 元。你同时 **最多** 只能接一个订单。
+
+给你 `n` 和 `rides` ，请你返回在最优接单方案下，你能盈利 **最多** 多少元。
+
+**注意：**你可以在一个地点放下一位乘客，并在同一个地点接上另一位乘客。
+
+![2008](imgs/leetcode/2008.jpg)
+
+```java
+class Solution {
+    public long maxTaxiEarnings(int n, int[][] rides) {
+        /**
+        f[i] 表示接受第 i个订单能获得的最大利润
+        rides[i][0] > rides[j][1] 
+        f[i] = f[j] + rides[i][1] - rides[i][0] + rides[i][2], f[i - 1];
+        */
+        Arrays.sort(rides, (a, b) -> a[1] - b[1]);
+        int m = rides.length;
+        long[] f = new long[m + 1];
+        for (int i = 0; i < m; i ++) {
+            int j = binary_search(rides, i, rides[i][0]);
+            f[i + 1] = Math.max(f[i], f[j] + rides[i][1] - rides[i][0] + rides[i][2]);
+        }
+        return f[m];
+    }
+    int binary_search(int[][] rides, int r, int x) {
+        int l = 0;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (x < rides[mid][1]) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return l;
+    }
+}
+```
+
+### 2369. 检查数组是否存在有效划分
+
+给你一个下标从 **0** 开始的整数数组 `nums` ，你必须将数组划分为一个或多个 **连续** 子数组。
+
+如果获得的这些子数组中每个都能满足下述条件 **之一** ，则可以称其为数组的一种 **有效** 划分：
+
+1. 子数组 **恰** 由 `2` 个相等元素组成，例如，子数组 `[2,2]` 。
+2. 子数组 **恰** 由 `3` 个相等元素组成，例如，子数组 `[4,4,4]` 。
+3. 子数组 **恰** 由 `3` 个连续递增元素组成，并且相邻元素之间的差值为 `1` 。例如，子数组 `[3,4,5]` ，但是子数组 `[1,3,5]` 不符合要求。
+
+如果数组 **至少** 存在一种有效划分，返回 `true` ，否则，返回 `false` 。
+
+![2369](./imgs/leetcode/2369.jpg)
+
+```java
+class Solution {
+    public boolean validPartition(int[] nums) {
+        /**
+        f[i] 表示以 0-i 存在有效成分
+        f[i] = (f[i - 2] && two(nums[i - 2], nums[i - 1])) || (f[i - 3] && three(nums[i - 3], nums[i - 2], nums[i - 1]));
+        **/
+        int n = nums.length;
+        boolean[] f = new boolean[n + 1];
+        f[0] = true;
+        for (int i = 1; i <= n; i ++) {
+            if (i >= 2) {
+                f[i] = f[i - 2] && validTwo(nums[i - 2], nums[i - 1]);
+            }
+            if (i >= 3) {
+                f[i] = f[i] || (f[i - 3] && validThree(nums[i - 3], nums[i - 2], nums[i - 1]));
+            }
+        }
+        return f[n];
+    }
+    boolean validTwo(int a, int b) {
+        return a == b;
+    }
+    boolean validThree(int a, int b, int c) {
+        return  (a == b && a == c) || ((b - a) == 1 && (c - b) == 1);
+    }
+}
+```
+
+### 2707. 字符串中的额外字符
+
+给你一个下标从 **0** 开始的字符串 `s` 和一个单词字典 `dictionary` 。你需要将 `s` 分割成若干个 **互不重叠** 的子字符串，每个子字符串都在 `dictionary` 中出现过。`s` 中可能会有一些 **额外的字符** 不在任何子字符串中。
+
+请你采取最优策略分割 `s` ，使剩下的字符 **最少** 。
+
+![2707](imgs/leetcode/2707.jpg)
+
+```java
+class Solution {
+    public int minExtraChar(String s, String[] dictionary) {
+        var set = new HashSet<String>();
+        for (var str : dictionary) set.add(str);
+        int n = s.length();
+        var f = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            f[i + 1] = f[i] + 1; // 不选
+            for (int j = 0; j <= i; j++) { // 枚举选哪个
+                if (set.contains(s.substring(j, i + 1))) {
+                    f[i + 1] = Math.min(f[i + 1], f[j]);
+                }
+            }
+        }
+        return f[n];
+    }
+}
+```
+
+### 2919. 使数组变美的最小增量运算数
 
 给你一个下标从 **0** 开始、长度为 `n` 的整数数组 `nums` ，和一个整数 `k` 。
 
@@ -2072,12 +3287,12 @@ class Solution {
 
 子数组是数组中的一个连续 **非空** 元素序列。
 
-![100107](./imgs/leetcode/100107.jpg)
+![2919](imgs/leetcode/2919.jpg)
 
 **思路**
-定义 `dfs(i，j)`表示现在要处理 `nums[0]`到`nums[i]`这段子数组并且` nums[i]`右边有j个没有变大的数
-选:`dfs(i, j)=dfs(i-1，0) +max (k-nums[i], 0)`不选（当j<2的时候）:`dfs(i, j) = dfs(i-1，j+1)`
-递归边界:当`i < 0`的时候，返回0
+定义 `dfs(i，j)`表示现在要处理 `nums[0]`到`nums[i]`这段子数组并且` nums[i]`右边有 j 个没有变大的数
+选:`dfs(i, j)=dfs(i-1，0) +max (k-nums[i], 0)`不选（当 j<2 的时候）:`dfs(i, j) = dfs(i-1，j+1)`
+递归边界:当`i < 0`的时候，返回 0
 递归入口:`dfs(n-1，0)`
 
 ```java
@@ -2117,7 +3332,7 @@ class Solution {
 
 以数组形式返回对应查询的所有答案。
 
-![包含每个查询的最小区间](./imgs/leetcode/1851.jpg)
+![包含每个查询的最小区间](imgs/leetcode/1851.jpg)
 
 ```java
 class Solution {
@@ -2151,14 +3366,65 @@ class Solution {
 
 ## 树
 
+### 102. 二叉树的层序遍历
+
+给你二叉树的根节点 `root` ，返回其节点值的 **层序遍历** 。 （即逐层地，从左到右访问所有节点）。
+
+![102](./imgs/leetcode/102.jpg)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> ans = new ArrayList<>();
+        if (root == null) {
+            return ans;
+        }
+        List<Integer> path = new ArrayList<>();
+        Deque<TreeNode> q = new ArrayDeque<>(), p = new ArrayDeque<>();
+        q.offerLast(root);
+        while (!q.isEmpty()) {
+            var cur = q.pollFirst();
+            path.add(cur.val);
+            if (cur.left != null) {
+                p.offerLast(cur.left);
+            }
+            if (cur.right != null) {
+                p.offerLast(cur.right);
+            }
+            if (q.isEmpty()) {
+                q = p;
+                p = new ArrayDeque<>();
+                ans.add(path);
+                path = new ArrayList<>();
+            }
+        }
+        return ans;
+    }
+}
+```
+
 ### 114. 二叉树展开为链表
 
 给你二叉树的根结点 `root` ，请你将它展开为一个单链表：
 
 - 展开后的单链表应该同样使用 `TreeNode` ，其中 `right` 子指针指向链表中下一个结点，而左子指针始终为 `null` 。
 - 展开后的单链表应该与二叉树 [**先序遍历**](https://baike.baidu.com/item/先序遍历/6442839?fr=aladdin) 顺序相同。
-- 
-![114](imgs/leetcode/114.jpg)
+- ![114](imgs/leetcode/114.jpg)
 
 ```java
 /**
@@ -2202,7 +3468,7 @@ class Solution {
 
 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个节点 p、q，最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
 
-![236. 二叉树的最近公共祖先](./imgs/leetcode/236.jpg)
+![236. 二叉树的最近公共祖先](imgs/leetcode/236.jpg)
 
 ```java
 /**
@@ -2243,7 +3509,7 @@ class Solution {
 
 > 注意: 合并过程必须从两个树的根节点开始。
 
-![617](./imgs/leetcode/617.jpg)
+![617](imgs/leetcode/617.jpg)
 
 ```java
 /**
@@ -2277,6 +3543,159 @@ class Solution {
 }
 ```
 
+### 889. 根据前序和后序遍历构造二叉树
+
+给定两个整数数组，`preorder` 和 `postorder` ，其中 `preorder` 是一个具有 **无重复** 值的二叉树的前序遍历，`postorder` 是同一棵树的后序遍历，重构并返回二叉树。
+
+如果存在多个答案，您可以返回其中 **任何** 一个。
+
+![889](./imgs/leetcode/889.jpg)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int[] pres, posts;
+    Map<Integer, Integer> map = new HashMap<>();
+    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+        pres = preorder;
+        posts = postorder;
+        int n = preorder.length;
+        for (int i = 0; i < n; i ++) {
+            map.put(postorder[i], i);
+        }
+        return dfs(0, n - 1, 0, n - 1);
+    }
+    TreeNode dfs(int a, int b, int x, int y) {
+        if (a > b) return null;
+        TreeNode cur = new TreeNode(pres[a]);
+        if (a == b) return cur;
+        int k = map.get(pres[a + 1]);
+        cur.left = dfs(a + 1, a + 1 + k - x, x, k);
+        cur.right = dfs(a + 1 + k - x + 1, b, k + 1, y - 1);
+        return cur;
+    }
+}
+```
+
+### 993. 二叉树的堂兄弟节点
+
+在二叉树中，根节点位于深度 `0` 处，每个深度为 `k` 的节点的子节点位于深度 `k+1` 处。
+
+如果二叉树的两个节点深度相同，但 **父节点不同** ，则它们是一对*堂兄弟节点*。
+
+我们给出了具有唯一值的二叉树的根节点 `root` ，以及树中两个不同节点的值 `x` 和 `y` 。
+
+只有与值 `x` 和 `y` 对应的节点是堂兄弟节点时，才返回 `true` 。否则，返回 `false`。
+
+![993](./imgs/leetcode/993.jpg)
+
+**BFS**
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isCousins(TreeNode root, int x, int y) {
+        Deque<TreeNode[]> q = new ArrayDeque<>();
+        q.offer(new TreeNode[]{root, null});
+        int d1 = 0, d2 = 0, depth = 0;
+        TreeNode p1 = null, p2 = null;
+        while (!q.isEmpty()) {
+            int size = q.size();
+            while (size -- > 0) {
+                TreeNode[] t = q.poll();
+                TreeNode node = t[0], parent = t[1];
+                if (node.val == x) {
+                    d1 = depth;
+                    p1 = parent;
+                } else if (node.val == y) {
+                    d2 = depth;
+                    p2 = parent;
+                }
+                if (node.left != null) {
+                    q.offer(new TreeNode[]{node.left, node});
+                }
+                if (node.right != null) {
+                    q.offer(new TreeNode[]{node.right, node});
+                }
+            }
+            depth ++;
+        }
+        return p1 != p2 && d1 == d2;
+    }
+}
+```
+
+**DFS**
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int xx, yy, d1, d2;
+    TreeNode p1, p2;
+    public boolean isCousins(TreeNode root, int x, int y) {
+        xx = x; yy = y;
+        dfs(root, null, 0);
+        return p1 != p2 && d1 == d2;
+    }
+    void dfs(TreeNode root, TreeNode parent, int depth) {
+        if (root == null) {
+            return;
+        }
+        if (root.val == xx) {
+            d1 = depth;
+            p1 = parent;
+        } else if (root.val == yy) {
+            d2 = depth;
+            p2 = parent;
+        }
+        dfs(root.left, root, depth + 1);
+        dfs(root.right, root, depth + 1);
+    }
+}
+```
+
 ### 1123. 最深叶节点的最近公共祖先
 
 给你一个有根节点 root 的二叉树，返回它 最深的叶节点的最近公共祖先 。
@@ -2287,7 +3706,7 @@ class Solution {
 - 树的根节点的 深度 为 0，如果某一节点的深度为 d，那它的子节点的深度就是 d+1
 - 如果我们假定 A 是一组节点 S 的 最近公共祖先，S 中的每个节点都在以 A 为根节点的子树中，且 A 的深度达到此条件下可能的最大值。
 
-![1123](./imgs/leetcode/1123.jpg)
+![1123](imgs/leetcode/1123.jpg)
 
 ```java
 /**
@@ -2332,7 +3751,7 @@ class Solution {
 
 「好节点」X 定义为：从根到该节点 X 所经过的节点中，没有任何节点的值大于 X 的值。
 
-![1448. 统计二叉树中好节点的数目](./imgs/leetcode/1448.jpg)
+![1448. 统计二叉树中好节点的数目](imgs/leetcode/1448.jpg)
 
 ```java
 /**
@@ -2365,6 +3784,392 @@ class Solution {
 }
 ```
 
+### 1457. 二叉树中的伪回文路径
+
+给你一棵二叉树，每个节点的值为 1 到 9 。我们称二叉树中的一条路径是 「**伪回文**」的，当它满足：路径经过的所有节点值的排列中，存在一个回文序列。
+
+请你返回从根到叶子节点的所有路径中 **伪回文** 路径的数目。
+
+![1457](imgs/leetcode/1457.jpg)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int pseudoPalindromicPaths (TreeNode root) {
+        return dfs(root, 0);
+    }
+    int dfs(TreeNode root, int mask) {
+        if (root == null) {
+            return 0;
+        }
+        mask ^= 1 << root.val;
+        if (root.left == null && root.right == null) {
+            /**
+             * 如果 mask 中只有一个 1，那么去掉这个 1 之后，mask 就变成 0 了
+             * 可以通过 mask&(mask−1) 「删除最小元素」的方法，判断 mask&(mask−1)==0
+             */
+            return (mask & (mask - 1)) == 0 ? 1 : 0;
+        }
+        return dfs(root.left, mask) + dfs(root.right, mask);
+    }
+}
+```
+
+### 2368. 受限条件下可到达节点的数目
+
+现有一棵由 `n` 个节点组成的无向树，节点编号从 `0` 到 `n - 1` ，共有 `n - 1` 条边。
+
+给你一个二维整数数组 `edges` ，长度为 `n - 1` ，其中 `edges[i] = [ai, bi]` 表示树中节点 `ai` 和 `bi` 之间存在一条边。另给你一个整数数组 `restricted` 表示 **受限** 节点。
+
+在不访问受限节点的前提下，返回你可以从节点 `0` 到达的 **最多** 节点数目*。*
+
+注意，节点 `0` **不** 会标记为受限节点。
+
+![2368](./imgs/leetcode/2368.jpg)
+
+```java
+class Solution {
+    public int reachableNodes(int n, int[][] edges, int[] restricted) {
+        int ans = 1;
+        boolean[] flag = new boolean[n];
+        for (int x : restricted) {
+            flag[x] = true;
+        }
+
+        List<Integer>[] g = new ArrayList[n];
+        for (int i = 0; i < n; i ++) {
+            g[i] = new ArrayList<>();
+        }
+
+        for (int[] e : edges) {
+            int a = e[0], b = e[1];
+            g[a].add(b);
+            g[b].add(a);
+        }
+        
+        Queue<Integer> q = new ArrayDeque<>();
+        q.offer(0);
+        
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            flag[cur] = true;
+            for (int x : g[cur]) {
+                if (!flag[x]) {
+                    q.offer(x);
+                    ans ++;
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
+
+### 2415. 反转二叉树的奇数层
+
+给你一棵 **完美** 二叉树的根节点 `root` ，请你反转这棵树中每个 **奇数** 层的节点值。
+
+- 例如，假设第 3 层的节点值是 `[2,1,3,4,7,11,29,18]` ，那么反转后它应该变成 `[18,29,11,7,4,3,1,2]` 。
+
+反转后，返回树的根节点。
+
+**完美** 二叉树需满足：二叉树的所有父节点都有两个子节点，且所有叶子节点都在同一层。
+
+节点的 **层数** 等于该节点到根节点之间的边数。
+
+![2415](imgs/leetcode/2415.jpg)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode reverseOddLevels(TreeNode root) {
+        dfs(root.left, root.right, true);
+        return root;
+    }
+    void dfs(TreeNode l, TreeNode r, boolean isOdd) {
+        if (l == null) return;
+        if (isOdd) {
+            int tmp = l.val;
+            l.val = r.val;
+            r.val = tmp;
+        }
+        dfs(l.left, r.right, !isOdd);
+        dfs(l.right, r.left, !isOdd);
+    }
+}
+```
+
+### 2476. 二叉搜索树最近节点查询
+
+给你一个 **二叉搜索树** 的根节点 `root` ，和一个由正整数组成、长度为 `n` 的数组 `queries` 。
+
+请你找出一个长度为 `n` 的 **二维** 答案数组 `answer` ，其中 `answer[i] = [mini, maxi]` ：
+
+- `mini` 是树中小于等于 `queries[i]` 的 **最大值** 。如果不存在这样的值，则使用 `-1` 代替。
+- `maxi` 是树中大于等于 `queries[i]` 的 **最小值** 。如果不存在这样的值，则使用 `-1` 代替。
+
+返回数组 `answer` 。
+
+![2476](./imgs/leetcode/2476.jpg)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> closestNodes(TreeNode root, List<Integer> queries) {
+        List<Integer> arr = new ArrayList<>();
+        dfs(root, arr);
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int x : queries) {
+            int l = 0, r = arr.size();
+            while (l < r) {
+                int mid = l + r >> 1;
+                if (arr.get(mid) < x) {
+                    l = mid + 1;
+                } else {
+                    r = mid;
+                }
+            }
+            int mx = r == arr.size() ? -1 : arr.get(r);
+            if (r == arr.size() || arr.get(r) != x) {
+                r --;
+            }
+            int mn = r < 0 ? -1 : arr.get(r);
+            ans.add(List.of(mn, mx));
+        }
+        return ans;
+    }
+    void dfs(TreeNode root, List<Integer> arr) {
+        if (root != null) {
+            dfs(root.left, arr);
+            arr.add(root.val);
+            dfs(root.right, arr);
+        }
+    }
+}
+```
+
+### 2583. 二叉树中的第 K 大层和
+
+给你一棵二叉树的根节点 `root` 和一个正整数 `k` 。
+
+树中的 **层和** 是指 **同一层** 上节点值的总和。
+
+返回树中第 `k` 大的层和（不一定不同）。如果树少于 `k` 层，则返回 `-1` 。
+
+**注意**，如果两个节点与根节点的距离相同，则认为它们在同一层。
+
+![2583](./imgs/leetcode/2583.jpg)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public long kthLargestLevelSum(TreeNode root, int k) {
+        Deque<TreeNode> q = new ArrayDeque<>(), p = new ArrayDeque<>();
+        List<Long> arr = new ArrayList<Long>();
+        q.offerLast(root);
+        long sum = 0;
+        while (!q.isEmpty()) {
+            var cur = q.pollFirst();
+            sum += cur.val;
+            if (cur.left != null) {
+                p.offerLast(cur.left);
+            }
+            if (cur.right != null) {
+                p.offerLast(cur.right);
+            }
+            if (q.isEmpty()) {
+                q = p;
+                arr.add(sum);
+                sum = 0;
+                p = new ArrayDeque<>();
+            }
+        }
+        if (arr.size() < k) {
+            return -1;
+        }
+        Collections.sort(arr);
+        return arr.get(arr.size() - k);
+    }
+}
+```
+
+### 2641. 二叉树的堂兄弟节点 II
+
+给你一棵二叉树的根 `root` ，请你将每个节点的值替换成该节点的所有 **堂兄弟节点值的和** 。
+
+如果两个节点在树中有相同的深度且它们的父节点不同，那么它们互为 **堂兄弟** 。
+
+请你返回修改值之后，树的根 `root` 。
+
+> 一个节点的深度指的是从树根节点到这个节点经过的边数。
+
+![2641](./imgs/leetcode/2641.jpg)
+
+**方法一：两次 DFS**
+
+我们创建一个列表 `s` 用于记录二叉树每一层的节点值之和，其中 `s[depth]` 表示第 `depth` 层的节点值之和（规定根节点所在的层为第 0 层）。
+
+接下来，我们先跑一遍 DFS，计算出数组 `s` 的值。然后再跑一遍 DFS，更新每个节点的子节点的值，子节点的值等于子节点所在层的节点值之和减去子节点及其兄弟节点的值。
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    List<Integer> s = new ArrayList<>();
+
+    public TreeNode replaceValueInTree(TreeNode root) {
+        dfs1(root, 0);
+        root.val = 0;
+        dfs2(root, 0);
+        return root;
+    }
+    void dfs1(TreeNode root, int depth) {
+        if (root == null) {
+            return;
+        }
+        if (s.size() <= depth) {
+            s.add(0);
+        }
+        s.set(depth, s.get(depth) + root.val);
+        dfs1(root.left, depth + 1);
+        dfs1(root.right, depth + 1);
+    }
+    void dfs2(TreeNode root, int depth) {
+        int l = root.left == null ? 0 : root.left.val;
+        int r = root.right == null ? 0 : root.right.val;
+        int sub = l + r;
+        depth ++;
+        if (root.left != null) {
+            root.left.val = s.get(depth) - sub;
+            dfs2(root.left, depth);
+        }
+        if (root.right != null) {
+            root.right.val = s.get(depth) - sub;
+            dfs2(root.right, depth);
+        }
+    }
+}
+```
+
+**方法二：BFS**
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode replaceValueInTree(TreeNode root) {
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        int sum = root.val;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            int nextSum = 0;
+            while (size-- > 0) {
+                TreeNode node = queue.poll();
+                node.val = sum - node.val; // node.val == 它与兄弟结点值的和
+                if (node.left != null && node.right != null) {
+                    nextSum += node.left.val + node.right.val;
+                    node.left.val += node.right.val; // 将左右子节点的值都改为它们的和
+                    node.right.val = node.left.val;
+                    queue.offer(node.left);
+                    queue.offer(node.right);
+                } else if (node.right != null) {
+                    nextSum += node.right.val;
+                    queue.offer(node.right);
+                } else if (node.left != null) {
+                    nextSum += node.left.val;
+                    queue.offer(node.left);
+                }
+            }
+            sum = nextSum;
+        }
+        return root;
+    }
+}
+```
+
 ## 图
 
 ### 1334. 阈值距离内邻居最少的城市
@@ -2373,9 +4178,9 @@ class Solution {
 
 返回能通过某些路径到达其他城市数目最少、且路径距离 **最大** 为 `distanceThreshold` 的城市。如果有多个这样的城市，则返回编号最大的城市。
 
-注意，连接城市 ***i*** 和 ***j*** 的路径的距离等于沿该路径的所有边的权重之和。
+注意，连接城市 **_i_** 和 **_j_** 的路径的距离等于沿该路径的所有边的权重之和。
 
-![1334](./imgs/leetcode/1334.jpg)
+![1334](imgs/leetcode/1334.jpg)
 
 ```java
 class Solution {
@@ -2383,7 +4188,7 @@ class Solution {
         int[][] g = new int[n][n];
         for (int i = 0; i < n; i ++) {
             Arrays.fill(g[i], Integer.MAX_VALUE / 2);
-        }   
+        }
         for (int[] edge : edges) {
             int a = edge[0], b = edge[1], c = edge[2];
             g[a][b] = g[b][a] = c;
@@ -2419,13 +4224,13 @@ class Solution {
 你总共需要上 numCourses 门课，课程编号依次为 0 到 numCourses-1 。你会得到一个数组 prerequisite ，其中 `prerequisites[i] = [ai, bi]` 表示如果你想选 bi 课程，你 必须 先选 ai 课程。
 
 - 有的课会有直接的先修课程，比如如果想上课程 1 ，你必须先上课程 0 ，那么会以 [0,1] 数对的形式给出先修课程数对。
-先决条件也可以是 间接 的。如果课程 a 是课程 b 的先决条件，课程 b 是课程 c 的先决条件，那么课程 a 就是课程 c 的先决条件。
+  先决条件也可以是 间接 的。如果课程 a 是课程 b 的先决条件，课程 b 是课程 c 的先决条件，那么课程 a 就是课程 c 的先决条件。
 
 你也得到一个数组 queries ，其中 `queries[j] = [uj, vj]`。对于第 j 个查询，您应该回答课程 uj 是否是课程 vj 的先决条件。
 
 返回一个布尔数组 answer ，其中 answer[j] 是第 j 个查询的答案。
 
-![1462. 课程表 IV](./imgs/leetcode/1462.jpg)
+![1462. 课程表 IV](imgs/leetcode/1462.jpg)
 
 ```java
 class Solution {
@@ -2495,32 +4300,32 @@ class Solution {
 - `int maximum()` 返回股票 **最高价格** 。
 - `int minimum()` 返回股票 **最低价格** 。
 
-![2034](./imgs/leetcode/2034.jpg)
+![2034](imgs/leetcode/2034.jpg)
 
 ```java
 class StockPrice {
     int maxTime;
     Map<Integer, Integer> map;
     PriorityQueue<int[]> minHeap, maxHeap;
-    
+
     public StockPrice() {
         maxTime = 0;
         map = new HashMap<>();
         minHeap = new PriorityQueue<>((a, b) -> a[1] - b[1]);
         maxHeap = new PriorityQueue<>((a, b) -> b[1] - a[1]);
     }
-    
+
     public void update(int timestamp, int price) {
         maxTime = Math.max(timestamp, maxTime);
         map.put(timestamp, price);
         minHeap.offer(new int[]{timestamp, price});
         maxHeap.offer(new int[]{timestamp, price});
     }
-    
+
     public int current() {
         return map.get(maxTime);
     }
-    
+
     public int maximum() {
         while (true) {
             int[] cur = maxHeap.peek();
@@ -2530,7 +4335,7 @@ class StockPrice {
             maxHeap.poll();
         }
     }
-    
+
     public int minimum() {
         while (true) {
             int[] cur = minHeap.peek();
@@ -2563,7 +4368,7 @@ class StockPrice {
 - `1 <= i <= n`
 - `i * i` 的十进制表示的字符串可以分割成若干连续子字符串，且这些子字符串对应的整数值之和等于 `i` 。
 
-![2698](./imgs/leetcode/2698.jpg)
+![2698](imgs/leetcode/2698.jpg)
 
 ```java
 class Solution {
@@ -2605,7 +4410,7 @@ class Solution {
 
 请你返回每个格子恰好有一个石头的 **最少移动次数** 。
 
-![2850](./imgs/leetcode/2850.jpg)
+![2850](imgs/leetcode/2850.jpg)
 
 ```java
 class Solution {
@@ -2666,7 +4471,7 @@ class Solution {
 
 请你返回 **无法互相到达** 的不同 **点对数目** 。
 
-![2316](./imgs/leetcode/2316.jpg)
+![2316](imgs/leetcode/2316.jpg)
 
 **深度优先搜索**
 
@@ -2752,7 +4557,7 @@ class Solution {
 
 给你一个字符串数组 `words` ，找出并返回 `length(words[i]) * length(words[j])` 的最大值，并且这两个单词不含有公共字母。如果不存在这样的两个单词，返回 `0` 。
 
-![318](./imgs/leetcode/318.jpg)
+![318](imgs/leetcode/318.jpg)
 
 ```java
 class Solution {
@@ -2778,7 +4583,190 @@ class Solution {
 }
 ```
 
+## 深度优先搜索
+
+### 1466. 重新规划路线
+
+`n` 座城市，从 `0` 到 `n-1` 编号，其间共有 `n-1` 条路线。因此，要想在两座不同城市之间旅行只有唯一一条路线可供选择（路线网形成一颗树）。去年，交通运输部决定重新规划路线，以改变交通拥堵的状况。
+
+路线用 `connections` 表示，其中 `connections[i] = [a, b]` 表示从城市 `a` 到 `b` 的一条有向路线。
+
+今年，城市 0 将会举办一场大型比赛，很多游客都想前往城市 0 。
+
+请你帮助重新规划路线方向，使每个城市都可以访问城市 0 。返回需要变更方向的最小路线数。
+
+题目数据 **保证** 每个城市在重新规划路线方向后都能到达城市 0 。
+
+![1466](imgs/leetcode/1466.jpg)
+
+```java
+class Solution {
+    public int minReorder(int n, int[][] connections) {
+        List<int[]>[] e = new List[n];
+        for (int i = 0; i < n; i ++) {
+            e[i] = new ArrayList<int[]>();
+        }
+        // 从 0 点出发去遍历其他点使用 1 标记原方向的边，使用 0 标记反向边
+        for (int[] edge : connections) {
+            e[edge[0]].add(new int[]{edge[1], 1});
+            e[edge[1]].add(new int[]{edge[0], 0});
+        }
+        return dfs(0, -1, e);
+    }
+    int dfs(int x, int parent, List<int[]>[] e) {
+        int res = 0;
+        for (int[] edge : e[x]) {
+            if (edge[0] == parent) {
+                continue;
+            }
+            res += edge[1] + dfs(edge[0], x, e);
+        }
+        return res;
+    }
+}
+```
+
+### 2477. 到达首都的最少油耗
+
+给你一棵 `n` 个节点的树（一个无向、连通、无环图），每个节点表示一个城市，编号从 `0` 到 `n - 1` ，且恰好有 `n - 1` 条路。`0` 是首都。给你一个二维整数数组 `roads` ，其中 `roads[i] = [ai, bi]` ，表示城市 `ai` 和 `bi` 之间有一条 **双向路** 。
+
+每个城市里有一个代表，他们都要去首都参加一个会议。
+
+每座城市里有一辆车。给你一个整数 `seats` 表示每辆车里面座位的数目。
+
+城市里的代表可以选择乘坐所在城市的车，或者乘坐其他城市的车。相邻城市之间一辆车的油耗是一升汽油。
+
+请你返回到达首都最少需要多少升汽油。
+
+![2477](imgs/leetcode/2477.jpg)
+
+**思路**
+
+![2477A](imgs/leetcode/2477A.jpg)
+
+```java
+class Solution {
+    long res = 0;
+    public long minimumFuelCost(int[][] roads, int seats) {
+        int n = roads.length;
+        List<Integer>[] g = new List[n + 1];
+        for (int i = 0; i <= n; i ++) {
+            g[i] = new ArrayList<Integer>();
+        }
+        for (int[] e : roads) {
+            g[e[0]].add(e[1]);
+            g[e[1]].add(e[0]);
+        }
+        dfs(0, -1, seats, g);
+        return res;
+    }
+    int dfs(int cur, int fa, int seats, List<Integer>[] g) {
+        int sum = 1;
+        for (int ne : g[cur]) {
+            if (ne != fa) {
+                int cnt = dfs(ne, cur, seats, g);
+                sum += cnt;
+                res += (cnt + seats - 1) / seats;
+            }
+        }
+        return sum;
+    }
+}
+```
+
 ## 广度优先搜索
+
+### 1631. 最小体力消耗路径
+
+你准备参加一场远足活动。给你一个二维 `rows x columns` 的地图 `heights` ，其中 `heights[row][col]` 表示格子 `(row, col)` 的高度。一开始你在最左上角的格子 `(0, 0)` ，且你希望去最右下角的格子 `(rows-1, columns-1)` （注意下标从 **0** 开始编号）。你每次可以往 **上**，**下**，**左**，**右** 四个方向之一移动，你想要找到耗费 **体力** 最小的一条路径。
+
+一条路径耗费的 **体力值** 是路径上相邻格子之间 **高度差绝对值** 的 **最大值** 决定的。
+
+请你返回从左上角走到右下角的最小 **体力消耗值** 。
+
+![1631](imgs/leetcode/1631.jpg)
+
+```java
+class Solution {
+    int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    public int minimumEffortPath(int[][] heights) {
+        int n = heights.length, m = heights[0].length;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+        pq.offer(new int[]{0, 0, 0});
+
+        int[] dist = new int[n * m];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[0] = 0;
+        boolean[] seen = new boolean[n * m];
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int x = cur[0], y = cur[1], d = cur[2];
+            int id = x * m + y;
+            if (seen[id]) {
+                continue;
+            }
+            if (x == n - 1 && y == m - 1) {
+                break;
+            }
+            seen[id] = true;
+            for (int i = 0; i < 4; i ++) {
+                int nx = x + dirs[i][0], ny = y + dirs[i][1];
+                if (nx >= 0 && nx < n && ny >= 0 && ny < m && Math.max(d, Math.abs(heights[x][y] - heights[nx][ny])) < dist[nx * m + ny]) {
+                    dist[nx * m + ny] = Math.max(d, Math.abs(heights[x][y] - heights[nx][ny]));
+                    pq.offer(new int[]{nx, ny, dist[nx * m + ny]});
+                }
+            }
+        }
+        return dist[n * m - 1];
+    }
+}
+```
+
+**二分法**
+
+```java
+class Solution {
+    public int minimumEffortPath(int[][] heights) {
+        int m = heights.length;
+        int n = heights[0].length;
+        int lo = 0;
+        int hi = 1000000;
+        while (lo < hi) {
+            int mid = lo/2 + hi/2;
+            boolean[][] visited = new boolean[m][n];
+            if (canPass(heights, visited, heights[0][0], mid, 0, 0)) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return lo;
+    }
+
+    private boolean canPass(int[][] heights, boolean[][] seen, int curr, int cost, int i, int j) {
+        if (i < 0 || i >= seen.length || j < 0 || j >= seen[0].length) {
+            return false;
+        }
+        if (seen[i][j] || Math.abs(heights[i][j] - curr) > cost) {
+            return false;
+        }
+        if (i == seen.length - 1 && j == seen[0].length - 1) {
+            return true;
+        }
+        seen[i][j] = true;
+        if (canPass(heights, seen, heights[i][j], cost, i + 1, j))
+            return true;
+        if (canPass(heights, seen, heights[i][j], cost, i, j + 1))
+            return true;
+        if (canPass(heights, seen, heights[i][j], cost, i - 1, j))
+            return true;
+        if (canPass(heights, seen, heights[i][j], cost, i, j - 1))
+            return true;
+        return false;
+    }
+}
+```
 
 ### 2258. 逃离火灾
 
@@ -2796,16 +4784,16 @@ class Solution {
 
 如果两个格子有共同边，那么它们为 **相邻** 格子。
 
-![2258](./imgs/leetcode/2258.jpg)
+![2258](imgs/leetcode/2258.jpg)
 
 **思路**
 
 BFS + 分类讨论
 通过比较双方到达时间来求解。
 
-具体的，用` fg `和` pg `，分别预处理出「火势」和「人员」到达每个网格的最早时间。其中火势蔓延唯一确定，而人员的预处理是在不考虑火势的情况下进行。
+具体的，用`fg`和`pg`，分别预处理出「火势」和「人员」到达每个网格的最早时间。其中火势蔓延唯一确定，而人员的预处理是在不考虑火势的情况下进行。
 
-根据` f=fg[n−1][m−1]f = fg[n-1][m-1]f=fg[n−1][m−1] `和` p=pg[n−1][m−1]p = pg[n-1][m-1]p=pg[n−1][m−1] `进行分情况讨论：
+根据`f=fg[n−1][m−1]f = fg[n-1][m-1]f=fg[n−1][m−1]`和`p=pg[n−1][m−1]p = pg[n-1][m-1]p=pg[n−1][m−1]`进行分情况讨论：
 
 若 `p=0`：人与安全屋不连通，返回 `−1`；
 
@@ -2875,15 +4863,15 @@ class Solution {
 给你一个数组 `nums` ，请你完成两类查询。
 
 1. 其中一类查询要求 **更新** 数组 `nums` 下标对应的值
-2. 另一类查询要求返回数组 `nums` 中索引 `left` 和索引 `right` 之间（ **包含** ）的nums元素的 **和** ，其中 `left <= right`
+2. 另一类查询要求返回数组 `nums` 中索引 `left` 和索引 `right` 之间（ **包含** ）的 nums 元素的 **和** ，其中 `left <= right`
 
 实现 `NumArray` 类：
 
 - `NumArray(int[] nums)` 用整数数组 `nums` 初始化对象
 - `void update(int index, int val)` 将 `nums[index]` 的值 **更新** 为 `val`
-- `int sumRange(int left, int right)` 返回数组 `nums` 中索引 `left` 和索引 `right` 之间（ **包含** ）的nums元素的 **和** （即，`nums[left] + nums[left + 1], ..., nums[right]`）
+- `int sumRange(int left, int right)` 返回数组 `nums` 中索引 `left` 和索引 `right` 之间（ **包含** ）的 nums 元素的 **和** （即，`nums[left] + nums[left + 1], ..., nums[right]`）
 
-![307](./imgs/leetcode/307.jpg)
+![307](imgs/leetcode/307.jpg)
 
 **思路**
 针对不同的题目，我们有不同的方案可以选择（假设我们有一个数组）：
@@ -2926,12 +4914,12 @@ class NumArray {
         p = new int[n + 1];
         for (int i = 0; i < n; i ++) add(i + 1, arr[i]);
     }
-    
+
     public void update(int i, int val) {
         add(i + 1, val - arr[i]);
         arr[i] = val;
     }
-    
+
     public int sumRange(int l, int r) {
         return query(r + 1) - query(l);
     }
@@ -2946,7 +4934,3 @@ class NumArray {
 ```
 
 ## 线段树
-
-
-
-

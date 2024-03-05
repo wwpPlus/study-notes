@@ -1205,9 +1205,685 @@ public class Main {
 
 ```
 
+### 单调栈
+
+#### 单调栈
+
+给定一个长度为` N `的整数数列，输出每个数左边第一个比它小的数，如果不存在则输出`−1`。
+
+```java
+import java.util.Stack;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i ++) arr[i] = sc.nextInt();
+        Stack<Integer> stk = new Stack();
+        for (int i = 0; i < n; i ++) {
+            while (!stk.isEmpty() && stk.peek() >= arr[i]) stk.pop();
+            int out = -1;
+            if (!stk.isEmpty()) out = stk.peek();
+            System.out.print(out + " ");
+            stk.push(arr[i]);
+        }
+    }
+}
+```
+
+### 单调队列
+
+#### 滑动窗口
+
+给定一个大小为 `n ≤ 1e6` 的数组。有一个大小为 `k` 的滑动窗口，它从数组的最左边移动到最右边。
+你只能在窗口中看到 `k` 个数字。每次滑动窗口向右移动一个位置。
+
+以下是一个例子：
+该数组为 `[1 3 -1 -3 5 3 6 7]`，`k` 为 33。
+
+| 窗口位置            | 最小值 | 最大值 |
+| ------------------ | ----- | ----- |
+| [1 3 -1] -3 5 3 6 7 | -1     | 3      |
+| 1 [3 -1 -3] 5 3 6 7 | -3     | 3      |
+| 1 3 [-1 -3 5] 3 6 7 | -3     | 5      |
+| 1 3 -1 [-3 5 3] 6 7 | -3     | 5      |
+| 1 3 -1 -3 [5 3 6] 7 | 3      | 6      |
+| 1 3 -1 -3 5 [3 6 7] | 3      | 7      |
+
+你的任务是确定滑动窗口位于每个位置时，窗口中的最大值和最小值。
+
+```java
+import java.io.*;
+
+public class Main {
+    static final int N = 1000010;
+    static int[] arr = new int[N];
+    static int[] q = new int[N];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] s1 = br.readLine().split(" ");
+        String[] s2 = br.readLine().split(" ");
+        
+        int n = Integer.parseInt(s1[0]), k = Integer.parseInt(s1[1]);
+        for (int i = 0; i < n; i ++) arr[i] = Integer.parseInt(s2[i]);
+        int hh = 0, tt = -1;
+        for (int i = 0; i < n; i ++) {
+            if (hh <= tt && q[hh] < i - k + 1) hh ++;
+            while (hh <= tt && arr[q[tt]] >= arr[i]) tt --;
+            q[++ tt] = i;
+            if (i >= k - 1) {
+                System.out.print(arr[q[hh]] + " ");
+            }
+        }
+        System.out.println("");
+        hh = 0; tt = -1;
+        for (int i = 0; i < n; i ++) {
+            if (hh <= tt && q[hh] < i - k + 1) hh ++;
+            while (hh <= tt && arr[q[tt]] <= arr[i]) tt --;
+            q[++ tt] = i;
+            if (i >= k - 1) {
+                System.out.print(arr[q[hh]] + " ");
+            }
+        }
+    }
+}
+```
+
+### KMP
+
+#### KMP字符串
+
+给定一个模式串 `P`，以及一个字符串 `S`，所有字符串中只包含大小写英文字母以及阿拉伯数字。
+模式串 `P` 在字符串 `S` 中多次作为子串出现。
+求出模式串 `P `在字符串 `S` 中所有出现的位置的起始下标。
+
+```java
+import java.io.*;
+public class Main{
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int n = Integer.valueOf(br.readLine());
+        char[] p = br.readLine().toCharArray();
+        int m = Integer.valueOf(br.readLine());
+        char[] s = br.readLine().toCharArray();
+        int[] ne = new int[n];
+
+        ne[0] = -1;
+        for (int i = 1, j = -1; i < n; i ++) {
+            while (j != -1 && p[i] != p[j + 1]) j = ne[j];
+            if (p[i] == p[j + 1]) j ++;
+            ne[i] = j;
+        }
+        for (int i = 0, j = -1; i < m; i ++) {
+            while (j != -1 && s[i] != p[j + 1]) j = ne[j];
+            if (s[i] == p[j + 1]) j ++;
+            if (j == n - 1){
+                bw.write(i - n + 1 + " ");
+                j = ne[j];
+            }
+        }
+    }
+}
+```
+
+### 哈希表
+
+#### 模拟散列表
+
+维护一个集合，支持如下几种操作：
+`I x`，插入一个整数 `x`；
+`Q x`，询问整数 `x` 是否在集合中出现过；
+现在要进行 `N` 次操作，对于每个询问操作输出对应的结果。
+
+**开放寻址法**
+
+```java
+import java.util.*;
+public class Main {
+    final static int N = 200003, nullVal = 0x3f3f3f3f;
+    static int[] h = new int[N];
+    
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        Arrays.fill(h, nullVal);
+        while (n -- > 0) {
+            String op = sc.next();
+            int x = sc.nextInt();
+            int k = find(x);
+            if ("I".equals(op)) {
+                h[k] = x;
+            } else {
+                if (h[k] != nullVal) System.out.println("Yes");
+                else System.out.println("No");
+            }
+        }
+    }
+    static int get_hash(int x) {
+        return (x % N + N) % N;
+    }
+    static int find(int x) {
+        int k = get_hash(x);
+        while (h[k] != nullVal && h[k] != x) {
+            k ++;
+            if (k == N) k = 0;
+        }
+        return k;
+    }
+}
+```
+
+**拉链法**
+
+```java
+import java.util.*;
+public class Main {
+    final static int N = 100003;
+    static int[] h = new int[N], e = new int[N], ne = new int[N];
+    static int idx;
+    
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        Arrays.fill(h, -1);
+        while (n -- > 0) {
+            String op = sc.next();
+            int x = sc.nextInt();
+            if ("I".equals(op)) {
+                insert(x);
+            } else {
+                if (find(x)) System.out.println("Yes");
+                else System.out.println("No");
+            }
+        }
+    }
+    static int get_hash(int x) {
+        return (x % N + N) % N;
+    }
+    static void insert(int x) {
+        int k = get_hash(x);
+        e[idx] = x;
+        ne[idx] = h[k];
+        h[k] = idx ++;
+    }
+    static boolean find(int x) {
+        int k = get_hash(x);
+        for (int i = h[k]; i != -1; i = ne[i]) {
+            if (e[i] == x) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+#### 字符串哈希
+
+给定一个长度为 `n` 的字符串，再给定 `m` 个询问，每个询问包含四个整数 `l1,r1,l2,r2`，请你判断 `[l1,r1]` 和 `[l2,r2]` 这两个区间所包含的字符串子串是否完全相同。
+
+字符串中只包含大小写英文字母和数字。
+
+```java
+import java.util.*;
+public class Main {
+    final static int N = 100010, P = 131;
+    static String s;
+    static long[] h = new long[N], p = new long[N];
+    
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt(), m = sc.nextInt();
+        s = " " + sc.next();
+        p[0] = 1L;
+        for (int i = 1; i < s.length(); i ++) {
+            p[i] = p[i - 1] * P;
+            h[i] = h[i - 1] * P + s.charAt(i);
+        }
+        while (m -- > 0) {
+            int l1 = sc.nextInt(), r1 = sc.nextInt(), l2 = sc.nextInt(), r2 = sc.nextInt();
+            if (get_hash(l1, r1) == get_hash(l2, r2)) System.out.println("Yes");
+            else System.out.println("No");
+        }
+    }
+    static long get_hash(int l, int r) {
+        return h[r] - h[l - 1] * p[r - l + 1];
+    }
+}
+
+```
+
 ## 搜索与图论
 
 ## 数学知识
+
+### 质数
+
+#### 试除法判定质数
+
+```java
+import java.util.*;
+public class Main {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        while (n -- > 0) {
+            int x = sc.nextInt();
+            String res = "Yes";
+            if (!is_prime(x)) {
+                res = "No";
+            }
+            System.out.println(res);
+        }
+    }
+    static boolean is_prime(int x) {
+        if (x < 2) {
+            return false;
+        }
+        for (int i = 2; i <= x / i; i ++) {
+            if (x % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+#### 分解质因数
+
+给定 `n` 个正整数 `x` ，将每个数分解质因数，并按照质因数从小到大的顺序输出每个质因数的底数和指数。
+
+```java
+import java.util.*;
+public class Main {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        while (n -- > 0) {
+            int x = sc.nextInt();
+            divide(x);
+            System.out.println();
+        }
+    }
+    static void divide(int x) {
+        for (int i = 2; i <= x / i; i ++) {
+            if (x % i == 0) {
+                int cnt = 0;
+                while (x % i == 0) {
+                    x /= i;
+                    cnt ++;
+                }
+                System.out.println(i + " " + cnt);
+            }
+        }
+        if (x > 1) {
+            System.out.println(x + " " + 1);
+        }
+    }
+}
+```
+
+#### 筛质数
+
+给定一个正整数 `n` ，请你求出 `1∼n` 中质数的个数。
+
+```java
+import java.util.*;
+public class Main {
+    static int res = 0;
+    static boolean[] st;
+    static int[] primes;
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        st = new boolean[n + 1];
+        primes = new int[n + 1];
+        get_primes(n);
+        System.out.println(res);
+    }
+    // 埃氏筛法 时间复杂度 O(nloglogn)
+    static void get_primes(int n) {
+        for (int i = 2; i <= n; i ++) {
+            if (!st[i]) {
+                res ++;
+                for (int j = i + i; j <= n; j += i) st[j] = true;
+            }
+        }
+    }
+    // 线性筛法 时间复杂度 O(n)
+    static void get_primes(int n) {
+        for (int i = 2; i <= n; i ++) {
+            if (!st[i]) primes[res ++] = i;
+            for (int j = 0; primes[j] <= n / i; j ++) {
+                st[primes[j] * i] = true;
+                if (i % primes[j] == 0) break; // primes[j]一定是 i 的最小质因子
+            }
+        }
+    }
+}
+```
+
+### 约数
+
+#### 试除法求约数
+
+给定 `n` 个正整数 `ai` ，对于每个整数 `ai`，请你按照从小到大的顺序输出它的所有约数。
+
+```java
+import java.util.*;
+public class Main {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        while (n -- > 0) {
+            int x = sc.nextInt();
+            var res = get_divisor(x);
+            Collections.sort(res);
+            for (int i : res) {
+                System.out.print(i + " ");
+            }
+            System.out.println();
+        }
+    }
+    static List<Integer> get_divisor(int x) {
+        List<Integer> res = new ArrayList<>();
+        for (int i = 1; i <= x / i; i ++) {
+            if (x % i == 0) {
+                res.add(i);
+                if (i != x / i) res.add(x / i);
+            }
+        }
+        return res;
+    }
+}
+```
+
+#### 约数个数
+
+给定 `n`个正整数 `ai`，请你输出这些数的乘积的约数个数，答案对 `109+7`取模。
+
+```java
+import java.util.*;
+public class Main {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        Map<Integer, Integer> primes = new HashMap<>();
+        while (n -- > 0) {
+            int x = sc.nextInt();
+            for (int i = 2; i <= x / i; i ++) {
+                while (x % i == 0) {
+                    x /= i;
+                    primes.put(i, primes.getOrDefault(i, 0) + 1);
+                }
+            }
+            if (x > 1) primes.put(x, primes.getOrDefault(x, 0) + 1);
+        }
+        
+        long res = 1L;
+        final int MOD = (int)1e9 + 7;
+        for (int k : primes.keySet()) {
+            res = res * (primes.get(k) + 1) % MOD;
+        }
+        System.out.println(res);
+    }
+}
+```
+
+#### 约数之和
+
+给定 `n`个正整数 `ai`，请你输出这些数的乘积的约数之和，答案对 `109+7`取模。
+
+```java
+import java.util.*;
+public class Main {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        Map<Integer, Integer> primes = new HashMap<>();
+        while (n -- > 0) {
+            int x = sc.nextInt();
+            for (int i = 2; i <= x / i; i ++) {
+                while (x % i == 0) {
+                    x /= i;
+                    primes.put(i, primes.getOrDefault(i, 0) + 1);
+                }
+            }
+            if (x > 1) primes.put(x, primes.getOrDefault(x, 0) + 1);
+        }
+        
+        long res = 1L;
+        final int MOD = (int)1e9 + 7;
+        for (int k : primes.keySet()) {
+            int v = primes.get(k);
+            long t = 1L;
+            while (v -- > 0) t = (t * k + 1) % MOD;
+            res = res * t % MOD;
+        }
+        System.out.println(res);
+    }
+}
+```
+
+#### 最大公约数
+
+```java
+import java.util.*;
+public class Main {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        while (n -- > 0) {
+            int a = sc.nextInt(), b = sc.nextInt();
+            int res = gcd(a, b);
+            System.out.println(res);
+        }
+    }
+    /**
+     * 假设d 可以整除a , b, 那么d 可以整除 a * x + b * y
+     * (a, b)的最大公约数等于(b, a % b)的最大公约数
+     * 因为a % b = a - (a / b) * b = a - c * b, 其中c = a / b
+     * d 可以整除a , b; d 可以整除 b, a - c * b
+     */
+    static int gcd(int a, int b) {
+        return b != 0 ? gcd(b, a % b) : a;
+    }
+}
+```
+
+### 欧拉函数
+
+#### 欧拉函数
+
+```java
+import java.util.*;
+public class Main {
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        while (n -- > 0) {
+            int x = sc.nextInt();
+            int res = x;
+            for (int i = 2; i <= x / i; i ++) {
+                if (x % i == 0) {
+                    res = res / i * (i - 1);
+                    while (x % i == 0) x /= i;
+                }
+            }
+            if (x > 1) res = res / x * (x - 1);
+            System.out.println(res);
+        }
+    }
+}
+```
+
+#### 筛法求欧拉函数
+
+给定一个正整数 `n`，求 `1∼n`中每个数的欧拉函数之和。
+
+```java
+import java.util.*;
+public class Main {
+    final static int N = 1000010;
+    static int cnt = 0;
+    static boolean[] st = new boolean[N];
+    static int[] phi = new int[N], primes = new int[N];
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        System.out.println(get_eulers(n));
+    }
+    static long  get_eulers(int n) {
+        phi[1] = 1;
+        for (int i = 2; i <= n; i ++) {
+            if (!st[i]) {
+                primes[cnt ++] = i;
+                phi[i] = i - 1;
+            }
+            for (int j = 0; primes[j] <= n / i; j ++) {
+                st[primes[j] * i] = true;
+                if (i % primes[j] == 0) {
+                    phi[primes[j] * i] = phi[i] * primes[j]; 
+                    break;
+                }
+                phi[primes[j] * i] = phi[i] * (primes[j] - 1);
+            }
+        }
+        long res = 0L;
+        for (int i = 1; i <= n; i ++) res += phi[i];
+        return res;
+    }
+}
+```
+
+### 快速幂
+
+#### 快速幂
+
+给定 `n` 组 `ai,bi,pi`，对于每组数据，求出 `ai^bi mod pi`的值。
+
+```java
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.valueOf(br.readLine());
+        while (n -- > 0) {
+            String[] ss = br.readLine().split(" ");
+            int a = Integer.valueOf(ss[0]), b = Integer.valueOf(ss[1]), p = Integer.valueOf(ss[2]);
+            System.out.println(qmi(a, b, p));
+        }
+    }
+    static long qmi(long a, long b, long p) {
+        long res = 1L;
+        while (b != 0) {
+            if ((b & 1) != 0) res = res * a % p;
+            b >>= 1;
+            a = a * a % p;
+        }
+        return res;
+    }
+}
+```
+#### 快速幂求逆元
+
+```java
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.valueOf(br.readLine());
+        while (n -- > 0) {
+            String[] ss = br.readLine().split(" ");
+            int a = Integer.valueOf(ss[0]), p = Integer.valueOf(ss[1]);
+            if (a % p == 0) System.out.println("impossible");
+            else System.out.println(qmi(a, p - 2, p));
+        }
+    }
+    static long qmi(long a, long b, long p) {
+        long res = 1L;
+        while (b != 0) {
+            if ((b & 1) != 0) res = res * a % p;
+            b >>= 1;
+            a = a * a % p;
+        }
+        return res;
+    }
+}
+```
+
+### 扩展欧几里得算法
+
+#### 扩展欧几里得算法
+
+给定 `n` 对正整数 `ai,bi`，对于每对数，求出一组 `xi,yi`，使其满足 `ai×xi+bi×yi=gcd(ai,bi)`。
+
+```java
+import java.io.*;
+
+public class Main {
+    static int[] x = new int[1];
+    static int[] y = new int[1];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.valueOf(br.readLine());
+        while (n -- > 0) {
+            String[] ss = br.readLine().split(" ");
+            int a = Integer.valueOf(ss[0]), b = Integer.valueOf(ss[1]);
+            exgcd(a, b, x, y);
+            System.out.println(x[0] + " " + y[0]);
+        }
+    }
+    static int exgcd(int a, int b, int[] x, int[] y) {
+        if (b == 0) {
+            x[0] = 1; y[0] = 0;
+            return a;
+        }
+        int d = exgcd(b, a % b, y, x);
+        y[0] -= (a / b) * x[0];
+        return d;
+    }
+}
+```
+
+#### 线性同余方程
+
+给定 `n` 组数据 `ai,bi,mi`，对于每组数求出一个 `xi`，使其满足` ai×xi≡bi(modmi)`，如果无解则输出 `impossible`。
+
+```java
+import java.io.*;
+
+public class Main {
+    static int[] x = new int[1];
+    static int[] y = new int[1];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.valueOf(br.readLine());
+        while (n -- > 0) {
+            String[] ss = br.readLine().split(" ");
+            int a = Integer.valueOf(ss[0]), b = Integer.valueOf(ss[1]), m = Integer.valueOf(ss[2]);
+            int d = exgcd(a, m, x, y);
+            if (b % d != 0) System.out.println("impossible");
+            else System.out.println((long)x[0] * (b / d) % m);
+        }
+    }
+    static int exgcd(int a, int b, int[] x, int[] y) {
+        if (b == 0) {
+            x[0] = 1; y[0] = 0;
+            return a;
+        }
+        int d = exgcd(b, a % b, y, x);
+        y[0] -= (a / b) * x[0];
+        return d;
+    }
+}
+```
 
 ## 动态规划
 

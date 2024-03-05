@@ -24,7 +24,15 @@ module.exports = {
       },
       {
         text: "Java",
-        link: "/Back/Docker.md",
+        ariaLabel: "Java菜单",
+        children: [
+          { text: "Java基础", link: "/Back/Base/Design-Pattern.md" },
+          { text: "Java框架", link: "/Back/Spring/Spring.md" },
+          { text: "并发编程", link: "/Back/Advanced/Concurrent.md" },
+          { text: "性能调优", link: "/Back/Optimize/MySQL.md" },
+          { text: "分布式", link: "/Back/Distributed/Redis.md" },
+          { text: "微服务", link: "/Back/Microservices/SpringBoot.md" }
+        ]
       },
       {
         text: "算法",
@@ -69,10 +77,40 @@ module.exports = {
           children: ["/Front/Interview/HTML.md", "/Front/Interview/CSS.md", "/Front/Interview/JavaScript.md", "/Front/Interview/Promise.md", "/Front/Interview/Vue.md", "/Front/Interview/网络.md", "/Front/Interview/工程化.md", "/Front/Interview/浏览器.md"],
         },
       ],
-      "/Back/": [
+      "/Back/Base": [
         {
-          text: "Java",
-          children: ["/Back/README.md", "/Back/Spring.md", "/Back/Linux.md", "/Back/Docker.md", "/Back/Redis.md", "/Back/RocketMQ.md", "/Back/Design-Pattern.md"],
+          text: "Java基础",
+          children: ["/Back/Base/README.md", "/Back/Base/Linux.md", "/Back/Base/Design-Pattern.md"],
+        },
+      ],
+      "/Back/Spring": [
+        {
+          text: "Java基础",
+          children: ["/Back/Spring/Spring.md"],
+        },
+      ],
+      "/Back/Advanced": [
+        {
+          text: "并发编程",
+          children: ["/Back/Advanced/Concurrent.md"],
+        },
+      ],
+      "/Back/Optimize": [
+        {
+          text: "性能调优",
+          children: ["/Back/Optimize/MySQL.md", "/Back/Optimize/JVM.md"],
+        },
+      ],
+      "/Back/Distributed": [
+        {
+          text: "分布式",
+          children: ["/Back/Distributed/Redis.md", "/Back/Distributed/Zookeeper.md", "/Back/Distributed/RocketMQ.md", "/Back/Distributed/RabbitMQ.md", "/Back/Distributed/Netty.md", "/Back/Distributed/Docker.md"],
+        },
+      ],
+      "/Back/Microservices": [
+        {
+          text: "微服务",
+          children: ["/Back/Microservices/SpringBoot.md"],
         },
       ],
       "/Algorithm/": [
@@ -90,7 +128,7 @@ module.exports = {
       "/Project/": [
         {
           text: "项目经历",
-          children: ["/Project/Resume.md", "/Project/软件杯.md", "/Project/experimental-platform.md", "/Project/web-app.md", "/Project/house-rent.md"],
+          children: ["/Project/Resume.md", "/Project/lottery.md", "/Project/软件杯.md", "/Project/experimental-platform.md", "/Project/web-app.md", "/Project/house-rent.md"],
         },
       ],
       "/Tools/": [
