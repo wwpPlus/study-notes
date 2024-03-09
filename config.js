@@ -46,17 +46,20 @@ module.exports = {
       {
         text: "微服务",
         children: [
+          { text: "Docker", link: "/Back/Microservices/Docker.md" },
           { text: "SpringBoot", link: "/Back/Microservices/SpringBoot.md" }
         ]
       },
       {
         text: "运维",
-        link: "/Back/Deploy/Docker.md"
+        children: [
+          { text: "Docker", link: "/Back/Microservices/Docker.md" }
+        ]
       },
       {
         text: "算法",
         children: [
-          { text: "LeetCode", link: "/Algorithm/LeetCode.md" },
+          { text: "LeetCode", link: "Algorithm/LeetCode.md" },
           { text: "Acwing", link: "/Algorithm/Acwing.md" },
           { text: "剑指Offer1", link: "/Algorithm/Offer1.md" },
           { text: "剑指Offer2", link: "/Algorithm/Offer2.md" },
@@ -102,22 +105,7 @@ module.exports = {
         },
       ],
       "/Back/Base/": [
-        ''
-      ],
-      "/Back/Distributed/": [
-        ''
-      ],
-      "/Back/Microservices/": [
-        ''
-      ],
-      "/Back/Deploy/": [
-        ''
-      ],
-      "/Algorithm/": [
-        ''
-      ],
-      "/Project/": [
-        ''
+        'Linux'
       ],
       "/AI/": [
         {
