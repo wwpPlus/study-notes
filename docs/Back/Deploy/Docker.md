@@ -10,7 +10,7 @@
 
 [官网安装参考手册](https://docs.docker.com/engine/install/centos/)
 
-> **环境说明：**我们使用的是 `CentOS 7 (64-bit)`目前，`CentOS` 仅发行版本中的内核支持 Docker。Docker 运行在 `CentOS 7` 上，要求系统为 64 位、系统内核版本为 `3.10` 以上。
+> 环境说明：我们使用的是 `CentOS 7 (64-bit)`目前，`CentOS` 仅发行版本中的内核支持 Docker。Docker 运行在 `CentOS 7` 上，要求系统为 64 位、系统内核版本为 `3.10` 以上。
 
 ```shell
 # 查看自己的内核
