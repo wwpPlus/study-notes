@@ -841,6 +841,46 @@ class Solution {
 
 ## 哈希
 
+### 299. 猜数字游戏
+
+你在和朋友一起玩 [猜数字（Bulls and Cows）](https://baike.baidu.com/item/猜数字/83200?fromtitle=Bulls+and+Cows&fromid=12003488&fr=aladdin)游戏，该游戏规则如下：
+
+写出一个秘密数字，并请朋友猜这个数字是多少。朋友每猜测一次，你就会给他一个包含下述信息的提示：
+
+- 猜测数字中有多少位属于数字和确切位置都猜对了（称为 "Bulls"，公牛），
+- 有多少位属于数字猜对了但是位置不对（称为 "Cows"，奶牛）。也就是说，这次猜测中有多少位非公牛数字可以通过重新排列转换成公牛数字。
+
+给你一个秘密数字 `secret` 和朋友猜测的数字 `guess` ，请你返回对朋友这次猜测的提示。
+
+提示的格式为 `"xAyB"` ，`x` 是公牛个数， `y` 是奶牛个数，`A` 表示公牛，`B` 表示奶牛。
+
+请注意秘密数字和朋友猜测的数字都可能含有重复数字。
+
+![299](./imgs/leetcode/299.jpg)
+
+```java
+class Solution {
+    public String getHint(String secret, String guess) {
+        int bulls = 0;
+        int[] hs = new int[10], hg = new int[10];
+        for (int i = 0; i < secret.length(); i ++) {
+            char s = secret.charAt(i), g = guess.charAt(i);
+            if (s == g) {
+                bulls ++;
+            } else {
+                hs[s - '0'] ++;
+                hg[g - '0'] ++;
+            }
+        }
+        int cows = 0;
+        for (int i = 0; i < 10; i ++) {
+            cows += Math.min(hs[i], hg[i]);
+        }
+        return bulls + "A" + cows + "B";
+    }
+}
+```
+
 ### 447. 回旋镖的数量
 
 给定平面上 `n` 对 **互不相同** 的点 `points` ，其中 `points[i] = [xi, yi]` 。**回旋镖** 是由点 `(i, j, k)` 表示的元组 ，其中 `i` 和 `j` 之间的距离和 `i` 和 `k` 之间的欧式距离相等（**需要考虑元组的顺序**）。
@@ -3245,6 +3285,79 @@ class Solution {
 }
 ```
 
+### 2684. 矩阵中移动的最大次数
+
+给你一个下标从 **0** 开始、大小为 `m x n` 的矩阵 `grid` ，矩阵由若干 **正** 整数组成。
+
+你可以从矩阵第一列中的 **任一** 单元格出发，按以下方式遍历 `grid` ：
+
+- 从单元格 `(row, col)` 可以移动到 `(row - 1, col + 1)`、`(row, col + 1)` 和 `(row + 1, col + 1)` 三个单元格中任一满足值 **严格** 大于当前单元格的单元格。
+
+返回你在矩阵中能够 **移动** 的 **最大** 次数。
+
+![2684](./imgs/leetcode/2684.jpg)
+
+```java
+// 超出内存限制
+class Solution {
+    int[][] dir = new int[][]{{-1, 1}, {0, 1}, {1, 1}};
+    public int maxMoves(int[][] grid) {
+        int res = 0;
+        for (int i = 0; i < grid.length; i ++) {
+            res = Math.max(res, getMovesCnt(i, 0, grid, dp));
+        }
+        return res;
+    }
+    int getMovesCnt(int x, int y, int[][] grid) {
+        int n = grid.length, m = grid[0].length;
+        int cnt = 0;
+        Deque<int[]> q = new ArrayDeque<>(), p = new ArrayDeque<>();
+        q.offerLast(new int[]{x, y});
+        while (!q.isEmpty()) {
+            var cur = q.pollFirst();
+            for (int i = 0; i < 3; i ++) {
+                int xx = cur[0] + dir[i][0], yy = cur[1] + dir[i][1];
+                if (xx >= 0 && xx < n && yy >= 0 && yy < m && grid[cur[0]][cur[1]] < grid[xx][yy]) {
+                    p.offerLast(new int[]{xx, yy});
+                }
+            }
+            if (q.isEmpty() && !p.isEmpty()) {
+                q = p;
+                p = new ArrayDeque<>();
+                cnt ++;
+            }
+        }
+        return cnt;
+    }
+}
+
+// 正解
+class Solution {
+    public int maxMoves(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        Set<Integer> q = new HashSet<>();
+        for (int i = 0; i < m; i++) {
+            q.add(i);
+        }
+        for (int j = 1; j < n; j++) {
+            Set<Integer> q2 = new HashSet<>();
+            for (int i : q) {
+                for (int i2 = i - 1; i2 <= i + 1; i2++) {
+                    if (0 <= i2 && i2 < m && grid[i][j - 1] < grid[i2][j]) {
+                        q2.add(i2);
+                    }
+                }
+            }
+            q = q2;
+            if (q.isEmpty()) {
+                return j - 1;
+            }
+        }
+        return n - 1;
+    }
+}
+```
+
 ### 2707. 字符串中的额外字符
 
 给你一个下标从 **0** 开始的字符串 `s` 和一个单词字典 `dictionary` 。你需要将 `s` 分割成若干个 **互不重叠** 的子字符串，每个子字符串都在 `dictionary` 中出现过。`s` 中可能会有一些 **额外的字符** 不在任何子字符串中。
@@ -3744,6 +3857,71 @@ class Solution {
     }
 }
 ```
+
+### 1261. 在受污染的二叉树中查找元素
+
+给出一个满足下述规则的二叉树：
+
+1. `root.val == 0`
+2. 如果 `treeNode.val == x` 且 `treeNode.left != null`，那么 `treeNode.left.val == 2 * x + 1`
+3. 如果 `treeNode.val == x` 且 `treeNode.right != null`，那么 `treeNode.right.val == 2 * x + 2`
+
+现在这个二叉树受到「污染」，所有的 `treeNode.val` 都变成了 `-1`。
+
+请你先还原二叉树，然后实现 `FindElements` 类：
+
+- `FindElements(TreeNode* root)` 用受污染的二叉树初始化对象，你需要先把它还原。
+- `bool find(int target)` 判断目标值 `target` 是否存在于还原后的二叉树中并返回结果。
+
+![1261](./imgs/leetcode/1261.jpg)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class FindElements {
+    Set<Integer> vals = new HashSet<>();
+    public FindElements(TreeNode root) {
+        root.val = 0;
+        vals.add(0);
+        dfs(root);
+    }
+    void dfs(TreeNode root) {
+        if (root != null) {
+            if (root.left != null) {
+                root.left.val = 2 * root.val + 1;
+            }
+            if (root.right != null) {
+                root.right.val = 2 * root.val + 2;
+            }
+            vals.add(root.val);
+            dfs(root.left);
+            dfs(root.right);
+        }
+    }
+    public boolean find(int target) {
+        return vals.contains(target);
+    }
+}
+
+/**
+ * Your FindElements object will be instantiated and called as such:
+ * FindElements obj = new FindElements(root);
+ * boolean param_1 = obj.find(target);
+ */
+ ```
 
 ### 1448. 统计二叉树中好节点的数目
 
