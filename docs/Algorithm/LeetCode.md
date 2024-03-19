@@ -2597,6 +2597,70 @@ class Solution {
 }
 ```
 
+### 1793. 好子数组的最大分数
+
+给你一个整数数组 `nums` **（下标从 0 开始）**和一个整数 `k` 。
+
+一个子数组 `(i, j)` 的 **分数** 定义为 `min(nums[i], nums[i+1], ..., nums[j]) * (j - i + 1)` 。一个 **好** 子数组的两个端点下标需要满足 `i <= k <= j` 。
+
+请你返回 **好** 子数组的最大可能 **分数** 。
+
+![1793](./imgs/leetcode/1793.jpg)
+
+同 [84. 柱状图中最大的矩形](https://leetcode.cn/problems/largest-rectangle-in-histogram/)
+
+```java
+class Solution {
+    // 双指针
+    public int maximumScore(int[] nums, int k) {
+        int l = k, r = k, n = nums.length, res = 0;
+        while (l >= 0 || r < n) {
+            while (r < n && nums[r] >= nums[k]) r ++;
+            while (l >= 0 && nums[l] >= nums[k]) l --;
+            res = Math.max(res, (r - l - 1) * nums[k]);
+            nums[k] = 0;
+            if (l >= 0) nums[k] = Math.max(nums[k], nums[l]);
+            if (r < n) nums[k] = Math.max(nums[k], nums[r]);
+        }
+        return res;
+    }
+    // 单调栈
+    // public int maximumScore(int[] nums, int k) {
+    //     int n = nums.length;
+    //     int[] left = new int[n], right = new int[n];
+    //     Deque<Integer> st = new ArrayDeque<>();
+    //     for (int i = 0; i < n; i ++) {
+    //         int x = nums[i];
+    //         while (!st.isEmpty() && x <= nums[st.peek()]) {
+    //             st.pop();
+    //         }
+    //         left[i] = st.isEmpty() ? -1 : st.peek();
+    //         st.push(i);
+    //     }
+    //     st.clear();
+    //     for (int i = n - 1; i >= 0; i --) {
+    //         int x = nums[i];
+    //         while (!st.isEmpty() && x <= nums[st.peek()]) {
+    //             st.pop();
+    //         }
+    //         right[i] = st.isEmpty() ? n : st.peek();
+    //         st.push(i);
+    //     }
+    //     int ans = 0;
+    //     for (int i = 0; i < n; i ++) {
+    //         int h = nums[i];
+    //         int l = left[i];
+    //         int r = right[i];
+    //         if (l < k  && k < r) {
+    //             ans = Math.max(ans, h * (r - l - 1));
+    //         }
+    //     }
+    //     return ans;
+    // }
+}
+
+```
+
 ### 2182. 构造限制重复的字符串
 
 给你一个字符串 `s` 和一个整数 `repeatLimit` ，用 `s` 中的字符构造一个新字符串 `repeatLimitedString` ，使任何字母 **连续** 出现的次数都不超过 `repeatLimit` 次。你不必使用 `s` 中的全部字符。
