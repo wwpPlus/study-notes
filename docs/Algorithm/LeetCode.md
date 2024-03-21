@@ -1200,6 +1200,59 @@ class Solution {
 }
 ```
 
+### 2671. 频率跟踪器
+
+请你设计并实现一个能够对其中的值进行跟踪的数据结构，并支持对频率相关查询进行应答。
+
+实现 `FrequencyTracker` 类：
+
+- `FrequencyTracker()`：使用一个空数组初始化 `FrequencyTracker` 对象。
+- `void add(int number)`：添加一个 `number` 到数据结构中。
+- `void deleteOne(int number)`：从数据结构中删除一个 `number` 。数据结构 **可能不包含** `number` ，在这种情况下不删除任何内容。
+- `bool hasFrequency(int frequency)`: 如果数据结构中存在出现 `frequency` 次的数字，则返回 `true`，否则返回 `false`。
+
+![2671](./imgs/leetcode/2671.jpg)
+
+```java
+class FrequencyTracker {
+    Map<Integer, Integer> map;
+    Map<Integer, Integer> fre;
+    public FrequencyTracker() {
+        map = new HashMap<>();
+        fre = new HashMap<>();
+    }
+    
+    public void add(int number) {
+        int f = map.getOrDefault(number, 0);
+        map.put(number, f + 1);
+        fre.put(f, fre.getOrDefault(f, 0) - 1);
+        fre.put(f + 1, fre.getOrDefault(f + 1, 0) + 1);
+    }
+    
+    public void deleteOne(int number) {
+        int f = map.getOrDefault(number, 0);
+        if (f - 1 < 0) {
+            return;
+        }
+        map.put(number, f - 1);
+        fre.put(f, fre.getOrDefault(f, 0) - 1);
+        fre.put(f - 1, fre.getOrDefault(f - 1, 0) + 1);
+    }
+    
+    public boolean hasFrequency(int frequency) {
+        return fre.getOrDefault(frequency, 0) > 0;
+    }
+}
+
+/**
+ * Your FrequencyTracker object will be instantiated and called as such:
+ * FrequencyTracker obj = new FrequencyTracker();
+ * obj.add(number);
+ * obj.deleteOne(number);
+ * boolean param_3 = obj.hasFrequency(frequency);
+ */
+```
+
 ## 矩阵
 
 ### 1072. 按列翻转得到最大值等行数
