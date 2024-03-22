@@ -3402,6 +3402,81 @@ class Solution {
 }
 ```
 
+### 2617. 网格图中最少访问的格子数
+
+给你一个下标从 **0** 开始的 `m x n` 整数矩阵 `grid` 。你一开始的位置在 **左上角** 格子 `(0, 0)` 。
+
+当你在格子 `(i, j)` 的时候，你可以移动到以下格子之一：
+
+- 满足 `j < k <= grid[i][j] + j` 的格子 `(i, k)` （向右移动），或者
+- 满足 `i < k <= grid[i][j] + i` 的格子 `(k, j)` （向下移动）。
+
+请你返回到达 **右下角** 格子 `(m - 1, n - 1)` 需要经过的最少移动格子数，如果无法到达右下角格子，请你返回 `-1` 。
+
+![2617](./imgs/leetcode/2617.jpg)
+
+**思路**
+
+根据题目描述，我们只能向下或者向右走，因此可以直接用二重循环来计算到达每一个位置的最少步数：当遍历到位置 (i,j) 时，所有其左侧和上方位置的最少步数都已经计算完成。
+
+当我们在位置 (i,j)时，如何计算到达该位置的最少步数呢？我们可以考虑上一步是向下还是向右走的。如果是「向下走」的，那么上一个位置应该是 (i′,j)，其中 `i′<i`。除此之外，i′还需要满足下面两个要求：
+
+- (i′,j) 要能走到 (i,j)；
+- 到达 (i′,j)的步数要最少。
+对于第二个要求，我们可以想到使用优先队列（小根堆）来维护所有的 i′，堆顶对应着步数最少的位置。同时对于第一个要求，我们可以在获取堆顶的 iopt′时进行判断，如果 (iopt′,j)不满足一步到达 (i,j)的要求，就可以将它从优先队列中直接移除，因为之后遍历到的同一列的位置，i的值只会更大，也就更不可能一步走到。如果优先队列中的所有元素均被移除，说明无法走到 (i,j)，否则就可以得到最少的步数，并将 i放入优先队列。
+
+这样一来，我们需要对每一列都维护一个优先队列。第 j个优先队列存储的是所有位于第 j列的位置，其中的元素是一个二元组，第一个值是到达 (i′,j)的最少步数，作为比较的关键字；第二个值是 i′，用来判断是否可以一步到达。
+
+同理，我们对于每一行也维护一个优先队列，这样就可以处理「向右走」的情况了。
+
+```java
+class Solution {
+    public int minimumVisitedCells(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        int[][] dist = new int[m][n];
+        for (int i = 0; i < m; i ++) {
+            Arrays.fill(dist[i], -1);
+        }
+        dist[0][0] = 1;
+        PriorityQueue<int[]>[] row =  new PriorityQueue[m];
+        PriorityQueue<int[]>[] col = new PriorityQueue[n];
+        for (int i = 0; i < m; i ++) {
+            row[i] = new PriorityQueue<int[]>((a, b) -> a[0] - b[0]);
+        }
+        for (int i = 0; i < n; i ++) {
+            col[i] = new PriorityQueue<int[]>((a, b) -> a[0] - b[0]);
+        }
+
+        for (int i = 0; i < m; i ++) {
+            for (int j = 0; j < n; j ++) {
+                while (!row[i].isEmpty() && row[i].peek()[1] + grid[i][row[i].peek()[1]] < j) {
+                    row[i].poll();
+                }
+                if (!row[i].isEmpty()) {
+                    dist[i][j] = update(dist[i][j], dist[i][row[i].peek()[1]] + 1);
+                }
+
+                while (!col[j].isEmpty() && col[j].peek()[1] + grid[col[j].peek()[1]][j] < i) {
+                    col[j].poll();
+                }
+                if (!col[j].isEmpty()) {
+                    dist[i][j] = update(dist[i][j], dist[col[j].peek()[1]][j] + 1);
+                }
+
+                if (dist[i][j] != -1) {
+                    row[i].offer(new int[]{dist[i][j], j});
+                    col[j].offer(new int[]{dist[i][j], i});
+                }
+            }
+        }
+        return dist[m - 1][n - 1];
+    }
+    int update(int x, int y) {
+        return x == -1 || y < x ? y : x;
+    }
+}
+```
+
 ### 2684. 矩阵中移动的最大次数
 
 给你一个下标从 **0** 开始、大小为 `m x n` 的矩阵 `grid` ，矩阵由若干 **正** 整数组成。

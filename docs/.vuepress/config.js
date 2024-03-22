@@ -40,7 +40,8 @@ module.exports = {
           { text: "Zookeeper", link: "/Back/Distributed/Zookeeper.md" },
           { text: "RabbitMQ", link: "/Back/Distributed/RabbitMQ.md" },
           { text: "RocketMQ", link: "/Back/Distributed/RocketMQ.md" },
-          { text: "Netty", link: "/Back/Distributed/Netty.md" }
+          { text: "Netty", link: "/Back/Distributed/Netty.md" },
+          { text: "Dubbo", link: "/Back/Distributed/Dubbo.md" }
         ]
       },
       {
