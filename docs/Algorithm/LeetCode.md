@@ -1253,6 +1253,70 @@ class FrequencyTracker {
  */
 ```
 
+### 100258. 最高频率的 ID
+
+你需要在一个集合里动态记录 ID 的出现频率。给你两个长度都为 `n` 的整数数组 `nums` 和 `freq` ，`nums` 中每一个元素表示一个 ID ，对应的 `freq` 中的元素表示这个 ID 在集合中此次操作后需要增加或者减少的数目。
+
+- **增加 ID 的数目：**如果 `freq[i]` 是正数，那么 `freq[i]` 个 ID 为 `nums[i]` 的元素在第 `i` 步操作后会添加到集合中。
+- **减少 ID 的数目：**如果 `freq[i]` 是负数，那么 `-freq[i]` 个 ID 为 `nums[i]` 的元素在第 `i` 步操作后会从集合中删除。
+
+请你返回一个长度为 `n` 的数组 `ans` ，其中 `ans[i]` 表示第 `i` 步操作后出现频率最高的 ID **数目** ，如果在某次操作后集合为空，那么 `ans[i]` 为 0 。
+
+![100258](./imgs/leetcode/100258.jpg)
+
+```java
+class Solution {
+    public long[] mostFrequentIDs(int[] nums, int[] freq) {
+        Map<Integer, Long> cnt = new HashMap<>();
+        TreeMap<Long, Integer> m = new TreeMap<>();
+        int n = nums.length;
+        long[] ans = new long[n];
+        for (int i = 0; i < n; i++) {
+            int x = nums[i];
+            if (cnt.containsKey(x) && m.containsKey(cnt.get(x)) && m.merge(cnt.get(x), -1, Integer::sum) == 0) { // --m[cnt[x]] == 0
+                m.remove(cnt.get(x));
+            }
+            long c = cnt.merge(x, (long) freq[i], Long::sum); // cnt[x] += freq[i]
+            m.merge(c, 1, Integer::sum); // ++m[cnt[x]]
+            ans[i] = m.lastKey();
+        }
+        return ans;
+    }
+}
+```
+
+**`Map.merge()` 的使用**
+
+它将新的值赋值到 key （如果不存在）或更新给定的key 值对应的 value
+
+```java
+ Map<String, Integer> studentScoreMap2 = new HashMap<>();
+        studentScoreList.forEach(studentScore -> studentScoreMap2.merge(
+          studentScore.getStuName(),
+          studentScore.getScore(),
+          Integer::sum));
+
+        System.out.println(objectMapper.writeValueAsString(studentScoreMap2));
+
+// 汇总成绩结果如下：
+// {"李四":228,"张三":215,"王五":235}
+
+// merge() 源码部分
+   default V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
+        Objects.requireNonNull(remappingFunction);
+        Objects.requireNonNull(value);
+        V oldValue = this.get(key);
+        V newValue = oldValue == null ? value : remappingFunction.apply(oldValue, value);
+        if (newValue == null) {
+            this.remove(key);
+        } else {
+            this.put(key, newValue);
+        }
+
+        return newValue;
+    }
+```
+
 ## 矩阵
 
 ### 1072. 按列翻转得到最大值等行数
@@ -5332,4 +5396,66 @@ class NumArray {
  */
 ```
 
+## 字典树
+
+### 100268. 最长公共后缀查询
+
+给你两个字符串数组 `wordsContainer` 和 `wordsQuery` 。
+
+对于每个 `wordsQuery[i]` ，你需要从 `wordsContainer` 中找到一个与 `wordsQuery[i]` 有 **最长公共后缀** 的字符串。如果 `wordsContainer` 中有两个或者更多字符串有最长公共后缀，那么答案为长度 **最短** 的。如果有超过两个字符串有 **相同** 最短长度，那么答案为它们在 `wordsContainer` 中出现 **更早** 的一个。
+
+请你返回一个整数数组 `ans` ，其中 `ans[i]`是 `wordsContainer`中与 `wordsQuery[i]` 有 **最长公共后缀** 字符串的下标。
+
+![100268](./imgs/leetcode/100268.jpg)
+
+```java
+class Solution {
+    class TrieNode {
+        int minL = Integer.MAX_VALUE;
+        int i;
+        TrieNode[] children;
+        public TrieNode() {
+            children = new TrieNode[26];
+        }
+    }
+    public int[] stringIndices(String[] wordsContainer, String[] wordsQuery) {
+        TrieNode root = new TrieNode();
+        for (int i = 0; i < wordsContainer.length; i ++) {
+            char[] cs = wordsContainer[i].toCharArray();
+            int l = cs.length;
+            TrieNode cur = root;
+            if (l < cur.minL) {
+                cur.minL = l;
+                cur.i = i;
+            }
+            for (int j = l - 1; j >= 0; j --) {
+                int b = cs[j] - 'a';
+                if (cur.children[b] == null) {
+                    cur.children[b] = new TrieNode();
+                }
+                cur = cur.children[b];
+                if (l < cur.minL) {
+                    cur.minL = l;
+                    cur.i = i;
+                }
+            }
+        }
+
+        int[] ans = new int[wordsQuery.length];
+        for (int i = 0; i < wordsQuery.length; i ++) {
+            char[] cs = wordsQuery[i].toCharArray();
+            TrieNode cur = root;
+            for (int j = cs.length - 1; j >= 0  && cur.children[cs[j] - 'a'] != null; j --) {
+                cur = cur.children[cs[j] - 'a'];
+            }
+            ans[i] = cur.i;
+        }
+        return ans;
+    }
+}
+```
+
 ## 线段树
+
+
+
