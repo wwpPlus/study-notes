@@ -3164,6 +3164,33 @@ class Solution {
 }
 ```
 
+### 518. 零钱兑换 II
+
+给你一个整数数组 `coins` 表示不同面额的硬币，另给一个整数 `amount` 表示总金额。
+
+请你计算并返回可以凑成总金额的硬币组合数。如果任何硬币组合都无法凑出总金额，返回 `0` 。
+
+假设每一种面额的硬币有无限个。 
+
+题目数据保证结果符合 32 位带符号整数。
+
+![518](./imgs/leetcode/518.jpg)
+
+```java
+class Solution {
+    public int change(int amount, int[] coins) {
+        int[] f = new int[amount + 1];
+        f[0] = 1;
+        for (int x : coins) {
+            for (int i = x; i <= amount; i ++) {
+                f[i] += f[i - x];
+            }
+        }
+        return f[amount];
+    }
+}
+```
+
 ### 714. 买卖股票的最佳时机含手续费
 
 给定一个整数数组 `prices`，其中 `prices[i]`表示第 `i` 天的股票价格 ；整数 `fee` 代表了交易股票的手续费用。
