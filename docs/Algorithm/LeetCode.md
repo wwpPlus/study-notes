@@ -4767,6 +4767,147 @@ class Solution {
 }
 ```
 
+### 2642. 设计可以求最短路径的图类
+
+给你一个有 `n` 个节点的 **有向带权** 图，节点编号为 `0` 到 `n - 1` 。图中的初始边用数组 `edges` 表示，其中 `edges[i] = [fromi, toi, edgeCosti]` 表示从 `fromi` 到 `toi` 有一条代价为 `edgeCosti` 的边。
+
+请你实现一个 `Graph` 类：
+
+- `Graph(int n, int[][] edges)` 初始化图有 `n` 个节点，并输入初始边。
+- `addEdge(int[] edge)` 向边集中添加一条边，其中 `edge = [from, to, edgeCost]` 。数据保证添加这条边之前对应的两个节点之间没有有向边。
+- `int shortestPath(int node1, int node2)` 返回从节点 `node1` 到 `node2` 的路径 **最小** 代价。如果路径不存在，返回 `-1` 。一条路径的代价是路径中所有边代价之和。
+
+![2642](./imgs/leetcode/2642.jpg)
+
+**邻接矩阵建图 + 朴素 `Dijkstra`**
+
+```java
+class Graph {
+    final int INF = Integer.MAX_VALUE / 2;
+    final int[][] g;
+    public Graph(int n, int[][] edges) {
+        g = new int[n][n];
+        for (int i = 0; i < n; i ++) {
+            Arrays.fill(g[i], INF);
+        }
+        for (int[] edge : edges) {
+            addEdge(edge);
+        }
+    }
+    
+    public void addEdge(int[] edge) {
+        int a = edge[0], b = edge[1], c = edge[2];
+        g[a][b] = c;
+    }
+    
+    public int shortestPath(int node1, int node2) {
+        int n = g.length;
+        int[] dist = new int[n];
+        Arrays.fill(dist, INF);
+        boolean[] st = new boolean[n];
+        dist[node1] = 0;
+        for (int i = 0; i < n; i ++) {
+            int t = -1;
+            for (int j = 0; j < n; j ++) {
+                if (!st[j] && (t == -1 || dist[t] > dist[j])) {
+                    t = j;
+                }
+            }
+            if (t == -1 || dist[t] == INF) {
+                return -1;
+            }
+            if (t == node2) {
+                return dist[t];
+            }
+            st[t] = true;
+            for (int j = 0; j < n; j ++) {
+                dist[j] = Math.min(dist[j], dist[t] + g[t][j]);
+            }
+        }
+        return -1;
+    }
+}
+
+/**
+ * Your Graph object will be instantiated and called as such:
+ * Graph obj = new Graph(n, edges);
+ * obj.addEdge(edge);
+ * int param_2 = obj.shortestPath(node1,node2);
+ */
+```
+
+**复杂度分析**
+
+时间复杂度：
+1. 初始化 O(n2)。
+2. addEdge O(1)。
+3. shortestPath O(n2)。
+空间复杂度：O(n2)。
+
+
+**邻接表建图 + 堆优化 `Dijkstra`**
+
+```java
+class Graph {
+    List<int[]>[] g;
+    public Graph(int n, int[][] edges) {
+        g = new ArrayList[n];
+        for (int i = 0; i < n; i ++) {
+            g[i] = new ArrayList<>();
+        }
+        for (int[] edge : edges) {
+            addEdge(edge);
+        }
+    }
+    
+    public void addEdge(int[] edge) {
+        int a = edge[0], b = edge[1], c = edge[2];
+        g[a].add(new int[]{b, c});
+    }
+    
+    public int shortestPath(int node1, int node2) {
+        int[] dis = new int[g.length];
+        Arrays.fill(dis, Integer.MAX_VALUE);
+        dis[node1] = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        pq.offer(new int[]{0, node1});
+        while (!pq.isEmpty()) {
+            int[] p = pq.poll();
+            int d = p[0], t = p[1];
+            if (t == node2) {
+                return d;
+            }
+            if (d > dis[t]) {
+                continue;
+            }
+            for (int[] e : g[t]) {
+                int x = e[0], y = e[1];
+                if (d + y < dis[x]) {
+                    dis[x] = d + y;
+                    pq.offer(new int[]{dis[x], x});
+                }
+            }
+        }
+        return -1;
+    }
+}
+
+/**
+ * Your Graph object will be instantiated and called as such:
+ * Graph obj = new Graph(n, edges);
+ * obj.addEdge(edge);
+ * int param_2 = obj.shortestPath(node1,node2);
+ */
+```
+
+**复杂度分析**
+
+时间复杂度：
+1. 初始化 O(n+m)。其中 m 为 edges的长度。
+2. addEdge O(1)。
+3. shortestPath O(n+mlogm)。其中 m 为调用 shortestPath时，图的边数。当图是稠密图时，复杂度为 O(n2log⁡n)。
+空间复杂度：O(n+m)。其中 m 为 edges的长度加上 addEdge的调用次数。
+
 ## 堆
 
 ### 2034. 股票价格波动
