@@ -1679,6 +1679,35 @@ class Solution {
 }
 ```
 
+### 2178. 拆分成最多数目的正偶数之和
+
+给你一个整数 finalSum 。请你将它拆分成若干个 互不相同 的正偶数之和，且拆分出来的正偶数数目 最多 。
+
+- 比方说，给你`finalSum = 12`，那么这些拆分是 符合要求 的（互不相同的正偶数且和为 `finalSum`）：`(2 + 10) ，(2 + 4 + 6) 和 (4 + 8)` 。它们中，`(2 + 4 + 6) `包含最多数目的整数。
+
+注意 `finalSum` 不能拆分成 `(2 + 2 + 4 + 4)` ，因为拆分出来的整数必须互不相同。
+请你返回一个整数数组，表示将整数拆分成 最多 数目的正偶数数组。如果没有办法将 `finalSum` 进行拆分，请你返回一个 空 数组。你可以按 任意 顺序返回这些整数。
+
+![拆分成最多数目的正偶数之和](./imgs/leetcode/2178.jpg)
+
+```java
+class Solution {
+    public List<Long> maximumEvenSplit(long finalSum) {
+        List<Long> res = new ArrayList<>();
+        if (finalSum % 2 != 0) {
+            return res;
+        }
+        for (long i = 2; i <= finalSum; i += 2) {
+            res.add(i);
+            finalSum -= i;
+        }
+        int k = res.size() - 1;
+        res.set(k, res.get(k) + finalSum);
+        return res;
+    }
+}
+```
+
 ### 2578. 最小和分割
 
 给你一个正整数 `num` ，请你将它分割成两个非负整数 `num1` 和 `num2` ，满足：
@@ -1776,31 +1805,45 @@ class Solution {
 }
 ```
 
-### 2178. 拆分成最多数目的正偶数之和
+### 2952. 需要添加的硬币的最小数量
 
-给你一个整数 finalSum 。请你将它拆分成若干个 互不相同 的正偶数之和，且拆分出来的正偶数数目 最多 。
+给你一个下标从 **0** 开始的整数数组 `coins`，表示可用的硬币的面值，以及一个整数 `target` 。
 
-- 比方说，给你`finalSum = 12`，那么这些拆分是 符合要求 的（互不相同的正偶数且和为 `finalSum`）：`(2 + 10) ，(2 + 4 + 6) 和 (4 + 8)` 。它们中，`(2 + 4 + 6) `包含最多数目的整数。
+如果存在某个 `coins` 的子序列总和为 `x`，那么整数 `x` 就是一个 **可取得的金额** 。
 
-注意 `finalSum` 不能拆分成 `(2 + 2 + 4 + 4)` ，因为拆分出来的整数必须互不相同。
-请你返回一个整数数组，表示将整数拆分成 最多 数目的正偶数数组。如果没有办法将 `finalSum` 进行拆分，请你返回一个 空 数组。你可以按 任意 顺序返回这些整数。
+返回需要添加到数组中的 **任意面值** 硬币的 **最小数量** ，使范围 `[1, target]` 内的每个整数都属于 **可取得的金额** 。
 
-![拆分成最多数目的正偶数之和](./imgs/leetcode/2178.jpg)
+数组的 **子序列** 是通过删除原始数组的一些（**可能不删除**）元素而形成的新的 **非空** 数组，删除过程不会改变剩余元素的相对位置。
+
+![2952](./imgs/leetcode/2952.jpg)
+
+**思路**
+
+我们从1开始，按顺序进行考虑能否获得该金额。定义`curMax`为当前判断的能否获得的金额。对`coins`进行排序。我们能够获得`[0,curMax−1]`范围内对金额，所以，初始情况下，`curMax=1`，我们只能获得0这个金额。
+
+- 如果当前`coins[i]≤curMax`，将`coins[i]`添加进来，能够获得的金额范围变成了`[0,curMax+coins[i]−1]`，即接下来要判断能否获得的金额变成了`curMax+coins[i]`；
+
+- 如果当前`coins[i]>curMaxcoins[i]`，那么说明当前`curMax`是得不到的，那么肯定需要额外添加`curMax`这个金额的银币进来，所以此时能够获得的金额范围变成了`[0,curMax+curMax−1]`，即接下来要判断能否获得的金额变成了`curMax+curMax`，同时需要添加一枚金额为curMax的硬币。
+
+就这样一直往后处理，直到`curMax>target`，然后返回添加的硬币数量即可。
 
 ```java
 class Solution {
-    public List<Long> maximumEvenSplit(long finalSum) {
-        List<Long> res = new ArrayList<>();
-        if (finalSum % 2 != 0) {
-            return res;
+    public int minimumAddedCoins(int[] coins, int target) {
+        int n = coins.length;
+        Arrays.sort(coins);
+        int curMax = 1;
+        int i = 0;
+        int cnt = 0;
+        while (curMax <= target) {
+            if (i < n && coins[i] <= curMax) {
+                curMax += coins[i ++];
+            } else {
+                curMax <<= 1;
+                cnt ++;
+            }
         }
-        for (long i = 2; i <= finalSum; i += 2) {
-            res.add(i);
-            finalSum -= i;
-        }
-        int k = res.size() - 1;
-        res.set(k, res.get(k) + finalSum);
-        return res;
+        return cnt;
     }
 }
 ```
