@@ -1,360 +1,896 @@
 # RabbitMQ
 
-## MQ介绍
+## 消息队列
 
-MQ：MessageQueue，消息队列。 队列，是一种FIFO 先进先出的数据结构。消息由生产者发送到MQ进行排队，然后按原来的顺序交由消息的消费者进行处理。QQ和微信就是典型的MQ。
+### 概念
 
-MQ的作用主要有以下三个方面：
+`MQ(message queue)`，从字面意思上看，本质是个队列，`FIFO` 先入先出，只不过队列中存放的内容是 `message` 而已，还是一种跨进程的通信机制，用于上下游传递消息。在互联网架构中，MQ 是一种非常常见的上下游**“逻辑解耦+物理解耦”**的消息通信服务。使用了 MQ 之后，消息发送上游只需要依赖 MQ，不用依赖其他服务。
 
-- 异步
+### MQ优势
 
-  异步能提高系统的响应速度、吞吐量。
+- 流量消峰
 
-- 解耦
+如果订单系统最多能处理一万次订单，这个处理能力应付正常时段的下单时绰绰有余，正常时段我们下单一秒后就能返回结果。但是在高峰期，如果有两万次下单操作系统是处理不了的，只能限制订单超过一万后不允许用户下单。使用消息队列做缓冲，我们可以取消这个限制，把一秒内下的订单分散成一段时间来处理，这时有些用户可能在下单十几秒后才能收到下单成功的操作，但是比不能下单的体验要好。
 
-  1. 服务之间进行解耦，才可以减少服务之间的影响。提高系统整体的稳定性以及可扩展性。
+- 应用解耦
 
-  2. 另外，解耦后可以实现数据分发。生产者发送一个消息后，可以由一个或者多个消费者进行消费，并且消费者的增加或者减少对生产者没有影响。
+以电商应用为例，应用中有订单系统、库存系统、物流系统、支付系统。用户创建订单后，如果耦合调用库存系统、物流系统、支付系统，任何一个子系统出了故障，都会造成下单操作异常。当转变成基于消息队列的方式后，系统间调用的问题会减少很多，比如物流系统因为发生故障，需要几分钟来修复。在 这几分钟的时间里，物流系统要处理的内存被缓存在消息队列中，用户的下单操作可以正常完成。当物流系统恢复后，继续处理订单信息即可，中单用户感受不到物流系统的故障，提升系统的可用性。
 
-- 削峰
+![image-20240330143342627](./imgs/RabbitMQ/image-20240330143342627.png)
 
-  以稳定的系统资源应对突发的流量冲击。
+- 异步处理
 
-### MQ的优缺点
+有些服务间调用是异步的，例如 A 调用 B，B 需要花费很长时间执行，但是 A 需要知道 B 什么时候可以执行完，以前一般有两种方式，A 过一段时间去调用 B 的查询 api 查询。或者 A 提供一个 `callback api`， B 执行完之后调用 api 通知 A 服务。这两种方式都不是很优雅，使用消息总线，可以很方便解决这个问题， A 调用 B 服务后，只需要**监听** B 处理完成的消息，当 B 处理完成后，会发送一条消息给 MQ，MQ 会将此消息转发给 A 服务。这样 A 服务既不用循环调用 B 的查询 api，也不用提供 `callback api`。同样 B 服务也不 用做这些操作。A 服务还能及时的得到异步处理成功的消息。
 
- 上面MQ的作用也就是使用MQ的优点。 但是引入MQ也有缺点：
+![image-20240330143540426](./imgs/RabbitMQ/1711887999808.jpg)
 
-- 系统可用性降低：系统引入的外部依赖增多，系统的稳定性就会变差。一旦MQ宕机，对业务会产生影响。这就需要考虑如何保证MQ的高可用。
+### MQ分类
 
-- 系统复杂度提高：引入MQ后系统的复杂度会大大提高。以前服务之间可以进行同步的服务调用，引入MQ后，会变为异步调用，数据的链路就会变得更复杂。并且还会带来其他一些问题。比如：如何保证消费不会丢失？不会被重复调用？怎么保证消息的顺序性等问题。
+- ActiveMQ
 
-- 消息一致性问题：A系统处理完业务，通过MQ发送消息给B、C系统进行后续的业务处理。如果B系统处理成功，C系统处理失败怎么办？这就需要考虑如何保证消息数据处理的一致性。
+优点：单机吞吐量万级，时效性 ms 级，可用性高，基于主从架构实现高可用性，消息可靠性较低的概率丢失数据
 
+缺点：官方社区现在对 `ActiveMQ 5.x` 维护越来越少，高吞吐量场景较少使用。
 
-### MQ产品特点比较
+- Kafka
 
-常用的MQ产品包括Kafka、RabbitMQ和RocketMQ。我们对这三个产品做下简单的比较，重点需要理解他们的适用场景。
+大数据领域内的消息传输，则绕不开 `Kafka`，这款**为大数据而生**的消息中间件，以其**百万级 TPS** 的吞吐量名声大噪，在数据采集、传输、存储的过程中发挥着举足轻重的作用。
 
-![image](https://note.youdao.com/yws/public/resource/f2a7001c83d43549dd4bfc76c3b9fa4c/90D2FA430B2C4BC2AB9E14AE619D4200?ynotemdtimestamp=1707228531840)
+优点：性能卓越，单机写入 TPS 约在百万条/秒，最大的优点，就是**吞吐量高**。时效性 ms 级可用性非常高，`kafka` 是分布式的，一个数据多个副本，少数机器宕机，不会丢失数据，不会导致不可用，消费者采用 `Pull` 方式获取消息，消息有序，通过控制能够保证所有消息被消费且仅被消费一次；有优秀的第三方 `Kafka Web` 管理界面 `Kafka-Manager`；在日志领域比较成熟，被多家公司和多个开源项目使用；
 
-## Rabbitmq安装
+功能支持： 功能较为简单，主要支持简单的 MQ 功能，在大数据领域的实时计算以及**日志采集**被大规模使用；
 
-### 实验环境
+缺点：`Kafka` 单机超过 64 个队列/分区，`Load` 会发生明显的飙高现象，队列越多，`load` 越高，发送消息响应时间变长，使用短轮询方式，实时性取决于轮询间隔时间，消费失败不支持重试；支持消息顺序， 但是一台代理宕机后，就会产生消息乱序；
 
-准备了三台虚拟机 `192.168.232.128~130`，预备搭建三台机器的集群。
+- RocketMQ
 
-三台机器均预装CentOS7 操作系统。分别配置机器名 `worker1，worker2，worker3`。然后需要关闭防火墙(或者找到RabbitMQ的业务端口全部打开。 5672(amqp端口)；15672(http Api端口)；25672(集群通信端口))。
+`RocketMQ` 出自阿里巴巴的开源产品，用 Java 语言实现，在设计时参考了 Kafka，并做出了自己的一 些改进。被阿里巴巴广泛应用在订单，交易，充值，流计算，消息推送，日志流式处理，`binglog` 分发等场景。
 
-### 安装Erlang语言包
+优点：**单机吞吐量十万级**，可用性非常高，分布式架构，**消息可以做到 0 丢失**，MQ 功能较为完善，还是分布式的，扩展性好，**支持 10 亿级别的消息堆积**，不会因为堆积导致性能下降，源码是 java 我们可以自己阅读源码，定制自己公司的 MQ
 
-下载rabbitmq提供的`zero dependency`版本。 [下载地址](https://github.com/rabbitmq/erlang-rpm/releases)，下载完成后安装：
+缺点：**支持的客户端语言不多**，目前是 java 及 c++，其中 c++不成熟；社区活跃度一般，没有在 MQ 核心中去实现 JMS 等接口，有些系统要迁移需要修改大量代码
 
-```shell
-rpm -ivh erlang-23.2.7-1.el7.x86_64.rpm
-# 查看版本
-erl -version
+- RabbitMQ
+
+2007 年发布，是一个在 `AMQP`(高级消息队列协议)基础上完成的，可复用的企业消息系统，是当前最主流的消息中间件之一。 
+
+优点：由于 `erlang` 语言的**高并发特性**，性能较好；**吞吐量到万级**，MQ 功能比较完备，健壮、稳定、易 用、跨平台、**支持多种语言**，支持 AJAX 文档齐全；
+
+缺点：商业版需要收费，学习成本较高
+
+![img](./imgs/RabbitMQ/90D2FA430B2C4BC2AB9E14AE619D4200.png)
+
+## RabbitMQ
+
+`RabbitMQ` 是一个消息中间件：它接受并转发消息。
+
+### 四大核心概念
+
+- 生产者：产生数据发送消息的程序是生产者；
+
+- 交换机：交换机是 `RabbitMQ` 非常重要的一个部件，一方面它接收来自生产者的消息，另一方面它将消息推送到队列中。交换机必须确切知道如何处理它接收到的消息，是将这些消息推送到特定队列还是推送到多个队列，亦或者是把消息丢弃，这个得有交换机类型决定
+
+- 队列：队列是 `RabbitMQ` 内部使用的一种数据结构，尽管消息流经 `RabbitMQ` 和应用程序，但它们只能存储在队列中。队列仅受主机的内存和磁盘限制的约束，本质上是一个大的消息缓冲区。许多生产者可 以将消息发送到一个队列，许多消费者可以尝试从一个队列接收数据。这就是我们使用队列的方式
+
+- 消费者：消费与接收具有相似的含义。消费者大多时候是一个等待接收消息的程序。请注意生产者，消费者和消息中间件很多时候并不在同一机器上。同一个应用程序既可以是生产者又是可以是消费者。
+
+### RabbitMQ组件
+
+![image-20240330145309912](./imgs/RabbitMQ/image-20240330145309912.png)
+
+| 名称         | 描述                                                         |
+| ------------ | :----------------------------------------------------------- |
+| Broker       | 一个接收和分发消息的应用程序，其中 RabbitMQ 服务器充当消息代理。 |
+| Virtual host | 为了多租户和安全目的而设计的概念，将 AMQP 的基本组件划分为虚拟组，类似于网络中的命名空间概念。 |
+| Connection   | 发布者/消费者和代理之间的 TCP 连接。                         |
+| Channel      | 在每次访问 RabbitMQ 都建立一个新的 TCP 连接可能效率低下，特别是在高消息负载下。通道是在连接内部建立的逻辑连接。 |
+| Exchange     | 消息到达代理的第一站。根据分发规则和路由键的匹配，将消息分发到队列中。 |
+| Queue        | 消息的最终目的地，在此处排队等待消费者取走。                 |
+| Binding      | 交换机和队列之间的虚拟连接。绑定可以包含路由键，绑定信息存储在交换机的查询表中，用作消息分发的依据。 |
+
+### 使用案例
+
+**引入依赖**
+
+```xml
+<dependencies>
+    <!--rabbitmq 依赖客户端-->
+    <dependency>
+        <groupId>com.rabbitmq</groupId>
+        <artifactId>amqp-client</artifactId>
+        <version>5.8.0</version>
+    </dependency>
+    <!--操作文件流的一个依赖-->
+    <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.6</version>
+    </dependency>
+</dependencies>
 ```
 
-### 安装RabbitMQ
+**消息生产者**
 
-下载RabbitMQ。[下载地址](https://github.com/rabbitmq/rabbitmq-server/releases)
-
-```shell
-# 前置依赖
-yum install socat
-rpm -Uvh rabbitmq-server-3.9.15-1.el7.noarch.rpm
-# 启动rabbitmq
-systemctl start rabbitmq-server
-# 查看rabbitmq状态
-systemctl status rabbitmq-server
-# 设置rabbitmq服务开机自启动
-systemctl enable rabbitmq-server
-# 关闭rabbitmq服务
-systemctl stop rabbitmq-server
-# 重启rabbitmq服务
-systemctl restart rabbitmq-server
+```java
+public class Producer {
+    private final static String QUEUE_NAME = "hello";
+    public static void main(String[] args) throws Exception {
+        //创建一个连接工厂
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("182.92.234.71");
+        factory.setUsername("admin");
+        factory.setPassword("123");
+        //channel 实现了自动 close 接口 自动关闭 不需要显示关闭
+        try(Connection connection = factory.newConnection();Channel channel =
+                connection.createChannel()) {
+            /**
+             * 生成一个队列
+             * 1.队列名称
+             * 2.队列里面的消息是否持久化 默认消息存储在内存中
+             * 3.该队列是否只供一个消费者进行消费 是否进行共享 true 可以多个消费者消费
+             * 4.是否自动删除 最后一个消费者端开连接以后 该队列是否自动删除 true 自动删除
+             * 5.其他参数
+             */
+            channel.queueDeclare(QUEUE_NAME,false,false,false,null);
+            String message="hello world";
+            /**
+             * 发送一个消息
+             * 1.发送到那个交换机
+             * 2.路由的 key 是哪个
+             * 3.其他的参数信息
+             * 4.发送消息的消息体
+             */
+            channel.basicPublish("",QUEUE_NAME,null,message.getBytes());
+            System.out.println("消息发送完毕");
+        }
+    }
+}
 ```
 
-![image-20210306173012889](./imgs/RabbitMQ/8670d8cd1b59902bfdba68d9925ee92c.png)
+**消息消费者**
 
-### 管理界面与授权
-
-```shell
-# 打开RabbitMQWeb管理界面插件
-rabbitmq-plugins enable rabbitmq_management
+```java
+public class Consumer {
+    private final static String QUEUE_NAME = "hello";
+    public static void main(String[] args) throws Exception {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("182.92.234.71");
+        factory.setUsername("admin");
+        factory.setPassword("123");
+        Connection connection = factory.newConnection();
+        Channel channel = connection.createChannel();
+        System.out.println("等待接收消息....");
+        //推送的消息如何进行消费的接口回调
+        DeliverCallback deliverCallback=(consumerTag,delivery)->{
+            String message= new String(delivery.getBody());
+            System.out.println(message);
+        };
+        //取消消费的一个回调接口 如在消费的时候队列被删除掉了
+        CancelCallback cancelCallback=(consumerTag)->{
+            System.out.println("消息消费被中断");
+        };
+        /**
+         * 消费者消费消息
+         * 1.消费哪个队列
+         * 2.消费成功之后是否要自动应答 true 代表自动应答 false 手动应答
+         * 3.消费者未成功消费的回调
+         */
+        channel.basicConsume(QUEUE_NAME,true,deliverCallback,cancelCallback);
+    }
+}
 ```
 
-然后打开浏览器，访问`服务器公网ip:15672`（注意打开阿里云安全组以及防火墙的15672端口），就可以看到管理界面
+## Work Queues
 
-![image-20210306193911485](./imgs/RabbitMQ/a48b7fdfa923e62a803ab273a2228a1d.png)
+工作队列(又称任务队列)的主要思想是避免立即执行资源密集型任务，而不得不等待它完成。 相反我们安排任务在之后执行。我们把任务封装为消息并将其发送到队列。在后台运行的工作进程将弹出任务并最终执行作业。当有多个工作线程时，这些工作线程将一起处理这些任务。
 
-`rabbitmq`有一个默认的账号密码`guest`，但该情况仅限于本机localhost进行访问，所以需要添加一个远程登录的用户
+### 轮询分发消息
 
-```shell
-# 添加用户
-rabbitmqctl add_user admin admin
-# 为用户添加资源权限(授予访问虚拟机根节点的所有权限)
-rabbitmqctl set_permissions -p / admin "." "." ".*"
-# 设置用户角色,分配操作权限
-rabbitmqctl set_user_tags admin administrator
-# 修改密码
-rabbitmqctl change_ password 用户名 新密码
-# 删除用户
-rabbitmqctl delete_user 用户名
-# 查看用户清单
-rabbitmqctl list_users
+```java
+public class RabbitMqUtils {
+    //得到一个连接的 channel
+    public static Channel getChannel() throws Exception{
+        //创建一个连接工厂
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("182.92.234.71");
+        factory.setUsername("admin");
+        factory.setPassword("123");
+        Connection connection = factory.newConnection();
+        Channel channel = connection.createChannel();
+        return channel;
+    }
+}
 ```
 
- 这样就可以用`admin/admin`用户登录Web控制台了。s
+**启动两个工作线程**
 
-![image-20210306200132821](./imgs/RabbitMQ/860e674a348ed597b5ae86ecf3008cdf.png)
-
-## RabbitMQ集群搭建
-
-在RabbitMQ中，一个节点的服务其实也是作为一个集群来处理的，在web控制台的`admin-> cluster` 中可以看到集群的名字，并且可以在页面上修改。而多节点的集群有两种方式
-
-- **默认的普通集群模式**：
-
-这种模式使用Erlang语言天生具备的集群方式搭建。这种集群模式下，**集群的各个节点之间只会有相同的元数据，即队列结构，而消息不会进行冗余，只存在一个节点中。**消费时，如果消费的不是存有数据的节点， RabbitMQ会临时在节点之间进行数据传输，将消息从存有数据的节点传输到消费的节点。
-
-> 这种集群模式的消息可靠性不是很高。因为如果其中有个节点服务宕机了，那这个节点上的数据就无法消费了，需要等到这个节点服务恢复后才能消费，而这时，消费者端已经消费过的消息就有可能给不了服务端正确应答，服务起来后，就会再次消费这些消息，造成这部分消息重复消费。 另外，如果消息没有做持久化，重启就消息就会丢失。
->
-> 并且，这种集群模式也不支持高可用，即当某一个节点服务挂了后，需要手动重启服务，才能保证这一部分消息能正常消费。
->
-> 这种集群模式只适合一些对消息安全性不是很高的场景。而在使用这种模式时，消费者应该尽量的连接上每一个节点，减少消息在集群中的传输。
-
-- **镜像模式**：
-
-这种模式是在普通集群模式基础上的一种增强方案，这也就是RabbitMQ的官方HA高可用方案。需要在搭建了普通集群之后再补充搭建。其本质区别在于，**这种模式会在镜像节点中间主动进行消息同步，而不是在客户端拉取消息时临时同步。**并且在集群内部有一个算法会选举产生`master`和`slave`，当一个`master`挂了后，也会自动选出一个来。从而给整个集群提供高可用能力。
-
-> 这种模式的消息可靠性更高，因为每个节点上都存着全量的消息。而他的弊端也是明显的，集群内部的网络带宽会被这种同步通讯大量的消耗，进而降低整个集群的性能。这种模式下，队列数量最好不要过多。
-
-### 搭建普通集群
-
-1. 同步集群节点中的cookie
-
-默认会在 `/var/lib/rabbitmq/` 目录下生成一个 `.erlang.cookie`。 里面有一个字符串。需要将集群中三个节点的cookie字符串一致。
-
-实验中将`worker1`和`worker3`加入到`worker2`的RabbitMQ集群中，所以将`worker2`的`.erlang.cookie`文件分发到`worker1`和`worker3`。
-
-2. 将`worker1`的服务加入到`worker2`的集群中
-
-首先需要保证`worker1`上的rabbitmq服务是正常启动的。 然后执行以下指令：
-
-```shell
-rabbitmqctl stop_app
-rabbitmqctl join_cluster --ram rabbit@worker2
-rabbitmqctl start_app
+```java
+public class Worker01 {
+    private static final String QUEUE_NAME="hello";
+    public static void main(String[] args) throws Exception {
+        Channel channel = RabbitMqUtils.getChannel();
+        DeliverCallback deliverCallback=(consumerTag,delivery)->{
+            String receivedMessage = new String(delivery.getBody());
+            System.out.println("接收到消息:"+receivedMessage);
+        };
+        CancelCallback cancelCallback=(consumerTag)->{
+            System.out.println(consumerTag+"消费者取消消费接口回调逻辑");
+        };
+        System.out.println("C2 消费者启动等待消费......");
+        channel.basicConsume(QUEUE_NAME,true,deliverCallback,cancelCallback);
+    }
+}
+// C1 消费者启动等待消费......
+// C2 消费者启动等待消费......
 ```
 
-> --ram 表示以Ram节点加入集群。RabbitMQ的集群节点分为disk和ram。disk节点会将元数据保存到硬盘当中，而ram节点只是在内存中保存元数据。
->
-> 1. 由于ram节点减少了很多与硬盘的交互，所以，ram节点的元数据使用性能会比较高。但是，同时，这也意味着元数据的安全性是不如disk节点的。在我们这个集群中，worker1和worker3都以ram节点的身份加入到worker2集群里，因此，是存在单点故障的。如果worker2节点服务崩溃，那么元数据就有可能丢失。在企业进行部署时，性能与安全性需要自己进行平衡。
->
-> 2. 这里说的元数据仅仅只包含交换机、队列等的定义，而不包含具体的消息。因此，ram节点的性能提升，仅仅体现在对元数据进行管理时，比如修改队列queue，交换机exchange，虚拟机vhosts等时，与消息的生产和消费速度无关。
->
-> 3. 如果一个集群中，全部都是ram节点，那么元数据就有可能丢失。这会造成集群停止之后就启动不起来了。RabbitMQ会尽量阻止创建一个全是ram节点的集群，但是并不能彻底阻止。所以，综合考虑，官方其实并不建议使用ram节点，更推荐保证集群中节点的资源投入，使用disk节点。
+![image-20240330150427376](./imgs/RabbitMQ/image-20240330150427376.png)
 
-然后同样把`worer3`上的rabbitmq加入到`worker2`的集群中，加入完成后，可以在`worker2`的Web管理界面上看到集群的节点情况：
+**启动发送线程**
 
-![image](https://note.youdao.com/yws/public/resource/f2a7001c83d43549dd4bfc76c3b9fa4c/3595FC69327E409AB65F4B4C4E3BC366?ynotemdtimestamp=1707228531840)
-
-> 也可以用后台指令查看集群状态 `rabbitmqctl cluster_status`
-
-### 搭建镜像集群
-
-这样就完成了普通集群的搭建。 在此基础上，可以继续搭建**镜像集群**。
-
-通常在生产环境中，为了减少RabbitMQ集群之间的数据传输，在配置镜像策略时，会针对固定的虚拟主机`virtual host`来配置。
-
-> RabbitMQ中的`vritual host`可以类比为MySQL中的库，针对每个虚拟主机，可以配置不同的权限、策略等。并且不同虚拟主机之间的数据是相互隔离的。
-
-首先创建一个`/mirror`的虚拟主机，然后再添加给对应的镜像策略：
-
-```shell
-rabbitmqctl add_vhost /mirror
-rabbitmqctl set_policy ha-all --vhost "/mirror" "^" '{"ha-mode":"all"}'
+```java
+public class Task01 {
+    private static final String QUEUE_NAME="hello";
+    public static void main(String[] args) throws Exception {
+        try(Channel channel=RabbitMqUtils.getChannel();) {
+            channel.queueDeclare(QUEUE_NAME,false,false,false,null);
+            //从控制台当中接受信息
+            Scanner scanner = new Scanner(System.in);
+            while (scanner.hasNext()){
+                String message = scanner.next();
+                channel.basicPublish("",QUEUE_NAME,null,message.getBytes());
+                System.out.println("发送消息完成:"+message);
+            }
+        }
+    }
+}
 ```
 
-同样，这些配置的策略也可以在Web控制台操作。另外也提供了HTTP API来进行这些操作。
+**结果**
 
-![image](https://note.youdao.com/yws/public/resource/f2a7001c83d43549dd4bfc76c3b9fa4c/2454616509AC4572A2C0726A2488E7DB?ynotemdtimestamp=1707228531840)
+通过程序执行发现生产者总共发送 4 个消息，消费者 1 和消费者 2 分别分得两个消息，并且 是按照有序的一个接收一次消息
 
-> 这些参数需要大致了解下。其中，`pattern`是队列的匹配规则，`^`表示全部匹配。 `^ ha \` 这样的配置表示以ha开头。通常就用虚拟主机来区分就够了，这个队列匹配规则就配置成全匹配。
->
-> `HA mode`：可选值 `all, exactly, nodes`。生产上通常为了保证高可用，就配 `all`
->
-> - all：队列镜像到集群中的所有节点。当新节点加入集群时，队列也会被镜像到这个节点。
->- exactly：需要搭配一个数字类型的参数(`ha-params`)。队列镜像到集群中指定数量的节点。如果集群内节点数少于这个数字，则队列镜像到集群内的所有节点。如果集群内节点少于这个数，当一个包含镜像的节点停止服务后，新的镜像就不会去另外找节点进行镜像备份了。
-> - nodes：需要搭配一个字符串类型的参数。将队列镜像到指定的节点上。如果指定的队列不在集群中，不会报错。当声明队列时，如果指定的所有镜像节点都不在线，那队列会被创建在发起声明的客户端节点上。
-> 
+![image-20240330150651051](./imgs/RabbitMQ/image-20240330150651051.png)
 
-通常镜像模式的集群已经足够满足大部分的生产场景了。虽然其对系统资源消耗比较高，但是在生产环境中，系统的资源都是会做预留的，所以正常的使用是没有问题的。但是在做业务集成时，还是需要注意队列数量不宜过多，并且尽量不要让RabbitMQ产生大量的消息堆积。
+### 消息应答
 
-> 这样搭建起来的RabbitMQ已经具备了集群特性，往任何一个节点上发送消息，消息都会及时同步到各个节点中。而在实际企业部署时，往往会以RabbitMQ的镜像队列作为基础，再增加一些运维手段，进一步提高集群的安全性和实用性。
->
-> 例如，增加`keepalived`保证每个RabbitMQ的稳定性，当某一个节点上的RabbitMQ服务崩溃时，可以及时重新启动起来。另外，也可以增加`HA-proxy`来做前端的负载均衡，通过`HA-proxy`增加一个前端转发的虚拟节点，应用可以像使用一个单点服务一样使用一个RabbitMQ集群。
+#### 概念
 
-## RabbitMQ基础概念
+消费者完成一个任务可能需要一段时间，如果其中一个消费者处理一个长的任务并仅只完成了部分突然它挂掉了，会发生什么情况。`RabbitMQ` 一旦向消费者传递了一条消息，便立即将该消息标记为删除。在这种情况下，突然有个消费者挂掉了，我们将丢失正在处理的消息。以及后续发送给该消费者的消息，因为它无法接收到。 
 
-RabbitMQ是基于`AMQP`协议开发的一个MQ产品，可以参照下图来理解RabbitMQ当中的基础概念：
+为了保证消息在发送过程中不丢失，`rabbitmq` 引入消息应答机制，消息应答就是：**消费者在接收到消息并且处理该消息之后，告诉 `rabbitmq` 它已经处理了，`rabbitmq` 可以把该消息删除了。** 
 
-![image](./imgs/RabbitMQ/7CA1BBCE84C54775BD12D5662EB434B1.png)
+#### 自动应答
 
-**虚拟主机 `virtual host`**
+消息发送后立即被认为已经传送成功，这种模式需要在**高吞吐量和数据传输安全性方面做权衡**，因为这种模式如果消息在接收到之前，消费者那边出现连接或者 `channel` 关闭，那么消息就丢失了，当然另一方面这种模式消费者那边可以传递过载的消息，**没有对传递的消息数量进行限制**， 当然这样有可能使得消费者这边由于接收太多还来不及处理的消息，导致这些消息的积压，最终使得内存耗尽，这些消费者线程被操作系统杀死，**所以这种模式仅适用在消费者可以高效并以某种速率能够处理这些消息的情况下使用。**
 
-RabbitMQ出于服务器复用的想法，可以在一个RabbitMQ集群中划分出多个虚拟主机，每一个虚拟主机都有AMQP的全套基础组件，并且可以针对每个虚拟主机进行权限以及数据分配，并且不同虚拟主机之间是完全隔离的。
+![image-20240330151201756](./imgs/RabbitMQ/image-20240330151201756.png)
 
-**连接 Connection**
+#### 消息自动重新入队
 
- 客户端与RabbitMQ进行交互，首先就需要建立一个TPC连接，这个连接就是Connection。
+如果消费者由于某些原因失去连接(其通道已关闭，连接已关闭或 TCP 连接丢失)，导致消息**未发送 ACK 确认**，`RabbitMQ` 将了解到消息未完全处理，并将对其重新排队。如果此时其他消费者可以处理，它将很快将其重新分发给另一个消费者。这样，即使某个消费者偶尔死亡，也可以确 保不会丢失任何消息。
 
-**信道 Channel**
+![image-20240330151304835](./imgs/RabbitMQ/image-20240330151304835.png)
 
- 一旦客户端与RabbitMQ建立了连接，就会分配一个AMQP信道 Channel。每个信道都会被分配一个唯一的ID。也可以理解为是客户端与RabbitMQ实际进行数据交互的通道，我们后续的大多数的数据操作都是在信道 Channel 这个层面展开的。
+#### 手动应答示例
 
- RabbitMQ为了减少性能开销，也会在一个Connection中建立多个Channel，这样便于客户端进行多线程连接，这些连接会复用同一个Connection的TCP通道，所以在实际业务中，对于Connection和Channel的分配也需要根据实际情况进行考量。
+默认消息采用的是自动应答，所以我们要想实现消息消费过程中不丢失，需要把自动应答改为手动应答，消费者在上面代码的基础上增加下面画红色部分代码。
 
-**交换机 Exchange**
+```java
+public static void main(String[] args) throws Exception {
+        Channel channel = RabbitMqUtils.getChannel();
+        DeliverCallback deliverCallback=(consumerTag,delivery)->{
+            String receivedMessage = new String(delivery.getBody());
+            Thread.sleep(10000L);
+          	System.out.println("接收到消息:"+receivedMessage);
+          	// 消息标记tag，false表示只应答接收到的那个传递的消息，true为应答所有消息包括传递过来的消息
+          	channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+        };
+        boolean autoAck = false;
+  			channel.basicConsume(QUEUE_NAME,autoAck,deliverCallback,consumerTag -> { });
+    }
+}
+```
 
- 这是RabbitMQ中进行数据路由的重要组件。消息发送到RabbitMQ中后，会首先进入一个交换机，然后由交换机负责将数据转发到不同的队列中。RabbitMQ中有多种不同类型的交换机来支持不同的路由策略。从Web管理界面就能看到，在每个虚拟主机中，RabbitMQ都会默认创建几个不同类型的交换机来。
+**消息生产者**
 
-![image](./imgs/RabbitMQ/3E175090095742D68DA658F2FA8BCA71.png)
+```java
+public class Task02 {
+    private static final String TASK_QUEUE_NAME = "ack_queue";
+    public static void main(String[] argv) throws Exception {
+        try (Channel channel = RabbitMqUtils.getChannel()) {
+            channel.queueDeclare(TASK_QUEUE_NAME, false, false, false, null);
+            Scanner sc = new Scanner(System.in);
+            System.out.println("请输入信息");
+            while (sc.hasNext()) {
+                String message = sc.nextLine();
+                channel.basicPublish("", TASK_QUEUE_NAME, null, message.getBytes("UTF-8"));
+                System.out.println("生产者发出消息" + message);
+            }
+        }
+    }
+}
+```
 
- 交换机多用来与生产者打交道。生产者发送的消息通过Exchange交换机分配到各个不同的Queue队列上，而对于消息消费者来说，通常只需要关注自己感兴趣的队列就可以了。
+**消费者1**
 
-**队列 Queue**
+```java
+public class Work03 {
+    private static final String ACK_QUEUE_NAME="ack_queue";
+    public static void main(String[] args) throws Exception {
+        Channel channel = RabbitMqUtils.getChannel();
+        System.out.println("C1 等待接收消息处理时间较短");
+        //消息消费的时候如何处理消息
+        DeliverCallback deliverCallback=(consumerTag,delivery)->{
+            String message= new String(delivery.getBody());
+            Thread.sleep(1000L);
+            System.out.println("接收到消息:"+message);
+            /**
+             * 1.消息标记 tag
+             * 2.是否批量应答未应答消息
+             */
+            channel.basicAck(delivery.getEnvelope().getDeliveryTag(),false);
+        };
+        //采用手动应答
+        boolean autoAck=false;
+        channel.basicConsume(ACK_QUEUE_NAME,autoAck,deliverCallback,(consumerTag)->{
+            System.out.println(consumerTag+"消费者取消消费接口回调逻辑");
+        });
+    }
+}
+```
 
- 队列是实际保存数据的最小单位。队列结构天生就具有FIFO的顺序，消息最终都会被分发到不同的队列当中，然后才被消费者进行消费处理。这也是最近RabbitMQ功能变动最大的地方。最为常用的是经典队列Classic。RabbitMQ 3.8.X版本添加了Quorum队列，3.9.X又添加了Stream队列。
+**消费者2**
 
-#### Classic 经典队列
+```java
+public class Work04 {
+    private static final String ACK_QUEUE_NAME="ack_queue";
+    public static void main(String[] args) throws Exception {
+        Channel channel = RabbitMqUtils.getChannel();
+        System.out.println("C2 等待接收消息处理时间较长");
+        //消息消费的时候如何处理消息
+        DeliverCallback deliverCallback=(consumerTag,delivery)->{
+            String message= new String(delivery.getBody());
+          	Thread.sleep(30000L);
+            System.out.println("接收到消息:"+message);
+            /**
+             * 1.消息标记 tag
+             * 2.是否批量应答未应答消息
+             */
+            channel.basicAck(delivery.getEnvelope().getDeliveryTag(),false);
+        };
+        //采用手动应答
+        boolean autoAck=false;
+        channel.basicConsume(ACK_QUEUE_NAME,autoAck,deliverCallback,(consumerTag)->{
+            System.out.println(consumerTag+"消费者取消消费接口回调逻辑");
+        });
+    }
+}
+```
 
- 这是RabbitMQ最为经典的队列类型。在单机环境中，拥有比较高的消息可靠性。
+**示例结果**
+
+正常情况下消息发送方发送两个消息 C1 和 C2 分别接收到消息并进行处理
+
+![image-20240330152504197](./imgs/RabbitMQ/image-20240330152504197.png)
+
+在发送者发送消息 dd，发出消息之后的把 C2 消费者停掉，按理说该 C2 来处理该消息，但是由于它处理时间较长，在还未处理完，也就是说 C2 还没有执行 ack 代码的时候，C2 被停掉了，此时会看到消息被 C1 接收到了，说明消息 dd 被重新入队，然后分配给能处理消息的 C1 处理了
+
+![image-20240330152630164](./imgs/RabbitMQ/image-20240330152630164.png)
+
+![image-20240330152640740](./imgs/RabbitMQ/image-20240330152640740.png)
+
+### RabbitMQ持久化
+
+刚刚我们已经看到了如何处理任务不丢失的情况，但是如何保障当 `RabbitMQ` 服务停掉以后消息生产者发送过来的消息不丢失。默认情况下 `RabbitMQ` 退出或由于某种原因崩溃时，它忽视队列和消息，除非告知它不要这样做。确保消息不会丢失需要做两件事：**需要将队列和消息都标记为持久化。**
+
+之前我们创建的队列都是非持久化的，`rabbitmq` 如果重启的话，该队列就会被删除掉，如果要队列实现持久化需要在声明队列的时候把 `durable` 参数设置为持久化
+
+> 但是需要注意的就是如果之前声明的队列不是持久化的，需要把原先队列先删除，或者重新创建一个持久化的队列，不然就会出现错误
+
+![image-20240330153042180](./imgs/RabbitMQ/image-20240330153042180.png)
+
+**消息实现持久化**
+
+要想让消息实现持久化需要在消息生产者修改代码，`MessageProperties.PERSISTENT_TEXT_PLAIN` 添加这个属性。
+
+```java
+channel.basicPublish("", TASK_QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes("UTF-8"));
+```
+
+将消息标记为持久化并不能完全保证不会丢失消息。尽管它告诉 `RabbitMQ` 将消息保存到磁盘，但是这里依然存在当消息刚准备存储在磁盘的时候但是还没有存储完，消息还在缓存的一个间隔点。此时并没有真正写入磁盘。持久性保证并不强，但是对于我们的简单任务队列而言，这已经绰绰有余了。如果需要更强有力的持久化策略。
+
+#### 不公平分发
+
+在最开始的时候我们学习到 `RabbitMQ` 分发消息采用的**轮训分发**，但是在某种场景下这种策略并不是很好，比方说有两个消费者在处理任务，其中有个消费者 1 处理任务的速度非常快，而另外一个消费者 2 处理速度却很慢，这个时候我们还是采用轮训分发的化就会到这处理速度快的这个消费者很大一部分时间 处于空闲状态，而处理慢的那个消费者一直在干活，这种分配方式在这种情况下其实就不太好，但是 RabbitMQ 并不知道这种情况它依然很公平的进行分发。 为了避免这种情况，我们可以设置参数 `channel.basicQos(1)`。
+
+**预取值**
+
+本身消息的发送就是异步发送的，所以在任何时候，`channel` 上肯定不止只有一个消息另外来自消费者的手动确认本质上也是异步的。**因此这里就存在一个未确认的消息缓冲区，因此希望开发人员能限制此缓冲区的大小**，以避免缓冲区里面无限制的未确认消息问题。这个时候就可以通过使用 `basic.qos` 方法设置“预取计数”值来完成的。**该值定义通道上允许的未确认消息的最大数量。**一旦数量达到配置的数量， RabbitMQ 将停止在通道上传递更多消息，除非至少有一个未处理的消息被确认，
+
+例如，假设在通道上有 未确认的消息 5、6、7，8，并且通道的预取计数设置为 4，此时 RabbitMQ 将不会在该通道上再传递任何消息，除非至少有一个未应答的消息被 ack。比方说 tag=6 这个消息刚刚被确认 ACK，RabbitMQ 将会感知这个情况到并再发送一条消息。消息应答和 QoS 预取值对用户吞吐量有重大影响。
+
+通常，增加预取将提高向消费者传递消息的速度。**虽然自动应答传输消息速率是最佳的，但是，在这种情况下已传递但尚未处理的消息的数量也会增加，从而增加了消费者的 RAM 消耗**(随机存取存储器)应该小心使用具有无限预处理 的自动确认模式或手动确认模式，消费者消费了大量的消息如果没有确认的话，会导致消费者连接节点的内存消耗变大，所以找到合适的预取值是一个反复试验的过程，不同的负载该值取值也不同 100 到 300 范 围内的值通常可提供最佳的吞吐量，并且不会给消费者带来太大的风险。预取值为 1 是最保守的。当然这 将使吞吐量变得很低，特别是消费者连接延迟很严重的情况下，特别是在消费者连接等待时间较长的环境中。对于大多数应用来说，稍微高一点的值将是最佳的。
+
+![image-20240331180105945](./imgs/RabbitMQ/image-20240331180105945.png)
+
+
+
+## 发布确认
+
+### 发布确认原理
+
+生产者将信道设置成 `confirm` 模式，一旦信道进入 `confirm` 模式，**所有在该信道上面发布的消息都将会被指派一个唯一的 ID(从 1 开始)，**一旦消息被投递到所有匹配的队列之后，broker 就会发送一个确认给生产者(包含消息的唯一 ID)，这就使得生产者知道消息已经正确到达目的队列了。
+
+**如果消息和队列是可持久化的，那么确认消息会在将消息写入磁盘之后发出**，broker 回传给生产者的确认消息中 `delivery-tag` 域包含了确认消息的序列号，此外 broker 也可以设置 basic.ack 的 `multiple` 域，表示到这个序列号之前的所有消息都已经得到了处理。
+
+confirm 模式最大的好处在于他是异步的，一旦发布一条消息，生产者应用程序就可以在等信道返回确认的同时继续发送下一条消息，当消息最终得到确认之后，生产者应用便可以通过回调方法来处理该确认消息，如果 RabbitMQ 因为自身内部错误导致消息丢失，就会发送一条 `nack` 消息，生产者应用程序同样可以在回调方法中处理该 `nack` 消息。
+
+### 发布确认策略
+
+发布确认默认是没有开启的，如果要开启需要调用方法 `confirmSelect`，每当你要想使用发布 确认，都需要在 channel 上调用该方法
+
+**单个确认发布**
+
+这是一种简单的确认方式，它是一种**同步确认发布**的方式，也就是发布一个消息之后只有它被确认发布，后续的消息才能继续发布，`waitForConfirmsOrDie(long)`这个方法只有在消息被确认的时候才返回，如果在指定时间范围内这个消息没有被确认那么它将抛出异常。 这种确认方式有一个最大的缺点就是：**发布速度特别的慢**，因为如果没有确认发布的消息就会阻塞所有后续消息的发布，这种方式最多提供每秒不超过数百条发布消息的吞吐量。当然对于某些应用程序来说这可能已经足够了。
+
+```java
+public static void publishMessageIndividually() throws Exception {
+    try (Channel channel = RabbitMqUtils.getChannel()) {
+        String queueName = UUID.randomUUID().toString();
+        channel.queueDeclare(queueName, false, false, false, null);
+        //开启发布确认
+        channel.confirmSelect();
+        long begin = System.currentTimeMillis();
+        for (int i = 0; i < MESSAGE_COUNT; i++) {
+            String message = i + "";
+            channel.basicPublish("", queueName, null, message.getBytes());
+            //服务端返回 false 或超时时间内未返回，生产者可以消息重发
+            boolean flag = channel.waitForConfirms();
+            if(flag){
+                System.out.println("消息发送成功");
+            }
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("发布" + MESSAGE_COUNT + "个单独确认消息,耗时" + (end - begin) +
+                "ms");
+    }
+}
+```
+
+**批量确认发布**
+
+上面那种方式非常慢，与单个等待确认消息相比，先发布一批消息然后一起确认可以极大地 提高吞吐量，当然这种方式的缺点就是：当发生故障导致发布出现问题时，不知道是哪个消息出现问题了，我们必须将整个批处理保存在内存中，以记录重要的信息而后重新发布消息。当然这种方案仍然是同步的，也一样阻塞消息的发布。
+
+```java
+public static void publishMessageBatch() throws Exception {
+    try (Channel channel = RabbitMqUtils.getChannel()) {
+        String queueName = UUID.randomUUID().toString();
+        channel.queueDeclare(queueName, false, false, false, null);
+        //开启发布确认
+        channel.confirmSelect();
+        //批量确认消息大小
+        int batchSize = 100;
+        //未确认消息个数
+        int outstandingMessageCount = 0;
+        long begin = System.currentTimeMillis();
+        for (int i = 0; i < MESSAGE_COUNT; i++) {
+            String message = i + "";
+            channel.basicPublish("", queueName, null, message.getBytes());
+            outstandingMessageCount++;
+            if (outstandingMessageCount == batchSize) {
+                channel.waitForConfirms();
+                outstandingMessageCount = 0;
+            }
+        }
+        //为了确保还有剩余没有确认消息 再次确认
+        if (outstandingMessageCount > 0) {
+            channel.waitForConfirms();
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("发布" + MESSAGE_COUNT + "个批量确认消息,耗时" + (end - begin) +
+                "ms");
+    }
+}
+```
+
+**异步确认发布**
+
+异步确认虽然编程逻辑比上两个要复杂，但是性价比最高，无论是可靠性还是效率都没得说， 他是利用**回调函数**来达到消息可靠性传递的，这个中间件也是通过函数回调来保证是否投递成功。
+
+![image-20240331180758925](./imgs/RabbitMQ/image-20240331180758925.png)
+
+```java
+public static void publishMessageAsync() throws Exception {
+    try (Channel channel = RabbitMqUtils.getChannel()) {
+        String queueName = UUID.randomUUID().toString();
+        channel.queueDeclare(queueName, false, false, false, null);
+        //开启发布确认
+        channel.confirmSelect();
+        /**
+         * 线程安全有序的一个哈希表，适用于高并发的情况
+         * 1.轻松的将序号与消息进行关联
+         * 2.轻松批量删除条目 只要给到序列号
+         * 3.支持并发访问
+         */
+        ConcurrentSkipListMap<Long, String> outstandingConfirms = new
+                ConcurrentSkipListMap<>();
+        /**
+         * 确认收到消息的一个回调
+         * 1.消息序列号
+         * 2.true 可以确认小于等于当前序列号的消息
+         * false 确认当前序列号消息
+         */
+        ConfirmCallback ackCallback = (sequenceNumber, multiple) -> {
+            if (multiple) {
+                //返回的是小于等于当前序列号的未确认消息 是一个 map
+                ConcurrentNavigableMap<Long, String> confirmed =
+                        outstandingConfirms.headMap(sequenceNumber, true);
+                //清除该部分未确认消息
+                confirmed.clear();
+            }else{
+                //只清除当前序列号的消息
+                outstandingConfirms.remove(sequenceNumber);
+            }
+        };
+        ConfirmCallback nackCallback = (sequenceNumber, multiple) -> {
+            String message = outstandingConfirms.get(sequenceNumber);
+            System.out.println("发布的消息"+message+"未被确认，序列号"+sequenceNumber);
+        };
+        /**
+         * 添加一个异步确认的监听器
+         * 1.确认收到消息的回调
+         * 2.未收到消息的回调
+         */
+        channel.addConfirmListener(ackCallback, null);
+        long begin = System.currentTimeMillis();
+        for (int i = 0; i < MESSAGE_COUNT; i++) {
+            String message = "消息" + i;
+            /**
+             * channel.getNextPublishSeqNo()获取下一个消息的序列号
+             * 通过序列号与消息体进行一个关联
+             * 全部都是未确认的消息体
+             */
+            outstandingConfirms.put(channel.getNextPublishSeqNo(), message);
+            channel.basicPublish("", queueName, null, message.getBytes());
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("发布" + MESSAGE_COUNT + "个异步确认消息,耗时" + (end - begin) +
+                "ms");
+    }
+}
+```
+
+处理异步未确认消息最好的解决方案是把未确认的消息放到一个基于内存的能被发布线程访问的队列， 比如说用 `ConcurrentLinkedQueue` 这个队列在 `confirm callbacks` 与发布线程之间进行消息的传递。
+
+**测试结果**
+
+```java
+public static void main(String[] args) throws Exception {
+    //这个消息数量设置为 1000 好些 不然花费时间太长
+    publishMessagesIndividually();
+    publishMessagesInBatch();
+    handlePublishConfirmsAsynchronously();
+}
+//运行结果
+//发布 1,000 个单独确认消息耗时 50,278 ms
+//发布 1,000 个批量确认消息耗时 635 ms
+//发布 1,000 个异步确认消息耗时 92 ms
+```
+
+以上 3 种发布确认速度对比 
+
+- 单独发布消息：同步等待确认，简单，但吞吐量非常有限。
+
+- 批量发布消息：批量同步等待确认，简单，合理的吞吐量，一旦出现问题但很难推断出是那条消息出现了问题。
+- 异步处理： 最佳性能和资源使用，在出现错误的情况下可以很好地控制，但是实现起来稍微复杂
+
+## 交换机
+
+RabbitMQ 消息传递模型的核心思想是：**生产者生产的消息从不会直接发送到队列**。实际上，通常生产者甚至都不知道这些消息传递传递到了哪些队列中。 
+
+生产者只能将消息发送到交换机(`exchange`)，交换机工作的内容非常简单，一方面它接收来自生产者的消息，另一方面将它们推入队列。交换机必须确切知道如何处理收到的消息。是应该把这些消息放到特定队列还是说把他们到许多队列中还是说应该丢弃它们。这就的由交换机的类型来决定。
+
+![image-20240331181318218](./imgs/RabbitMQ/image-20240331181318218.png)
+
+交换机类型：
+
+1. 直接(`direct`)
+2. 主题(`topic`)
+3. 标题(`headers`)
+4. 扇出(`fanout`)
+
+### Fanout
+
+Fanout是将接收到的所有**消息广播**到它知道的所有队列中。
+
+**示例：使用Fanout广播到两个队列中**
+
+![image-20240331181639109](./imgs/RabbitMQ/image-20240331181639109.png)
+
+`EmitLog` 发送消息给两个消费者接收
+
+```java
+public class EmitLog {
+    private static final String EXCHANGE_NAME = "logs";
+    public static void main(String[] argv) throws Exception {
+        try (Channel channel = RabbitUtils.getChannel()) {
+            /**
+             * 声明一个 exchange
+             * 1.exchange 的名称
+             * 2.exchange 的类型
+             */
+            channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+            Scanner sc = new Scanner(System.in);
+            System.out.println("请输入信息");
+            while (sc.hasNext()) {
+                String message = sc.nextLine();
+                channel.basicPublish(EXCHANGE_NAME, "", null, message.getBytes("UTF-8"));
+                System.out.println("生产者发出消息" + message);
+            }
+        }
+    }
+}
+```
+
+`ReceiveLogs01` 将接收到的消息打印在控制台
+
+```java
+public class ReceiveLogs01 {
+    private static final String EXCHANGE_NAME = "logs";
+    public static void main(String[] argv) throws Exception {
+        Channel channel = RabbitUtils.getChannel();
+        channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+        /**
+         * 生成一个临时的队列 队列的名称是随机的
+         * 当消费者断开和该队列的连接时 队列自动删除
+         */
+        String queueName = channel.queueDeclare().getQueue();
+        //把该临时队列绑定我们的 exchange 其中 routingkey(也称之为 binding key)为空字符串
+        channel.queueBind(queueName, EXCHANGE_NAME, "");
+        System.out.println("等待接收消息,把接收到的消息打印在屏幕.....");
+        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+            String message = new String(delivery.getBody(), "UTF-8");
+            System.out.println("控制台打印接收到的消息"+message);
+        };
+        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> { });
+    }
+}
+```
+
+`ReceiveLogs02` 将接收到的消息存储在磁盘
+
+```java
+public class ReceiveLogs02 {
+    private static final String EXCHANGE_NAME = "logs";
+
+    public static void main(String[] argv) throws Exception {
+        Channel channel = RabbitUtils.getChannel();
+        channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+        /**
+         * 生成一个临时的队列 队列的名称是随机的
+         * 当消费者断开和该队列的连接时 队列自动删除
+         */
+        String queueName = channel.queueDeclare().getQueue();
+        //把该临时队列绑定我们的 exchange 其中 routingkey(也称之为 binding key)为空字符串
+        channel.queueBind(queueName, EXCHANGE_NAME, "");
+        System.out.println("等待接收消息,把接收到的消息写到文件.....");
+        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+            String message = new String(delivery.getBody(), "UTF-8");
+            File file = new File("C:\\work\\rabbitmq_info.txt");
+            FileUtils.writeStringToFile(file, message, "UTF-8");
+            System.out.println("数据写入文件成功");
+        };
+        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
+        });
+    }
+}
+```
+
+### `Direct exchange`
+
+**绑定**是交换机和队列之间的桥梁关系。也可以这么理解： 队列只对它绑定的交换机的消息感兴趣。
+
+绑定用参数：`routingKey` 来表示也可称该参数为 `binding key`， 创建绑定我们用代码：`channel.queueBind(queueName, EXCHANGE_NAME, "routingKey");`；绑定之后的意义由其交换类型决定。
+
+**示例**
+
+上一节中的我们的日志系统将所有消息广播给所有消费者，对此我们想做一些改变，例如我们希望**将日志消息写入磁盘的程序仅接收严重错误(errros)，而不存储哪些警告(warning)或信息(info)日志消息避免浪费磁盘空间。**
+
+Fanout 这种交换类型并不能给我们带来很大的灵活性-它只能进行**无意识的广播**，在这里我们将使用 direct 这种类型来进行替换，这种类型的工作方式是，消息只去到它绑定的 `routingKey` 队列中去。
+
+![image-20240331182306533](./imgs/RabbitMQ/image-20240331182306533.png)
+
+```java
+public class EmitLogDirect {
+    private static final String EXCHANGE_NAME = "direct_logs";
+    public static void main(String[] argv) throws Exception {
+        try (Channel channel = RabbitUtils.getChannel()) {
+            channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+            //创建多个 bindingKey
+            Map<String, String> bindingKeyMap = new HashMap<>();
+            bindingKeyMap.put("info","普通 info 信息");
+            bindingKeyMap.put("warning","警告 warning 信息");
+            bindingKeyMap.put("error","错误 error 信息");
+            //debug 没有消费这接收这个消息 所有就丢失了
+            bindingKeyMap.put("debug","调试 debug 信息");
+            for (Map.Entry<String, String> bindingKeyEntry: bindingKeyMap.entrySet()){
+                String bindingKey = bindingKeyEntry.getKey();
+                String message = bindingKeyEntry.getValue();
+                channel.basicPublish(EXCHANGE_NAME,bindingKey, null,
+                        message.getBytes("UTF-8"));
+                System.out.println("生产者发出消息:" + message);
+            }
+        }
+    }
+}
+
+public class ReceiveLogsDirect01 {
+    private static final String EXCHANGE_NAME = "direct_logs";
+    public static void main(String[] argv) throws Exception {
+        Channel channel = RabbitUtils.getChannel();
+        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+        String queueName = "disk";
+        channel.queueDeclare(queueName, false, false, false, null);
+        channel.queueBind(queueName, EXCHANGE_NAME, "error");
+        System.out.println("等待接收消息.....");
+        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+            String message = new String(delivery.getBody(), "UTF-8");
+            message="接收绑定键:"+delivery.getEnvelope().getRoutingKey()+",消息:"+message;
+            File file = new File("C:\\work\\rabbitmq_info.txt");
+            FileUtils.writeStringToFile(file,message,"UTF-8");
+            System.out.println("错误日志已经接收");
+        };
+        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
+        });
+    }
+}
+
+public class ReceiveLogsDirect02 {
+    private static final String EXCHANGE_NAME = "direct_logs";
+    public static void main(String[] argv) throws Exception {
+        Channel channel = RabbitUtils.getChannel();
+        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+        String queueName = "console";
+        channel.queueDeclare(queueName, false, false, false, null);
+        channel.queueBind(queueName, EXCHANGE_NAME, "info");
+        channel.queueBind(queueName, EXCHANGE_NAME, "warning");
+        System.out.println("等待接收消息.....");
+        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+            String message = new String(delivery.getBody(), "UTF-8");
+            System.out.println(" 接收绑定键 :"+delivery.getEnvelope().getRoutingKey()+", 消
+                    息:"+message);
+        };
+        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
+        });
+    }
+}
+```
+
+### Topics
+
+在上一个小节中，我们改进了日志记录系统。我们没有使用只能进行随意广播的 fanout 交换机，而是使用了 direct 交换机，从而有能实现有选择性地接收日志。
+
+尽管使用 direct 交换机改进了我们的系统，但是它仍然存在局限性：比如想接收的日志类型有 `info.base` 和 `info.advantage`，某个队列只想 `info.base` 的消息，那这个时候 direct 就办不到了。这个时候就只能使用 topic 类型
+
+发送到类型是 topic 交换机的消息的 `routing_key` 不能随意写，必须满足一定的要求，它必须是一个单词列表，以点号分隔开。这些单词可以是任意单词，比如说："stock.usd.nyse", "nyse.vmw", "quick.orange.rabbit"，这个单词列表最多不能超过 255 个字节。
+
+匹配规则
+
+- `*` 可以代替一个单词
+- `#` 可以替代零个或多个单词
+
+![image-20240331182724771](./imgs/RabbitMQ/image-20240331182724771.png)
+
+```java
+public class EmitLogTopic {
+    private static final String EXCHANGE_NAME = "topic_logs";
+    public static void main(String[] argv) throws Exception {
+        try (Channel channel = RabbitUtils.getChannel()) {
+            channel.exchangeDeclare(EXCHANGE_NAME, "topic");
+            /**
+             * Q1-->绑定的是
+             * 中间带 orange 带 3 个单词的字符串(*.orange.*)
+             * Q2-->绑定的是
+             * 最后一个单词是 rabbit 的 3 个单词(*.*.rabbit)
+             * 第一个单词是 lazy 的多个单词(lazy.#)
+             *
+             */
+            Map<String, String> bindingKeyMap = new HashMap<>();
+            bindingKeyMap.put("quick.orange.rabbit","被队列 Q1Q2 接收到");
+            bindingKeyMap.put("lazy.orange.elephant","被队列 Q1Q2 接收到");
+            bindingKeyMap.put("quick.orange.fox","被队列 Q1 接收到");
+            bindingKeyMap.put("lazy.brown.fox","被队列 Q2 接收到");
+            bindingKeyMap.put("lazy.pink.rabbit","虽然满足两个绑定但只被队列 Q2 接收一次");
+            bindingKeyMap.put("quick.brown.fox","不匹配任何绑定不会被任何队列接收到会被丢弃");
+            bindingKeyMap.put("quick.orange.male.rabbit","是四个单词不匹配任何绑定会被丢弃");
+            bindingKeyMap.put("lazy.orange.male.rabbit","是四个单词但匹配 Q2");
+            for (Map.Entry<String, String> bindingKeyEntry: bindingKeyMap.entrySet()){
+                String bindingKey = bindingKeyEntry.getKey();
+                String message = bindingKeyEntry.getValue();
+                channel.basicPublish(EXCHANGE_NAME,bindingKey, null,
+                        message.getBytes("UTF-8"));
+                System.out.println("生产者发出消息" + message);
+            }
+        }
+    }
+}
+
+public class ReceiveLogsTopic01 {
+    private static final String EXCHANGE_NAME = "topic_logs";
+    public static void main(String[] argv) throws Exception {
+        Channel channel = RabbitUtils.getChannel();
+        channel.exchangeDeclare(EXCHANGE_NAME, "topic");
+        //声明 Q1 队列与绑定关系
+        String queueName="Q1";
+        channel.queueDeclare(queueName, false, false, false, null);
+        channel.queueBind(queueName, EXCHANGE_NAME, "*.orange.*");
+        System.out.println("等待接收消息.....");
+        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+            String message = new String(delivery.getBody(), "UTF-8");
+            System.out.println(" 接收队列 :"+queueName+" 绑 定
+                    键:"+delivery.getEnvelope().getRoutingKey()+",消息:"+message);
+        };
+        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
+        });
+    }
+}
+
+public class ReceiveLogsTopic02 {
+    private static final String EXCHANGE_NAME = "topic_logs";
+    public static void main(String[] argv) throws Exception {
+        Channel channel = RabbitUtils.getChannel();
+        channel.exchangeDeclare(EXCHANGE_NAME, "topic");
+        //声明 Q2 队列与绑定关系
+        String queueName="Q2";
+        channel.queueDeclare(queueName, false, false, false, null);
+        channel.queueBind(queueName, EXCHANGE_NAME, "*.*.rabbit");
+        channel.queueBind(queueName, EXCHANGE_NAME, "lazy.#");
+        System.out.println("等待接收消息.....");
+        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+            String message = new String(delivery.getBody(), "UTF-8");
+            System.out.println(" 接收队列 :"+queueName+" 绑 定
+                    键:"+delivery.getEnvelope().getRoutingKey()+",消息:"+message);
+        };
+        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
+        });
+    }
+}
+```
+
+## 队列
+
+### Classic 经典队列
+
+这是RabbitMQ最为经典的队列类型。在单机环境中，拥有比较高的消息可靠性。
 
 ![image](./imgs/RabbitMQ/56DE9E00653447DBAF78687F8BD25A3F.png)
 
- 在这个图中可以看到，经典队列可以选择是否持久化(**Durability**)以及是否自动删除(**Auto delete**)两个属性。
+经典队列可以选择是否持久化(**Durability**)以及是否自动删除(**Auto delete**)两个属性。
 
-其中，Durability有两个选项，Durable和Transient。 Durable表示队列会将消息保存到硬盘，这样消息的安全性更高。但是同时，由于需要有更多的IO操作，所以生产和消费消息的性能，相比Transient会比较低。
+### Quorum 仲裁队列
 
-Auto delete属性如果选择为是，那队列将在至少一个消费者已经连接，然后所有的消费者都断开连接后删除自己。
-
-后面的Arguments部分，还有非常多的参数，可以点击后面的问号逐步了解。
-
-> 其实这时，应该结合kafka和RocketMQ这几个MQ产品，对队列有一个更全面的理解。在MQ当中，队列其实是MQ集群中的一个数据分片的最小单位。在MQ集群中，一个Topic会对应多个队列，而这些队列会均匀的分配到集群的各个节点当中。
-
-#### Quorum 仲裁队列
-
- 仲裁队列，是RabbitMQ从3.8.0版本，引入的一个新的队列类型，整个3.8.X版本，也都是在围绕仲裁队列进行完善和优化。仲裁队列相比Classic经典队列，在分布式环境下对消息的可靠性保障更高。官方文档中表示，未来会使用Quorum仲裁队列代替传统Classic队列。
+仲裁队列，是RabbitMQ从3.8.0版本，引入的一个新的队列类型。仲裁队列相比Classic经典队列，在分布式环境下对消息的可靠性保障更高。
 
 ![image](./imgs/RabbitMQ/D5C38F9FAC6A4D21BAE50FE38C1786D7.png)
 
-> 关于Quorum的详细介绍见 https://www.rabbitmq.com/quorum-queues.html，这里只是对其中的重点进行下解读
+Quorum是基于Raft一致性协议实现的一种新型的分布式消息队列，他实现了持久化，多备份的FIFO队列，主要就是针对RabbitMQ的镜像模式设计的。简单理解就是quorum队列中的消息需要有集群中多半节点同意确认后，才会写入到队列中。这种队列类似于RocketMQ当中的DLedger集群。这种方式可以保证消息在集群内部不会丢失。同时，Quorum是以牺牲很多高级队列特性为代价，来进一步保证消息在分布式环境下的高可靠。
 
- Quorum是基于Raft一致性协议实现的一种新型的分布式消息队列，他实现了持久化，多备份的FIFO队列，主要就是针对RabbitMQ的镜像模式设计的。简单理解就是quorum队列中的消息需要有集群中多半节点同意确认后，才会写入到队列中。这种队列类似于RocketMQ当中的DLedger集群。这种方式可以保证消息在集群内部不会丢失。同时，Quorum是以牺牲很多高级队列特性为代价，来进一步保证消息在分布式环境下的高可靠。
-
- 从整体功能上来说，Quorum队列是在Classic经典队列的基础上做减法，因此对于RabbitMQ的长期使用者而言，其实是会影响使用体验的。他与普通队列的区别：
+Quorum队列与普通队列的区别：
 
 ![image](./imgs/RabbitMQ/BCD97037405A4DFC90E6B0977E95E9E8.png)
 
- 从官方这个比较图就能看到，Quorum队列大部分功能都是在Classic队列基础上做减法，比如Non-durable queues表示是非持久化的内存队列。Exclusivity表示独占队列，即表示队列只能由声明该队列的Connection连接来进行使用，包括队列创建、删除、收发消息等，并且独占队列会在声明该队列的Connection断开后自动删除。
-
- 其中有个特例就是这个Poison Message(有毒的消息)。所谓毒消息是指消息一直不能被消费者正常消费(可能是由于消费者失败或者消费逻辑有问题等)，就会导致消息不断的重新入队，这样这些消息就成为了毒消息。这些读消息应该有保障机制进行标记并及时删除。Quorum队列会持续跟踪消息的失败投递尝试次数，并记录在"x-delivery-count"这样一个头部参数中。然后，就可以通过设置 Delivery limit参数来定制一个毒消息的删除策略。当消息的重复投递次数超过了Delivery limit参数阈值时，RabbitMQ就会删除这些毒消息。当然，如果配置了死信队列的话，就会进入对应的死信队列。
+Quorum队列大部分功能都是在Classic队列基础上做减法，比如`Non-durable queues`表示是非持久化的内存队列。`Exclusivity`表示独占队列，即表示队列只能由声明该队列的`Connection`连接来进行使用，包括队列创建、删除、收发消息等，并且独占队列会在声明该队列的Connection断开后自动删除。
 
 **Quorum队列更适合于 队列长期存在，并且对容错、数据安全方面的要求比低延迟、不持久等高级队列更能要求更严格的场景。**例如 电商系统的订单，引入MQ后，处理速度可以慢一点，但是订单不能丢失。
 
 也对应以下一些不适合使用的场景：
 
-1、一些临时使用的队列：比如transient临时队列，exclusive独占队列，或者经常会修改和删除的队列。
-2、对消息低延迟要求高： 一致性算法会影响消息的延迟。
-3、对数据安全性要求不高：Quorum队列需要消费者手动通知或者生产者手动确认。
-4、队列消息积压严重 ： 如果队列中的消息很大，或者积压的消息很多，就不要使用Quorum队列。Quorum队列当前会将所有消息始终保存在内存中，直到达到内存使用极限。
+1. 一些临时使用的队列：比如transient临时队列，exclusive独占队列，或者经常会修改和删除的队列。
 
-#### Stream队列
-
- Stream队列是RabbitMQ自3.9.0版本开始引入的一种新的数据队列类型，也是目前官方最为推荐的队列类型。这种队列类型的消息是持久化到磁盘并且具备分布式备份的，更适合于消费者多，读消息非常频繁的场景。
-
-![image](./imgs/RabbitMQ/821A925807514CEF854DB38FBF3C4AAF.png)
-
-> Stream队列的官方文档地址: https://www.rabbitmq.com/streams.html
-
- Stream队列的核心是以append-only只添加的日志来记录消息，整体来说，就是消息将以append-only的方式持久化到日志文件中，然后通过调整每个消费者的消费进度offset，来实现消息的多次分发。下方有几个属性也都是来定义日志文件的大小以及保存时间。如果你熟悉Kafka或者RocketMQ，会对这种日志记录消息的方式非常熟悉。这种队列提供了RabbitMQ已有的其他队列类型不太好实现的四个特点：
-1、large fan-outs 大规模分发
-
- 当想要向多个订阅者发送相同的消息时，以往的队列类型必须为每个消费者绑定一个专用的队列。如果消费者的数量很大，这就会导致性能低下。而Stream队列允许任意数量的消费者使用同一个队列的消息，从而消除绑定多个队列的需求。
-
-2、Replay/Time-travelling 消息回溯
-
- RabbitMQ已有的这些队列类型，在消费者处理完消息后，消息都会从队列中删除，因此，无法重新读取已经消费过的消息。而Stream队列允许用户在日志的任何一个连接点开始重新读取数据。
-
-3、Throughput Performance 高吞吐性能
-
- Strem队列的设计以性能为主要目标，对消息传递吞吐量的提升非常明显。
-
-4、Large logs 大日志
-
- RabbitMQ一直以来有一个让人诟病的地方，就是当队列中积累的消息过多时，性能下降会非常明显。但是Stream队列的设计目标就是以最小的内存开销高效地存储大量的数据。
-
- 整体上来说，RabbitMQ的Stream队列，其实有很多地方借鉴了其他MQ产品的优点，在保证消息可靠性的基础上，着力提高队列的消息吞吐量以及消息转发性能。因此，Stream也是在视图解决一个RabbitMQ一直以来，让人诟病的缺点，就是当队列中积累的消息过多时，性能下降会非常明显的问题。RabbitMQ以往更专注于企业级的内部使用，但是从这些队列功能可以看到，Rabbitmq也在向更复杂的互联网环境靠拢，未来对于RabbitMQ的了解，也需要随着版本推进，不断更新。
-
- 但是，从整体功能上来讲，队列只不过是一个实现FIFO的数据结构而已，这种数据结构其实是越简单越好。而当前RabbitMQ区分出这么多种队列类型，其实极大的增加了应用层面的使用难度，应用层面必须有一些不同的机制兼容各种队列。所以，在未来版本中，RabbitMQ很可能还是会将这几种队列类型最终统一成一种类型。例如官方已经说明未来会使用Quorum队列类型替代经典队列，到那时，应用层很多工具就可以得到简化，比如不需要再设置durable和exclusive属性。虽然Quorum队列和Stream队列目前还没有合并的打算，但是在应用层面来看，他们两者是冲突的，是一种竞争关系，未来也很有可能最终统一保留成一种类型。至于未来走向如何，我们可以在后续版本拭目以待。
-
-## RabbitMQ编程模型
-
- RabbitMQ的使用生态已经相当庞大，支持非常多的语言。而就以java而论，也已经支持非常多的扩展。我们接下来会从原生API、SpringBoot集成、SpringCloudStream集成，三个角度来详细学习RabbitMQ的编程模型。在学习编程模型时，要注意下，新推出的Stream队列，他的客户端跟另外两种队列稍有不同。
-
-### 原生API
-
- 使用RabbitMQ提供的原生客户端API进行交互。先来了解下如何使用Classic和Quorum队列。至于Stream队列，目前他使用的是和这两个队列不同的客户端，所以会在后面一个章节单独讨论。
-
-#### maven依赖
-
-```xml
-<dependency>
-    <groupId>com.rabbitmq</groupId>
-    <artifactId>amqp-client</artifactId>
-    <version>5.9.0</version>
-</dependency>
-```
-
-#### 基础编程模型
-
- 这些各种各样的消息模型其实都对应一个比较统一的基础编程模型。
-
-##### step1、首先创建连接，获取Channel
-
-```
-ConnectionFactory factory = new ConnectionFactory();
-factory.setHost("localhost");
-
-connection = factory.newConnection();
-channel = connection.createChannel();
-```
-
-##### step2、声明queue队列
-
-关键代码：
-
-```java
- channel.queueDeclare(String queue, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments);
-```
-
-> api说明：
->
-> Declare a queue
-> Parameters:
-> **queue** the name of the queue
-> **durable** true if we are declaring a durable queue (the queue will survive a server restart)
-> **exclusive** true if we are declaring an exclusive queue (restricted to this connection)
-> **autoDelete** true if we are declaring an autodelete queue (server will delete it when no longer in use)
-> **arguments** other properties (construction arguments) for the queue
-> Returns:
-> a declaration-confirm method to indicate the queue was successfully declared
-> Throws:
-> java.io.IOException - if an error is encountered
-> See Also:
-> com.rabbitmq.client.AMQP.Queue.Declare
-> com.rabbitmq.client.AMQP.Queue.DeclareOk
+2. 对消息低延迟要求高：一致性算法会影响消息的延迟。
+3. 对数据安全性要求不高：Quorum队列需要消费者手动通知或者生产者手动确认。
+4. 队列消息积压严重：如果队列中的消息很大，或者积压的消息很多，就不要使用Quorum队列。Quorum队列当前会将所有消息始终保存在内存中，直到达到内存使用极限。
 
 如果要声明一个Quorum队列，则只需要在后面的arguments中传入一个参数，**x-queue-type**，参数值设定为**quorum**。
 
@@ -365,762 +901,628 @@ params.put("x-queue-type","quorum");
 channel.queueDeclare(QUEUE_NAME, true, false, false, params);
 ```
 
-> 注意：1、对于Quorum类型，durable参数就必须是true了，设置成false的话，会报错。同样，exclusive参数必须设置为false
+Quorum队列的消息是必须持久化的，所以durable参数必须设定为true，如果声明为false，就会报错。同样，exclusive参数必须设置为false。这些声明，在Producer和Consumer中是要保持一致的。
 
-如果要声明一个Stream队列，则 **x-queue-type**参数要设置为 **stream** .
+### Stream 队列
 
-```java
-  Map<String,Object> params = new HashMap<>();
-        params.put("x-queue-type","stream");
-        params.put("x-max-length-bytes", 20_000_000_000L); // maximum stream size: 20 GB
-        params.put("x-stream-max-segment-size-bytes", 100_000_000); // size of segment files: 100 MB
-        channel.queueDeclare(QUEUE_NAME, true, false, false, params);
-```
+Stream队列是RabbitMQ自3.9.0版本开始引入的一种新的数据队列类型，也是目前官方最为推荐的队列类型。这种队列类型的消息是持久化到磁盘并且具备分布式备份的，更适合于消费者多，读消息非常频繁的场景。
 
-> 注意：1、同样，durable参数必须是true，exclusive必须是false。 --你应该会想到，对于这两种队列，这两个参数就是多余的了，未来可以直接删除。
->
-> 2、x-max-length-bytes 表示日志文件的最大字节数。x-stream-max-segment-size-bytes 每一个日志文件的最大大小。这两个是可选参数，通常为了防止stream日志无限制累计，都会配合stream队列一起声明。
-
- 声明的队列，如果服务端没有，那么会自动创建。但是如果服务端有了这个队列，那么声明的队列属性必须和服务端的队列属性一致才行。
-
-##### step3、Producer根据应用场景发送消息到queue
-
-关键代码：
+![image](./imgs/RabbitMQ/821A925807514CEF854DB38FBF3C4AAF.png)
 
 ```java
-channel.basicPublish(String exchange, String routingKey, BasicProperties props,message.getBytes("UTF-8")) ;1
+Map<String,Object> params = new HashMap<>();
+params.put("x-queue-type","stream");
+params.put("x-max-length-bytes", 20_000_000_000L); // maximum stream size: 20 GB
+params.put("x-stream-max-segment-size-bytes", 100_000_000); // size of segment files: 100 MB
+channel.queueDeclare(QUEUE_NAME, true, false, false, params);
+
+// 用原生API创建Stream类型的Consumer时，还必须添加一个参数x-stream-offset，表示从队列的哪个位置开始消费。
+Map<String,Object> consumeParam = new HashMap<>();
+consumeParam.put("x-stream-offset","last");
+channel.basicConsume(QUEUE_NAME, false,consumeParam, myconsumer);
 ```
 
-> api说明：
-> Publish a message. Publishing to a non-existent exchange will result in a channel-level protocol exception, which closes the channel. Invocations of Channel#basicPublish will eventually block if a resource-driven alarm is in effect.
-> Parameters:
-> **exchange** the exchange to publish the message to
-> **routingKey** the routing key
-> **props** other properties for the message - routing headers etc
-> **body** the message body
-
-其中exchange是一个Producer与queue的中间交互机制。可以让Producer把消息按一定的规则发送到不同的queue，不需要的话就传空字符串
-
-##### step4、Consumer消费消息
-
-定义消费者，消费消息进行处理，并向RabbitMQ进行消息确认。确认了之后就表明这个消息已经消费完了，否则RabbitMQ还会继续让别的消费者实例来处理。
-
-主要收集了两种消费方式
-**1、被动消费模式**，Consumer等待rabbitMQ 服务器将message推送过来再消费。一般是启一个一直挂起的线程来等待。
-关键代码
-
-```
-channel.basicConsume(String queue, boolean autoAck, Consumer callback);1
-```
-
-> api说明：
-> Start a non-nolocal, non-exclusive consumer, with a server-generated consumerTag.
-> Parameters:
-> **queue** the name of the queue
-> **autoAck** true if the server should consider messages acknowledged once delivered; false if the server should expect explicit acknowledgements
-> **callback** an interface to the consumer object
-> Returns:
-> the consumerTag generated by the server
-
-其中autoAck是个关键。autoAck为true则表示消息发送到该Consumer后就被Consumer消费掉了，不需要再往其他Consumer转发。为false则会继续往其他Consumer转发。
-要注意如果每个Consumer一直为false，会导致消息不停的被转发，不停的吞噬系统资源，最终造成宕机。
-
-**2、另一种是主动消费模式。**Comsumer主动到rabbitMQ服务器上去获取指定的messge进行消费。
-关键代码
-
-```
-GetResponse response = channel.basicGet(QUEUE_NAME, boolean autoAck);1
-```
-
-> api说明：
-> Retrieve a message from a queue using com.rabbitmq.client.AMQP.Basic.Get
-> Parameters:
-> **queue** the name of the queue
-> **autoAck** true if the server should consider messages acknowledged once delivered; false if the server should expect explicit acknowledgements
-> Returns:
-> a GetResponse containing the retrieved message data
-> Throws:
-> java.io.IOException - if an error is encountered
-> See Also:
-> com.rabbitmq.client.AMQP.Basic.Get
-> com.rabbitmq.client.AMQP.Basic.GetOk
-> com.rabbitmq.client.AMQP.Basic.GetEmpty
-
-**3.Stream队列消费** 在当前版本下，消费Stream队列时，需要注意三板斧的设置。
-
-- channel必须设置basicQos属性。
-- 正确声明Stream队列。
-- 消费时需要指定offset。
-
-具体参看示例代码。注意其中的注释。
-
-```java
-Connection connection = RabbitMQUtil.getConnection();
-        Channel channel = connection.createChannel();
-        //1、这个属性必须设置。
-        channel.basicQos(100);
-        //2、声明Stream队列
-        Map<String,Object> params = new HashMap<>();
-        params.put("x-queue-type","stream");
-        params.put("x-max-length-bytes", 20_000_000_000L); // maximum stream size: 20 GB
-        params.put("x-stream-max-segment-size-bytes", 100_000_000); // size of segment files: 100 MB
-        channel.queueDeclare(QUEUE_NAME, true, false, false, params);
-
-        //Consumer接口还一个实现QueueConsuemr 但是代码注释过期了。
-        Consumer myconsumer = new DefaultConsumer(channel) {
-            @Override
-            public void handleDelivery(String consumerTag, Envelope envelope,
-                                       AMQP.BasicProperties properties, byte[] body)
-                    throws IOException {
-                System.out.println("========================");
-                String routingKey = envelope.getRoutingKey();
-                System.out.println("routingKey >" + routingKey);
-                String contentType = properties.getContentType();
-                System.out.println("contentType >" + contentType);
-                long deliveryTag = envelope.getDeliveryTag();
-                System.out.println("deliveryTag >" + deliveryTag);
-                System.out.println("content:" + new String(body, "UTF-8"));
-                // (process the message components here ...)
-                //消息处理完后，进行答复。答复过的消息，服务器就不会再次转发。
-                //没有答复过的消息，服务器会一直不停转发。
-                channel.basicAck(deliveryTag, false);
-            }
-        };
-        //3、消费时，必须指定offset。 可选的值：
-        // first: 从日志队列中第一个可消费的消息开始消费
-        // last: 消费消息日志中最后一个消息
-        // next: 相当于不指定offset，消费不到消息。
-        // Offset: 一个数字型的偏移量
-        // Timestamp:一个代表时间的Data类型变量，表示从这个时间点开始消费。例如 一个小时前 Date timestamp = new Date(System.currentTimeMillis() - 60 * 60 * 1_000)
-        Map<String,Object> consumeParam = new HashMap<>();
-        consumeParam.put("x-stream-offset","next");
-        channel.basicConsume(QUEUE_NAME, false,consumeParam, myconsumer);
+Stream队列的核心是以`append-only`只添加的日志来记录消息，整体来说，就是消息将以`append-only`的方式持久化到日志文件中，然后通过调整每个消费者的消费进度`offset`，来实现消息的多次分发。这种队列提供了RabbitMQ已有的其他队列类型不太好实现的四个特点：
 
-        channel.close();
-```
+1. large fan-outs 大规模分发
 
-> 这三点要尤其注意，因为当前版本的错误提示非常让人着急。
+当想要向多个订阅者发送相同的消息时，以往的队列类型必须为每个消费者绑定一个专用的队列。如果消费者的数量很大，这就会导致性能低下。而Stream队列允许任意数量的消费者使用同一个队列的消息，从而消除绑定多个队列的需求。
 
-##### step5、完成以后关闭连接，释放资源
+2. Replay/Time-travelling 消息回溯
 
-```java
- channel.close(); 
-```
+RabbitMQ已有的这些队列类型，在消费者处理完消息后，消息都会从队列中删除，因此，无法重新读取已经消费过的消息。而Stream队列允许用户在日志的任何一个连接点开始重新读取数据。
 
-#### 官网的消息场景
+3. Throughput Performance 高吞吐性能
 
-原生API重点就是学习并理解RabbitMQ的官方消息模型。具体参见 https://www.rabbitmq.com/getstarted.html 。其中可以看到，RabbitMQ官方提供了总共七种消息模型，这其中，6 RPC部分是使用RabbitMQ来实现RPC远程调用，这个场景通常不需要使用MQ来实现，所以也就不当作重点来学习。而7 Publisher Confirms是当前版本新引进来的一种消息模型，对保护消息可靠性有很重要的意义。
+Strem队列的设计以性能为主要目标，对消息传递吞吐量的提升非常明显。
 
-这些消息模型基本上涵盖了日常开发中的绝大部分场景，而对于他们的API使用，其实都是大同小异，非常容易上手，并且在实际开发中，一般也有其他更好的框架来整合RabbitMQ使用 。所以对这一部分的学习，理解业务场景是最为重要的。
+4. Large logs 大日志
 
-![image](./imgs/RabbitMQ/2058EEF3A1E94CEE878BFB3D42AA8BF4.png)
+RabbitMQ一直以来有一个让人诟病的地方，就是当队列中积累的消息过多时，性能下降会非常明显。但是Stream队列的设计目标就是以最小的内存开销高效地存储大量的数据。
 
-##### 1：hello world体验
+整体上来说，RabbitMQ的Stream队列，其实有很多地方借鉴了其他MQ产品的优点，在保证消息可靠性的基础上，着力提高队列的消息吞吐量以及消息转发性能。因此，Stream也是在视图解决一个RabbitMQ一直以来，让人诟病的缺点，就是当队列中积累的消息过多时，性能下降会非常明显的问题。
 
-![image](./imgs/RabbitMQ/4A29197DA4E84F11987D4A65F6BDC781.png)
+### 死信队列
 
-最直接的方式，P端发送一个消息到一个指定的queue，中间不需要任何exchange规则。C端按queue方式进行消费。
-关键代码：(其实关键的区别也就是几个声明上的不同。)
-producer:
+死信，顾名思义就是无法被消费的消息，一般来说，`producer` 将消息投递到 `broker` 或者直接到 `queue` 里了，`consumer` 从 `queue` 取出消息进行消费，但某些时候由于特定的原因导致 **`queue` 中的某些消息无法被消费**，这样的消息如果没有后续的处理，就变成了死信，有死信自然就有了死信队列。 
 
-```java
-channel.queueDeclare(QUEUE_NAME,false,false,false,null);
-channel.basicPublish("", QUEUE_NAME, null, message.getBytes("UTF-8"));
-```
+应用场景：为了保证订单业务的消息数据不丢失，需要使用到 `RabbitMQ` 的死信队列机制
 
-consumer:
+- 当消息消费发生异常时，将消息投入死信队列中；
+- 用户在商城下单成功并点击去支付后在指定时间未支付时自动失效
 
-```java
-channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-```
+死信队列的来源
 
-##### 2： Work queues 工作序列
+- 消息 TTL 过期
+- 队列达到最大长度(队列满了，无法再添加数据到 mq 中)
+- 消息被拒绝(`basic.reject` 或 `basic.nack`)并且 `requeue=false`
 
-这就是kafka同一groupId的消息分发模式
+![image-20240331183209989](./imgs/RabbitMQ/image-20240331183209989.png)
 
-![image](./imgs/RabbitMQ/1BF771FBABB7491EBE97FC4FDB4C1725.png)
+### 延迟队列
 
-工作任务模式，领导部署一个任务，由下面的一个员工来处理。
-producer:
+延时队列：队列内部是有序的，最重要的特性就体现在它的延时属性上，延时队列中的元素是希望在指定时间到了以后或之前取出和处理，简单来说，延时队列就是**用来存放需要在指定时间被处理的元素的队列**。
 
-```java
-channel.queueDeclare(TASK_QUEUE_NAME, true, false, false, null); //任务一般是不能因为消息中间件的服务而被耽误的，所以durable设置成了true，这样，即使rabbitMQ服务断了，这个消息也不会消失
-channel.basicPublish("", TASK_QUEUE_NAME,MessageProperties.PERSISTENT_TEXT_PLAIN,
-        message.getBytes("UTF-8"));123
-```
+使用场景：
 
-Consumer:
+1. 订单在十分钟之内未支付则自动取消；
+2. 新创建的店铺，如果在十天内都没有上传过商品，则自动发送消息提醒；
+3. 用户注册成功后，如果三天内没有登陆则进行短信提醒；
+4. 用户发起退款，如果三天内没有得到处理则通知相关运营人员；
+5. 预定会议后，需要在预定的时间点前十分钟通知各个与会人员参加会议
 
-```java
-channel.queueDeclare(TASK_QUEUE_NAME, true, false, false, null);
-channel.basicQos(1);
-channel.basicConsume(TASK_QUEUE_NAME, false, consumer);123
-```
+这些场景都有一个特点，需要在某个事件发生之后或者之前的指定时间点完成某一项任务。
 
-这个模式应该是最常用的模式，也是官网讨论比较详细的一种模式，所以官网上也对这种模式做了重点讲述。
+比如：发生订单生成事件，在十分钟之后检查该订单支付状态，然后将未支付的订单进行关闭；看起来似乎使用定时任务，一直轮询数据，每秒查一次，取出需要被处理的数据。
 
-- 首先。Consumer端的autoAck字段设置的是false,这表示consumer在接收到消息后不会自动反馈服务器已消费了message，而要改在对message处理完成了之后，再调用channel.basicAck来通知服务器已经消费了该message.这样即使Consumer在执行message过程中出问题了，也不会造成message被忽略，因为没有ack的message会被服务器重新进行投递。
-  但是，这其中也要注意一个很常见的BUG，就是如果所有的consumer都忘记调用basicAck()了，就会造成message被不停的分发，也就造成不断的消耗系统资源。这也就是 Poison Message(毒消息)
-- 其次，官方特意提到的message的持久性。关键的message不能因为服务出现问题而被忽略。还要注意，官方特意提到，所有的queue是不能被多次定义的。如果一个queue在开始时被声明为durable，那在后面再次声明这个queue时，即使声明为 not durable，那这个queue的结果也还是durable的。
-- 然后，是中间件最为关键的分发方式。这里，RabbitMQ默认是采用的fair dispatch，也叫round-robin模式，就是把消息轮询，在所有consumer中轮流发送。这种方式，没有考虑消息处理的复杂度以及consumer的处理能力。而他们改进后的方案，是consumer可以向服务器声明一个prefetchCount，我把他叫做预处理能力值。channel.basicQos(prefetchCount);表示当前这个consumer可以同时处理几个message。这样服务器在进行消息发送前，会检查这个consumer当前正在处理中的message(message已经发送，但是未收到consumer的basicAck)有几个，如果超过了这个consumer节点的能力值，就不再往这个consumer发布。
-  这种模式，官方也指出还是有问题的，消息有可能全部阻塞，所有consumer节点都超过了能力值，那消息就阻塞在服务器上，这时需要自己及时发现这个问题，采取措施，比如增加consumer节点或者其他策略
-  `Note about queue size If all the workers are busy, your queue can fill up. You will want to keep an eye on that, and maybe add more workers, or have some other strategy.`
-- 另外 官网上没有深入提到的，就是还是没有考虑到message处理的复杂程度。有的message处理可能很简单，有的可能很复杂，现在还是将所有message的处理程度当成一样的。还是有缺陷的，但是目前也只看到dubbo里对单个服务有权重值的概念，涉及到了这个问题。
+如果数据量比较少，确实可以这样做，比如：对于**“如果账单一周内未支付则进行自动结算”**这样的需求， 如果对于时间不是严格限制，而是宽松意义上的一周，那么每天晚上跑个定时任务检查一下所有未支付的账单，确实也是一个可行的方案。
 
-##### 3：Publish/Subscribe 订阅 发布 机制
+但对于数据量比较大，并且时效性较强的场景，如：**“订单十分钟内未支付则关闭“**，短期内未支付的订单数据可能会有很多，活动期间甚至会达到百万甚至千万级别，对这么庞大的数据量仍旧使用轮询的方式显然是不可取的，很可能在一秒内无法完成所有订单的检查，同时会给数据库带来很大压力，无法满足业务要求而且性能低下。
 
-type为**fanout** 的exchange：
+![image-20240331183931296](./imgs/RabbitMQ/image-20240331183931296.png)
 
-![image](./imgs/RabbitMQ/1801AC8DB08640AFB8703766DF8689B7.png)
+### TTL
 
-这个机制是对上面的一种补充。也就是把preducer与Consumer进行进一步的解耦。producer只负责发送消息，至于消息进入哪个queue，由exchange来分配。如上图，就是把producer发送的消息，交由exchange同时发送到两个queue里，然后由不同的Consumer去进行消费。
-关键代码 ===》 producer: //只负责往exchange里发消息，后面的事情不管。
+`TTL` 是 RabbitMQ 中一个消息或者队列的属性，表明一条消息或者该队列中的所有**消息的最大存活时间**
 
-```
-channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
-channel.basicPublish(EXCHANGE_NAME, "", null, message.getBytes("UTF-8"));12
-```
+如果一条消息设置了 `TTL` 属性或者进入了设置 `TTL` 属性的队列，那么这条消息如果在 `TTL` 设置的时间内没有被消费，则会成为**"死信"**。如果同时配置了队列的 TTL 和消息的 TTL，那么较小的那个值将会被使用，有两种方式设置 TTL。
 
-receiver: //将消费的目标队列绑定到exchange上。
+- 针对每条消息设置 TTL：`setExpiration(ttlTime)`
+- 创建队列时设置队列的 `x-message-ttl` 属性
 
-```
-channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
-String queueName = channel.queueDeclare().getQueue();
-channel.queueBind(queueName, EXCHANGE_NAME, "");123
-```
+**两者的区别**
 
-关键处就是type为”fanout” 的exchange,这种类型的exchange只负责往所有已绑定的队列上发送消息。
+- 如果设置了队列的 TTL 属性，那么一旦消息过期，就会被队列丢弃(如果配置了死信队列被丢到死信队列中)；
 
-##### 4：Routing 基于内容的路由
+- 针对每条消息设置 TTL，消息即使过期，也不一定会被马上丢弃，因为**消息是否过期是在即将投递到消费者之前判定的**，如果当前队列有严重的消息积压情况，则已过期的消息也许还能存活较长时间；
 
-type为”direct” 的exchange
+- 如果不设置 TTL，表示消息永远不会过期，如果将 TTL 设置为 0，则表示除非此时可以直接投递该消息到消费者，否则该消息将会被丢弃。
 
-![image](./imgs/RabbitMQ/EBEE406BFF704ECD91A4F8D26D7301CF.png)
+### 整合`SpringBoot`项目
 
-这种模式一看图就清晰了。 在上一章 exchange 往所有队列发送消息的基础上，增加一个路由配置，指定exchange如何将不同类别的消息分发到不同的queue上。
-关键代码===> Producer:
+#### 队列TTL
 
-```
-channel.exchangeDeclare(EXCHANGE_NAME, "direct");
-channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes("UTF-8"));12
-```
+创建两个队列 QA 和 QB，两者队列 TTL 分别设置为 10S 和 40S，然后在创建一个交换机 X 和死信交 换机 Y，它们的类型都是 direct，创建一个死信队列 QD，它们的绑定关系如下：
 
-Receiver:
+![image-20240331184459281](./imgs/RabbitMQ/image-20240331184459281.png)
 
-```
-channel.exchangeDeclare(EXCHANGE_NAME, "direct");
-channel.queueBind(queueName, EXCHANGE_NAME, routingKey1);
-channel.queueBind(queueName, EXCHANGE_NAME, routingKey2);
-channel.basicConsume(queueName, true, consumer);1234
-```
-
-##### 5：Topics 话题
-
-type为"topic" 的exchange
-
-![image](./imgs/RabbitMQ/8BCB3B962C9B4F57853B343D81004968.png)
-这个模式也就在上一个模式的基础上，对routingKey进行了模糊匹配
-单词之间用,隔开，* 代表一个具体的单词。# 代表0个或多个单词。
-关键代码===> Producer:
-
-```
-channel.exchangeDeclare(EXCHANGE_NAME, "topic");
-channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes("UTF-8"));12
-```
-
-Receiver:
-
-```
-channel.exchangeDeclare(EXCHANGE_NAME, "topic");
-channel.queueBind(queueName, EXCHANGE_NAME, routingKey1);
-channel.queueBind(queueName, EXCHANGE_NAME, routingKey2);
-channel.basicConsume(queueName, true, consumer);1234
-```
-
-##### 6：RPC 远程调用
-
-远程调用是同步阻塞的调用远程服务并获取结果。
-RPC远程调用机制其实并不是消息中间件的处理强项。毕竟消息队列机制很大程度上来说就是为了缓冲同步RPC调用造成的瞬间高峰。而RabbitMQ的同步调用示例，看着也确实怪怪的。并且，RPC远程调用的场景，也有太多可替代的技术会比用消息中间件处理得更优雅，更流畅。
-
-```
-A note on RPC
-Although RPC is a pretty common pattern in computing, it’s often criticised. The problems arise when a programmer is not aware whether a function call is local or if it’s a slow RPC. Confusions like that result in an unpredictable system and adds unnecessary complexity to debugging. Instead of simplifying software, misused RPC can result in unmaintainable spaghetti code.
-Bearing that in mind, consider the following advice:
-● Make sure it’s obvious which function call is local and which is remote.
-● Document your system. Make the dependencies between components clear.
-● Handle error cases. How should the client react when the RPC server is down for a long time?
-When in doubt avoid RPC. If you can, you should use an asynchronous pipeline - instead of RPC-like blocking, results are asynchronously pushed to a next computation stage.
-```
-
-官网上这一大堆说明，其实我觉得就是表明，叫你不要用消息中间件来做RPC。所以关于这个RPC调用功能，就不再多做解释了。代码实现可以参见官网，或者配套的示例代码。
-
-##### 7：Publisher Confirms 发送者消息确认
-
- RabbitMQ的消息可靠性是非常高的，但是他以往的机制都是保证消息发送到了MQ之后，可以推送到消费者消费，不会丢失消息。但是发送者发送消息是否成功是没有保证的。我们可以回顾下，发送者发送消息的基础API：Producer.basicPublish方法是没有返回值的，也就是说，一次发送消息是否成功，应用是不知道的，这在业务上就容易造成消息丢失。而这个模块就是通过给发送者提供一些确认机制，来保证这个消息发送的过程是成功的。
-
-> 如果了解了这个机制就会发现，这个消息确认机制就是跟RocketMQ的事务消息机制差不多的。而对于这个机制，RocketMQ的支持明显更优雅。
-
- 发送者确认模式默认是不开启的，所以如果需要开启发送者确认模式，需要手动在channel中进行声明。
-
-```java
-channel.confirmSelect();
-```
-
- 在官网的示例中，重点解释了三种策略：
-
- **1、发布单条消息**
-
- 即发布一条消息就确认一条消息。核心代码：
-
-```java
-for (int i = 0; i < MESSAGE_COUNT; i++) {
-    String body = String.valueOf(i);
-    channel.basicPublish("", queue, null, body.getBytes());
-    channel.waitForConfirmsOrDie(5_000);
-}
-```
-
- channel.waitForConfirmsOrDie(5_000);这个方法就会在channel端等待RabbitMQ给出一个响应，用来表明这个消息已经正确发送到了RabbitMQ服务端。但是要注意，这个方法会同步阻塞channel，在等待确认期间，channel将不能再继续发送消息，也就是说会明显降低集群的发送速度即吞吐量。
-
-> 官方说明了，其实channel底层是异步工作的，会将channel阻塞住，然后异步等待服务端发送一个确认消息，才解除阻塞。但是我们在使用时，可以把他当作一个同步工具来看待。
->
-> 然后如果到了超时时间，还没有收到服务端的确认机制，那就会抛出异常。然后通常处理这个异常的方式是记录错误日志或者尝试重发消息，但是尝试重发时一定要注意不要使程序陷入死循环。
-
- **2、发送批量消息**
-
- 之前单条确认的机制会对系统的吞吐量造成很大的影响，所以稍微中和一点的方式就是发送一批消息后，再一起确认。
-
- 核心代码：
-
-```java
-   int batchSize = 100;
-            int outstandingMessageCount = 0;
-
-            long start = System.nanoTime();
-            for (int i = 0; i < MESSAGE_COUNT; i++) {
-                String body = String.valueOf(i);
-                ch.basicPublish("", queue, null, body.getBytes());
-                outstandingMessageCount++;
-
-                if (outstandingMessageCount == batchSize) {
-                    ch.waitForConfirmsOrDie(5_000);
-                    outstandingMessageCount = 0;
-                }
-            }
-
-            if (outstandingMessageCount > 0) {
-                ch.waitForConfirmsOrDie(5_000);
-            }
-```
-
- 这种方式可以稍微缓解下发送者确认模式对吞吐量的影响。但是也有个固有的问题就是，当确认出现异常时，发送者只能知道是这一批消息出问题了， 而无法确认具体是哪一条消息出了问题。所以接下来就需要增加一个机制能够具体对每一条发送出错的消息进行处理。
-
- **3、异步确认消息**
-
- 实现的方式也比较简单，Producer在channel中注册监听器来对消息进行确认。核心代码就是一个：
-
-```java
-channel.addConfirmListener(ConfirmCallback var1, ConfirmCallback var2);
-```
-
- 按说监听只要注册一个就可以了，那为什么这里要注册两个呢？如果对照下RocketMQ的事务消息机制，这就很容易理解了。发送者在发送完消息后，就会执行第一个监听器callback1，然后等服务端发过来的反馈后，再执行第二个监听器callback2。
-
- 然后关于这个ConfirmCallback，这是个监听器接口，里面只有一个方法： void handle(long sequenceNumber, boolean multiple) throws IOException; 这方法中的两个参数，
-
-- sequenceNumer：这个是一个唯一的序列号，代表一个唯一的消息。在RabbitMQ中，他的消息体只是一个二进制数组，并不像RocketMQ一样有一个封装的对象，所以默认消息是没有序列号的。而RabbitMQ提供了一个方法`int sequenceNumber = channel.getNextPublishSeqNo());`来生成一个全局递增的序列号。然后应用程序需要自己来将这个序列号与消息对应起来。`没错！是的！需要客户端自己去做对应！`
-- multiple：这个是一个Boolean型的参数。如果是false，就表示这一次只确认了当前一条消息。如果是true，就表示RabbitMQ这一次确认了一批消息，在sequenceNumber之前的所有消息都已经确认完成了。
-
-> 对比下RocketMQ的事务消息机制，有没有觉得很熟悉，但是又很别扭？当然，考虑到这个对于RabbitMQ来说还是个新鲜玩意，所以有理由相信这个机制在未来会越来越完善。
-
-### SpringBoot集成
-
- SpringBoot官方就集成了RabbitMQ，所以RabbitMQ与SpringBoot的集成是非常简单的。不过，SpringBoot集成RabbitMQ的方式是按照Spring的一套统一的MQ模型创建的，因此SpringBoot集成插件中对于生产者、消息、消费者等重要的对象模型，与RabbitMQ原生的各个组件有对应关系，但是并不完全相同。这一点需要在后续试验过程中加深理解。
-
-#### 引入依赖
-
- SpringBoot官方集成了RabbitMQ，只需要快速引入依赖包即可使用。RabbitMQ与SpringBoot集成的核心maven依赖就下面一个。
-
-```
-<dependency>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-amqp</artifactId>
-</dependency>
-```
-
-> 要特别注意下版本。我们这里采用的是SpringBoot的2.6.7版本的依赖发布包。不同版本下的配置方式会有变化。
-
- 然后所有的基础运行环境都在application.properties中进行配置。所有配置以spring.rabbitmq开头。通常按照示例进行一些基础的必要配置就可以跑了。关于详细的配置信息，可以参见RabbitProperties，源码中有各个字段说明。
-
- 如果需要更详细的配置资料，那就需要到官方的github仓库上去查了。但是国内访问github的这个速度，你是知道的。
-
-#### 配置生产者
-
- 基础的运行环境参数以及生产者的一些默认属性配置都集中到了application.properties配置文件中。所有配置项都以spring.rabbitmq开头。
-
-> 关于详细的配置信息，可以参见RabbitProperties类的源码，源码中有各个字段的简单说明。
->
-> 如果需要更详细的配置资料，那就需要去官方的github仓库上去查了。github地址： https://github.com/spring-projects/spring-amqp 。但是国内访问github的速度，你知道的。
-
-#### 声明队列
-
- 所有的exchange, queue, binding的配置，都需要以对象的方式声明。默认情况下，这些业务对象一经声明，应用就会自动到RabbitMQ上常见对应的业务对象。但是也是可以配置成绑定已有业务对象的。
-
-> 业务对象的声明方式，具体请参见示例工程。
->
-> 详细的属性声明，同样参见github仓库。
-
-#### 使用RabbitmqTemplate对象发送消息
-
- 生产者的所有属性都已经在application.properties配置文件中进行配置。项目启动时，就会在Spring容器中初始化一个RabbitmqTemplate对象，然后所有的发送消息操作都通过这个对象来进行。
-
-#### 使用@RabbitListener注解声明消费者
-
- 消费者都是通过@RabbitListener注解来声明。注解中包含了声明消费者队列时所需要的重点参数。对照原生API，这些参数就不难理解了。
-
-但是当要消费Stream队列时，还是要重点注意他的三个必要的步骤：
-
-- channel必须设置basicQos属性。 channel对象可以在@RabbitListener声明的消费者方法中直接引用，Spring框架会进行注入。
-- 正确声明Stream队列。 通过往Spring容器中注入Queue对象的方式声明队列。在Queue对象中传入声明Stream队列所需要的参数。
-- 消费时需要指定offset。 可以通过注入Channel对象，使用原生API传入offset属性。
-
- 使用SpringBoot框架集成RabbitMQ后，开发过程可以得到很大的简化，所以使用过程并不难，对照一下示例就能很快上手。但是，需要理解一下的是，SpringBoot集成后的RabbitMQ中的很多概念，虽然都能跟原生API对应上，但是这些模型中间都是做了转换的，比如Message，就不是原生RabbitMQ中的消息了。使用SpringBoot框架，尤其需要加深对RabbitMQ原生API的理解，这样才能以不变应万变，深入理解各种看起来简单，但是其实坑很多的各种对象声明方式。
-
-#### 关于Stream队列
-
- 在目前版本下，使用RabbitMQ的SpringBoot框架集成，可以正常声明Stream队列，往Stream队列发送消息，但是无法直接消费Stream队列了。
-
- 关于这个问题，还是需要从Stream队列的三个重点操作入手。SpringBoot框架集成RabbitMQ后，为了简化编程模型，就把channel，connection等这些关键对象给隐藏了，目前框架下，无法直接接入这些对象的注入过程，所以无法直接使用。
-
- 如果非要使用Stream队列，那么有两种方式，一种是使用原生API的方式，在SpringBoot框架下自行封装。另一种是使用RabbitMQ的Stream 插件。在服务端通过Strem插件打开TCP连接接口，并配合单独提供的Stream客户端使用。这种方式对应用端的影响太重了，并且并没有提供与SpringBoot框架的集成，还需要自行完善，因此选择使用的企业还比较少。
-
- 这里就不详细介绍使用方式了。关于Stream插件的使用和配置方式参见官方文档：https://www.rabbitmq.com/stream.html。配合Stream插件使用的客户端有Java和GO两个版本。其中Java版本客户端参见git仓库：https://github.com/rabbitmq/rabbitmq-stream-java-client 。
-
-> 其实关于Stream队列，现在也不需要着急上手，只是把他当作一种特殊的队列类型，上手了解即可。因为一方面太新的技术，往往还需要小白鼠多多验证。另一方面，现在RabbitMQ多种队列并存的状态，在不久肯定会得到简化，到时候，应用层的使用方式也肯定会跟着变化。
->
-> 推荐自己以前写的一篇博文 https://blog.csdn.net/roykingw/article/details/78404956 可以作为大家了解SpringBoot集成RabbitMQ的一个入门博文。
-
-### SpringCloudStream集成
-
-> 这是我们VIP课程中唯一一次给大家详细讲解SpringCloudStream这个框架。后续MQ产品会用到，但是就不会对框架做更多分析了。
->
-> SpringCloudStream框架由于编程方式非常简单，所以在很多技术非常扎实的大型企业中，SpringCloudStream框架的使用频率会比SpringBoot框架更高。
-
- SpringCloudStream 是一个构建高扩展和事件驱动的微服务系统的框架，用于连接共有消息系统，官网地址： https://spring.io/projects/spring-cloud-stream 。整体上是把各种花里胡哨的MQ产品抽象成了一套非常简单的统一的编程框架，以实现事件驱动的编程模型。社区官方实现了RabbitMQ，Apache Kafka，Kafka Stream和Amazon Kinesis这几种产品，而其他还有很多产品比如RocketMQ，都是由产品方自行提供扩展实现。所以可以看到，对于RabbitMQ，使用SpringCloudStream框架算是一种比较成熟的集成方案。但是需要主要注意的是，SpringCloudStream框架集成的版本通常是比RabbitMQ落后几个版本的，使用时需要注意。
-
- SpringCloudStream框架封装出了三个最基础的概念来对各种消息中间件提供统一的抽象：
-
-- Destination Binders:负责集成外部消息系统的组件。
-- Destination Binding:由Binders创建的，负责沟通外部消息系统、消息发送者和消息消费者的桥梁。
-- Message:消息发送者与消息消费者沟通的简单数据结构。
-
- 可以看到，这个模型非常简单，使用时也会非常方便。但是简单，意味着SCStream中的各种概念模型，与RabbitMQ的基础概念之间是有比较大的差距的，例如Exchange、Queue这些原生概念，集成到SCStream框架时，都需要注意如何配置，如何转换。
-
-#### 引入依赖
-
- RabbitMQ的SpringCloudStream支持是由Spring社区官网提供的，所以这也是相当成熟的一种集成方案。但是要注意，SpringCloudStream框架集成的版本通常是比RabbitMQ产品本身落后几个版本的，使用时需要注意。
-
- 他的核心依赖也就一个：
+添加依赖
 
 ```xml
-  <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <!-- artifactId>spring-cloud-starter-stream-rabbit</artifactId -->
-            <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+<dependencies>
+        <!--RabbitMQ 依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <!--RabbitMQ 测试依赖-->
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 ```
 
-> 这两个Maven依赖没有什么特别大的区别，实际上，他们的github代码库是在一起的。仓库地址：https://github.com/spring-cloud/spring-cloud-stream-binder-rabbit
->
-> 依赖的版本通常建议使用SpringCloud的整体版本控制。 org.springframework.cloud#spring-cloud-dependencies#Hoxton.SR6，这样各个组件之间的版本比较安全。不建议贸然尝试新版本。
+配置文件
 
-#### 基础使用方法：
+```properties
+spring.rabbitmq.host=182.92.234.71
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=admin
+spring.rabbitmq.password=123
+```
 
- 使用SCStream框架集成RabbitMQ，编程模型非常的简单。我们先在本地搭建一个RabbitMQ服务，按照以下三步就可以完成与RabbitMQ的对接。
-
-1、声明Sink 消息消费者
+配置类
 
 ```java
-@Component
-@EnableBinding(Sink.class)
-public class MessageReceiver {
- private Logger logger = LoggerFactory.getLogger(MessageReceiver.class);
+@Configuration
+public class TtlQueueConfig {
+    public static final String X_EXCHANGE = "X";
+    public static final String QUEUE_A = "QA";
+    public static final String QUEUE_B = "QB";
+    public static final String Y_DEAD_LETTER_EXCHANGE = "Y";
+    public static final String DEAD_LETTER_QUEUE = "QD";
 
- @EventListener
- @StreamListener(Sink.INPUT)
- public void process(Object message) {
-        System.out.println("received message : " + message);
-        logger.info("received message : {}", message);
+    // 声明 xExchange
+    @Bean("xExchange")
+    public DirectExchange xExchange() {
+        return new DirectExchange(X_EXCHANGE);
+    }
+
+    // 声明 xExchange
+    @Bean("yExchange")
+    public DirectExchange yExchange() {
+        return new DirectExchange(Y_DEAD_LETTER_EXCHANGE);
+    }
+
+    //声明队列 A ttl 为 10s 并绑定到对应的死信交换机
+    @Bean("queueA")
+    public Queue queueA() {
+        Map<String, Object> args = new HashMap<>(3);
+        //声明当前队列绑定的死信交换机
+        args.put("x-dead-letter-exchange", Y_DEAD_LETTER_EXCHANGE);
+        //声明当前队列的死信路由 key
+        args.put("x-dead-letter-routing-key", "YD");
+        //声明队列的 TTL
+        args.put("x-message-ttl", 10000);
+        return QueueBuilder.durable(QUEUE_A).withArguments(args).build();
+    }
+
+    // 声明队列 A 绑定 X 交换机
+    @Bean
+    public Binding queueaBindingX(@Qualifier("queueA") Queue queueA,
+                                  @Qualifier("xExchange") DirectExchange xExchange) {
+        return BindingBuilder.bind(queueA).to(xExchange).with("XA");
+    }
+
+    //声明队列 B ttl 为 40s 并绑定到对应的死信交换机
+    @Bean("queueB")
+    public Queue queueB() {
+        Map<String, Object> args = new HashMap<>(3);
+        //声明当前队列绑定的死信交换机
+        args.put("x-dead-letter-exchange", Y_DEAD_LETTER_EXCHANGE);
+        //声明当前队列的死信路由 key
+        args.put("x-dead-letter-routing-key", "YD");
+        //声明队列的 TTL
+        args.put("x-message-ttl", 40000);
+        return QueueBuilder.durable(QUEUE_B).withArguments(args).build();
+    }
+
+    //声明队列 B 绑定 X 交换机
+    @Bean
+    public Binding queuebBindingX(@Qualifier("queueB") Queue queue1B,
+                                  @Qualifier("xExchange") DirectExchange xExchange) {
+        return BindingBuilder.bind(queue1B).to(xExchange).with("XB");
+    }
+
+    //声明死信队列 QD
+    @Bean("queueD")
+    public Queue queueD() {
+        return new Queue(DEAD_LETTER_QUEUE);
+    }
+
+    //声明死信队列 QD 绑定关系
+    @Bean
+    public Binding deadLetterBindingQAD(@Qualifier("queueD") Queue queueD,
+                                        @Qualifier("yExchange") DirectExchange yExchange) {
+        return BindingBuilder.bind(queueD).to(yExchange).with("YD");
     }
 }
 ```
 
-2、使用Source 消息生产者 发送消息
+生产者
+
+生产者的所有属性都已经在`application.properties`配置文件中进行配置。项目启动时，就会在Spring容器中初始化一个`RabbitmqTemplate`对象，然后所有的发送消息操作都通过这个对象来进行。
+
+```java
+@Slf4j
+@RequestMapping("ttl")
+@RestController
+public class SendMsgController {
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @GetMapping("sendMsg/{message}")
+    public void sendMsg(@PathVariable String message) {
+        log.info("当前时间：{},发送一条信息给两个 TTL 队列:{}", new Date(), message);
+        rabbitTemplate.convertAndSend("X", "XA", "消息来自 ttl 为 10S 的队列: " + message);
+        rabbitTemplate.convertAndSend("X", "XB", "消息来自 ttl 为 40S 的队列: " + message);
+    }
+}
+```
+
+消费者
+
+消费者都是通过`@RabbitListener`注解来声明。在`@RabbitMQListener`注解中包含了非常多对Queue进行定制的属性，大部分的属性都是有默认值的。例如`ackMode`默认是null，就表示自动应答。在日常开发过程中，通常都会简化业务模型，让消费者只要绑定队列消费即可。
+
+```java
+@Slf4j
+@Component
+public class DeadLetterQueueConsumer {
+    @RabbitListener(queues = "QD")
+    public void receiveD(Message message, Channel channel) throws IOException {
+        String msg = new String(message.getBody());
+        log.info("当前时间：{},收到死信队列信息{}", new Date().toString(), msg);
+    }
+}
+```
+
+发起一个请求 `http://localhost:8080/ttl/sendMsg/嘻嘻嘻`
+
+![image-20240331185402869](./imgs/RabbitMQ/image-20240331185402869.png)
+
+1. 第一条消息在 10S 后变成了死信消息，然后被消费者消费掉
+2. 第二条消息在 40S 之后变成了死信消息， 然后被消费掉，这样一个延时队列就打造完成了。
+
+不过，如果这样使用的话，岂不是**每增加一个新的时间需求，就要新增一个队列**，这里只有 10S 和 40S 两个时间选项，如果需要一个小时后处理，那么就需要增加 TTL 为一个小时的队列，如果是预定会议室然后提前通知这样的场景，岂不是要增加无数个队列才能满足需求？
+
+#### 延时队列优化
+
+新增了一个队列 QC，绑定关系如下，该队列不设置 TTL 时间
+
+![image-20240331185532598](./imgs/RabbitMQ/image-20240331185532598.png)
+
+配置类
 
 ```java
 @Component
-@EnableBinding(Source.class)
-public class MessageSender {
-
- @Autowired
- private Source source;
- 
- public void sendMessage(Object message) {
-  MessageBuilder<Object> builder = MessageBuilder.withPayload(message);
-  source.output().send(builder.build());
- }
+public class MsgTtlQueueConfig {
+    public static final String Y_DEAD_LETTER_EXCHANGE = "Y";
+    public static final String QUEUE_C = "QC";
+    //声明队列 C 死信交换机
+    @Bean("queueC")
+    public Queue queueB(){
+        Map<String, Object> args = new HashMap<>(3);
+        //声明当前队列绑定的死信交换机
+        args.put("x-dead-letter-exchange", Y_DEAD_LETTER_EXCHANGE);
+        //声明当前队列的死信路由 key
+        args.put("x-dead-letter-routing-key", "YD");
+        //没有声明 TTL 属性
+        return QueueBuilder.durable(QUEUE_C).withArguments(args).build();
+    }
+    //声明队列 B 绑定 X 交换机
+    @Bean
+    public Binding queuecBindingX(@Qualifier("queueC") Queue queueC,
+                                  @Qualifier("xExchange") DirectExchange xExchange){
+        return BindingBuilder.bind(queueC).to(xExchange).with("XC");
+    }
 }
 ```
 
-3、在SpringBoot的配置文件中，增加配置
-
-```properties
-server.port=8080
-
-spring.cloud.stream.bindings.output.destination=streamExchange
-
-spring.cloud.stream.bindings.input.destination=streamExchange
-spring.cloud.stream.bindings.input.group=stream
-spring.cloud.stream.bindings.input.content-type=text/plain
-```
-
- 这样三个步骤，就完成了与本地RabbitMQ的对接。
-
- 接下来增加SpringBoot启动类，以及测试用的Controller就可以启动测试了。
+消费者
 
 ```java
-@SpringBootApplication
-public class SCApplication {
-
- public static void main(String[] args) {
-  SpringApplication.run(SCApplication.class, args);
- }
-}
-@RestController
-//@EnableBinding(Source.class)
-public class SendMessageController {
-
- @Autowired
- private Source source;
- 
- @GetMapping("/send")
- public Object send(String message) {
-  MessageBuilder<String> messageBuilder = MessageBuilder.withPayload(message);
-  source.output().send(messageBuilder.build());
-  return "message sended : "+message;
- }
+@GetMapping("sendExpirationMsg/{message}/{ttlTime}")
+public void sendMsg(@PathVariable String message,@PathVariable String ttlTime) {
+    rabbitTemplate.convertAndSend("X", "XC", message, correlationData ->{
+        correlationData.getMessageProperties().setExpiration(ttlTime);
+        return correlationData;
+    });
+    log.info("当前时间：{},发送一条时长{}毫秒 TTL 信息给队列 C:{}", new Date(),ttlTime, message);
 }
 ```
 
- 启动应用后，访问Controller提供的测试端口 http://localhost:8080/send?message=123 。后台就能收到这个消息。
+发起请求`http://localhost:8080/ttl/sendExpirationMsg/你好 1/20000 http://localhost:8080/ttl/sendExpirationMsg/你好 2/2000`
 
-![image](./imgs/RabbitMQ/17C5AD9F28934E048B779B6D83B24302.png)
+![image-20240331185734615](./imgs/RabbitMQ/image-20240331185734615.png)
 
-> 这里可以看到，当前消费者不光收到了MQ消息，还收到了一些系统事件。这些系统事件需要添加@EventListener注解才能接收到。
+看起来似乎没什么问题，但是在最开始的时候，就介绍过如果使用在消息属性上设置 TTL 的方式，消息可能并不会按时“死亡“，因为 **RabbitMQ 只会检查第一个消息是否过期**，如果过期则丢到死信队列， **如果第一个消息的延时时长很长，而第二个消息的延时时长很短，第二个消息并不会优先得到执行。**
 
-#### 理解SpringCloudStream干了些什么
+#### 插件实现延迟队列
 
- 非常简单的几行代码，你甚至都不需要感知RabbitMQ的存在，就完成了与RabbitMQ的对接。但是，简单的背后，意味着，如果你要深入使用更多功能，需要有更扎实的技术基础，对SpringCloudStream有更深入的了解。
+[插件下载](https://www.rabbitmq.com/community-plugins.html)，下载 `rabbitmq_delayed_message_exchange` 插件，然后解压放置到 RabbitMQ 的插件目录。 进入 RabbitMQ 的安装目录下的 plugins 目录，执行下面命令让该插件生效，然后重启 RabbitMQ 
 
- 我们先来了解下，在刚才的简单示例当中，SpringCloudStream都干了些什么事情。
-
-1、配置RabbitMQ服务器
-
- 在SpringBoot的autoconfigure包当中，有个 RabbitProperties类，这个类就会解析application.properties中以spring.rabbitmq开头的配置。里面配置了跟RabbitMQ相关的主要参数，包含服务器地址等。里面对每个参数也都提供了默认值。默认就是访问本地的RabbitMQ服务。
-
-```properties
-#这几个是默认配置。
-spring.rabbitmq.host=localhost
-spring.rabbitmq.port=5672
-spring.rabbitmq.username=guest
-spring.rabbitmq.password=guest
-spring.rabbitmq.virtual-host=/
+```sh
+/usr/lib/rabbitmq/lib/rabbitmq_server-3.8.8/plugins rabbitmq-plugins enable rabbitmq_delayed_message_exchange
 ```
 
-2、在RabbitMQ中声明Exchange和Queue
+![image-20240331190340940](./imgs/RabbitMQ/image-20240331190340940.png)
 
- 既然是要对接RabbitMQ，那么最终还是需要与RabbitMQ服务器进行交互的。从RabbitMQ的管理页面上来看，SCStream帮我们在RabbitMQ的根虚拟机上创建了一个topic类型的scstreamExchange交换机，然后在这个交换机上绑定了一个scstreamExchange.stream队列，绑定的RoutingKey是#。 而程序中的消息发送者是将消息发送到scstreamExchange交换机，然后RabbitMQ将消息转发到scstreamExchange.stream队列，消息接收者从队列接收到消息。这个流程，就是Spring Cloud Stream在背后为我们做的事情。 在这里可以尝试对应RabbitMQ的基础概念以及SCStream框架中的基础概念，整理一下他们之间的对应关系。
+新增了一个队列 `delayed.queue`,一个自定义交换机 `delayed.exchange`，绑定关系如下:
 
- 其实这个示例也演示了SCStream的特点。SCStream框架帮我们屏蔽了与消息中间件的交互细节，开发人员甚至都不需要感知消息中间件的存在，将更多的关注点放到业务处理的细节里。实际上，就我们这个简单的示例，只需要将maven中的spring-cloud-starter-stream-rabbit依赖，换成spring-cloud-starter-stream-kafka，就可以完成与本地Kafka服务的交互，代码不需要做任何的改动。
+![image-20240331190402437](./imgs/RabbitMQ/image-20240331190402437.png)
 
-#### 深入玩转SCStream
+**配置类**
 
- 这里需要注意，SCStream框架的设计目的，是为了实现一套简明的事件驱动模型。在这个事件驱动模型中，是没有RabbitMQ中这些Exchange、queue或者是kafka中的Topic之类的这些功能的，所以这也意味着，如果想要使用RabbitMQ的一些特性功能，比如Quorum队列，死信队列，懒加载队列等，反而会比较麻烦。这就需要对各种基础概念有更深的了解。
-
-##### 1、配置Binder
-
- SCStream是通过Binder来定义一个外部消息服务器。具体对于RabbitMQ来说，Binder就是一个Exchange的抽象。默认情况下，RabbitMQ的binder使用了SpringBoot的ConnectionFactory，所以，他也支持spring-boot-starter-amqp组件中提供的对RabbitMQ的所有配置信息。这些配置信息在application.properties里都以spring.rabbitmq开头。
-
- 而在SCStream框架中，也支持配置多个Binder访问不同的外部消息服务器(例如同时访问kafka和rabbitmq，或者同时访问rabbitmq的多个virtual-host)，就可以通过Binder进行定义。配置的方式都是通过spring.cloud.stream.binders.[bindername].environment.[props]=[value]的格式来进行配置。另外，如果配置了多个binder，也可以通过spring.cloud.stream.default-binder属性指定默认的binder。例如
-
-```properties
-spring.cloud.stream.binders.testbinder.environment.spring.rabbitmq.host=localhost
-spring.cloud.stream.binders.testbinder.environment.spring.rabbitmq.port=5672
-spring.cloud.stream.binders.testbinder.environment.spring.rabbitmq.username=guest
-spring.cloud.stream.binders.testbinder.environment.spring.rabbitmq.password=guest
-```
-
- 这个配置方式就配置了一个名为testbinder的Binder。
-
-##### 2、Binding配置
-
- Binding是SCStream中实际进行消息交互的桥梁。在RabbitMQ中，一个binding可以对应消费者的一个queue，在发送消息时，也可以直接对应一个exchange。在SCStream中，就是通过将Binding和Binder建立绑定关系，然后客户端就之需要通过Binding来进行实际的消息收发。
-
- 在SCStream框架中，配置Binding首先需要进行声明。声明Binding的方式是在应用中通过@EnableBinding注解，向Spring容器中逐日一个Binding接口对象。在这个接口中，增加@Input注解指定接收消息的Binding，而通过@Output注解指定发送消息的Binding。在SCStream中，默认提供了Source、Sink、Processor三个接口对象，这三个对象都是简单的接口，可以直接拿来使用，当然也可以配置自己的Binding接口对象。比如Source，他的定义就是这样的：
+在我们自定义的交换机中，这是一种新的交换类型，该类型消息支持延迟投递机制消息传递后并不会立即投递到目标队列中，而是存储在 `mnesia`(一个分布式数据系统)表中，当达到投递时间时，才投递到目标队列中。
 
 ```java
-public interface Source {
- String OUTPUT = "output";
- @Output(Source.OUTPUT)
- MessageChannel output();
+@Configuration
+public class DelayedQueueConfig {
+    public static final String DELAYED_QUEUE_NAME = "delayed.queue";
+    public static final String DELAYED_EXCHANGE_NAME = "delayed.exchange";
+    public static final String DELAYED_ROUTING_KEY = "delayed.routingkey";
+    @Bean
+    public Queue delayedQueue() {
+        return new Queue(DELAYED_QUEUE_NAME);
+    }
+    //自定义交换机 我们在这里定义的是一个延迟交换机
+    @Bean
+    public CustomExchange delayedExchange() {
+        Map<String, Object> args = new HashMap<>();
+        //自定义交换机的类型
+        args.put("x-delayed-type", "direct");
+        return new CustomExchange(DELAYED_EXCHANGE_NAME, "x-delayed-message", true, false,
+                args);
+    }
+    @Bean
+    public Binding bindingDelayedQueue(@Qualifier("delayedQueue") Queue queue,
+                                       @Qualifier("delayedExchange") CustomExchange
+                                               delayedExchange) {
+        return
+                BindingBuilder.bind(queue).to(delayedExchange).with(DELAYED_ROUTING_KEY).noargs();
+    }
 }
 ```
 
- 通过这个@Output直接，就声明出了一个Binding对象，他的名字就叫做output。对于RabbitMQ，就对应一个queue。SCStream就会将这个output声明为一个消息发送队列。
+消息生产者
 
- 接下来就可以在应用中使用@EnableBinding(Source.class)，声明这个Binding对象。接下来，就可以在Spring应用中使用@Autowired注入，然后通过source.output()方法获取到MesasgeChannel对象，进而发送消息了。
+```java
+public static final String DELAYED_EXCHANGE_NAME = "delayed.exchange";
+public static final String DELAYED_ROUTING_KEY = "delayed.routingkey";
+@GetMapping("sendDelayMsg/{message}/{delayTime}")
+public void sendMsg(@PathVariable String message,@PathVariable Integer delayTime) {
+    rabbitTemplate.convertAndSend(DELAYED_EXCHANGE_NAME, DELAYED_ROUTING_KEY, message,
+            correlationData ->{
+                correlationData.getMessageProperties().setDelay(delayTime);
+                return correlationData;
+            });
+    log.info(" 当 前 时 间 ： {}, 发送一条延迟 {} 毫秒的信息给队列 delayed.queue:{}", new
+            Date(),delayTime, message);
+}
+```
 
- 这时，如果不对output这个Binding做任何配置，应用启动后，会在RabbitMQ中声明出一个默认的exchange和queue。但是默认的名字都太奇怪，而且很多细节功能不够好用。所以，通常都会对这个Binding进行配置。配置的方式都是在application.properties中配置。所有配置都是按照**spring.cloud.stream.binding.[bindingname].[props]=[value]**的格式进行指定。例如：
+消费者
+
+```java
+public static final String DELAYED_QUEUE_NAME = "delayed.queue";
+@RabbitListener(queues = DELAYED_QUEUE_NAME)
+public void receiveDelayedQueue(Message message){
+    String msg = new String(message.getBody());
+    log.info("当前时间：{},收到延时队列的消息：{}", new Date().toString(), msg);
+}
+```
+
+发起请求： `http://localhost:8080/ttl/sendDelayMsg/come on baby1/20000 http://localhost:8080/ttl/sendDelayMsg/come on baby2/2000`
+
+![image-20240331190701259](./imgs/RabbitMQ/image-20240331190701259.png)
+
+发现第二个消息被先消费掉了，符合预期
+
+### 优先级队列
+
+在我们系统中有一个订单催付的场景，我们的客户在天猫下的订单，淘宝会及时将订单推送给我们，如果在用户设定的时间内未付款那么就会给用户推送一条短信提醒，很简单的一个功能
+
+但是，`tmall` 商家对我们来说，肯定是要分大客户和小客户，比如像苹果，小米这样大商家，他们的订单必须得到优先处理，而曾经我们的后端系统是使用 `redis` 来存放的定时轮询，而 redis 只能用 List 做一个简简单单的消息队列，并不能实现一个优先级的场景， 所以订单量大了后采用 RabbitMQ 进行改造和优化，如果发现是大客户的订单给一个相对比较高的优先级， 否则就是默认优先级。
+
+设置优先级：
+
+1. 控制台页面添加`x-max-priority`
+2. 队列中设置`params.put("x-max-priority", 10);`
+3. 消息中设置`AMQP.BasicProperties properties = new AMQP.BasicProperties().builder().priority(5).build();`
+
+> 要让队列实现优先级需要做的事情有如下事情：队列需要设置为优先级队列，消息需要设置消息的优先级，消费者需要等待消息已经发送到队列中才去消费，因为这样才有机会对消息进行排序
+
+### 惰性队列
+
+**惰性队列会尽可能的将消息存入磁盘中，而在消费者消费到相应的消息时才会被加载到内存中**，它的一个重要的设计目标是**能够支持更长的队列**，即支持更多的消息存储。当消费者由于各种各样的原因(比如消费者下线、宕机亦或者是由于维护而关闭等)而致使长时间内不能消费消息造成堆积时，惰性队列就很有必要了。
+
+默认情况下，当生产者将消息发送到 RabbitMQ 的时候，队列中的消息会尽可能的存储在内存之中， 这样可以更加快速的将消息发送给消费者。即使是持久化的消息，在被写入磁盘的同时也会在内存中驻留 一份备份。当 RabbitMQ 需要释放内存的时候，会将内存中的消息换页至磁盘中，这个操作会耗费较长的时间，也会阻塞队列的操作，进而无法接收新的消息。
+
+队列具备两种模式：`default` 和 `lazy`。默认的为 default 模式，在 3.6.0 之前的版本无需做任何变更。
+
+lazy 模式即为惰性队列的模式，可以通过调用 `channel.queueDeclare` 方法的时候在参数中设置，也可以通过 `Policy` 的方式设置，如果一个队列同时使用这两种方式设置的话，那么 Policy 的方式具备更高的优先级。
+
+如果要通过声明的方式改变已有队列的模式的话，那么只能先删除队列，然后再重新声明一个新的。 
+
+在队列声明的时候可以通过`“x-queue-mode”`参数来设置队列的模式，取值为“`default`”和“`lazy`”。下面示 例中演示了一个惰性队列的声明细节：
+
+```java
+Map<String, Object> args = new HashMap<String, Object>();
+args.put("x-queue-mode", "lazy");
+channel.queueDeclare("myqueue", false, false, false, args);
+```
+
+**内存开销对比**
+
+![image-20240331193117743](./imgs/RabbitMQ/image-20240331193117743.png)
+
+在发送 1 百万条消息，每条消息大概占 1KB 的情况下，普通队列占用内存是 1.2GB，而惰性队列仅仅占用 1.5MB
+
+### 总结
+
+延时队列在需要延时处理的场景下非常有用，使用 RabbitMQ 来实现延时队列可以很好的利用 RabbitMQ 的特性，
+
+如：消息可靠发送、消息可靠投递、死信队列来保障消息至少被消费一次以及未被正确处理的消息不会被丢弃。另外，通过 RabbitMQ 集群的特性，可以很好的解决单点故障问题，不会因为单个节点挂掉导致延时队列不可用或者消息丢失。 
+
+延时队列还有很多其它选择，比如利用 Java 的 `DelayQueue`，利用 Redis 的 `zset`，利用 `Quartz` 或者利用 `kafka` 的时间轮，这些方式各有特点，看需要适用的场景
+
+## RabbitMQ总结
+
+### 如何保证消息不丢失
+
+#### 容易丢失消息的环节
+
+![image.png](./imgs/RabbitMQ/WEBRESOURCE826481ef2e4ca511e97b8a95fcc2e61a.png)
+
+ 其中，1，2，4三个场景都是跨网络的，而跨网络就肯定会有丢消息的可能。
+
+然后关于3这个环节，通常MQ存盘时都会先写入操作系统的缓存`page cache`中，然后再由操作系统异步的将消息写入硬盘。这个中间有个时间差，就可能会造成消息丢失。如果服务挂了，缓存中还没有来得及写入硬盘的消息就会丢失。这也是任何用户态的应用程序无法避免的。
+
+ 对于任何MQ产品，都应该从这四个方面来考虑数据的安全性。那我们看看用RabbitMQ时要如何解决这个问题。
+
+#### 消息零丢失方案
+
+- 生产者保证消息正确发送到RibbitMQ
+
+ 对于单个数据，可以使用生产者确认机制。通过多次确认的方式，保证生产者的消息能够正确的发送到RabbitMQ中。
+
+RabbitMQ的生产者确认机制分为同步确认和异步确认。同步确认主要是通过在生产者端使用`Channel.waitForConfirmsOrDie()`指定一个等待确认的完成时间。异步确认机制则是通过`channel.addConfirmListener(ConfirmCallback var1, ConfirmCallback var2)`在生产者端注入两个回调确认函数。第一个函数是在生产者消息发送成功时调用，第二个函数则是生产者消息发送失败时调用。两个函数需要通过`sequenceNumber`自行完成消息的前后对应。`sequenceNumber`的生成方式需要通过channel的序列获取。`int sequenceNumber = channel.getNextPublishSeqNo();`
+
+当前版本的RabbitMQ，可以在Producer中添加一个`ReturnListener`，监听那些成功发到`Exchange`，但是却没有路由到Queue的消息。如果不想将这些消息返回给Producer，就可以在Exchange中，也可以声明一个`alternate-exchange`参数，将这些无法正常路由的消息转发到指定的备份Exchange上。
+
+如果发送批量消息，在RabbitMQ中，另外还有一种手动事务的方式，可以保证消息正确发送。手动事务机制主要有几个关键的方法：
+
+1. channel.txSelect() 开启事务；
+2. channel.txCommit() 提交事务；
+3. channel.txRollback() 回滚事务；
+
+用这几个方法来进行事务管理。但是这种方式需要手动控制事务逻辑，并且手动事务会对channel产生阻塞，造成吞吐量下降
+
+- RabbitMQ消息存盘不丢消息
+
+这个在RabbitMQ中比较好处理，对于Classic经典队列，直接将队列声明成为持久化队列即可。而新增的Quorum队列和Stream队列，都是明显的持久化队列，能更好的保证服务端消息不会丢失。
+
+- RabbitMQ 主从消息同步时不丢消息
+
+ 这涉及到RabbitMQ的集群架构。首先他的普通集群模式，消息是分散存储的，不会主动进行消息同步了，是有可能丢失消息的。而镜像模式集群，数据会主动在集群各个节点当中同步，这时丢失消息的概率不会太高。
+
+另外，启用`Federation`联邦机制，给包含重要消息的队列建立一个远端备份，也是一个不错的选择。
+
+- RabbitMQ消费者不丢失消息
+
+RabbitMQ在消费消息时可以指定是自动应答，还是手动应答。如果是自动应答模式，消费者会在完成业务处理后自动进行应答，而如果消费者的业务逻辑抛出异常，RabbitMQ会将消息进行重试，这样是不会丢失消息的，但是有可能会造成消息一直重复消费。
+
+将RabbitMQ的应答模式设定为手动应答可以提高消息消费的可靠性。
+
+```java
+channel.basicConsume(queueName, false, new DefaultConsumer(channel) {
+    @Override
+    public void handleDelivery(String consumerTag, Envelope envelope,
+                               BasicProperties properties, byte[] body)
+      throws IOException {
+      long deliveryTag = envelope.getDeliveryTag();
+      channel.basicAck(deliveryTag, false);
+    }
+  });
+channel.basicConsume(queueName, true, myconsumer);
+```
+
+另外这个应答模式在SpringBoot集成案例中，也可以在配置文件中通过属性`spring.rabbitmq.listener.simple.acknowledge-mode` 进行指定。
+
+可以设定为AUTO 自动应答； MANUAL 手动应答；NONE 不应答；
+
+其中这个NONE不应答，就是不启动应答机制，RabbitMQ只管往消费者推送消息后，就不再重复推送消息了，相当于RocketMQ的`sendoneway`， 这样效率更高，但是显然会有丢消息的可能。
+
+ 最后，任何用户态的应用程序都无法保证绝对的数据安全，所以，备份与恢复的方案也需要考虑到。
+
+### 消息幂等
+
+1. RabbitMQ的自动重试功能：
+
+当消费者消费消息处理业务逻辑时，如果抛出异常，或者不向RabbitMQ返回响应，默认情况下，RabbitMQ会无限次数的重复进行消息消费。
+
+处理幂等问题，**首先要设定RabbitMQ的重试次数**。在SpringBoot集成RabbitMQ时，可以在配置文件中指定`spring.rabbitmq.listener.simple.retry`开头的一系列属性，来制定重试策略。
+
+ **然后，需要在业务上处理幂等问题**。处理幂等问题的关键是要给每个消息一个唯一的标识。
+
+在SpringBoot框架集成RabbitMQ后，可以给每个消息指定一个全局唯一的`MessageID`，在消费者端针对`MessageID`做幂等性判断。关键代码：
+
+```java
+//发送者指定ID字段
+Message message2 = MessageBuilder.withBody(message.getBytes()).setMessageId(UUID.randomUUID().toString()).build();
+  rabbitTemplate.send(message2);
+//消费者获取MessageID，自己做幂等性判断
+@RabbitListener(queues = "fanout_email_queue")
+public void process(Message message) throws Exception {
+    // 获取消息Id
+    String messageId = message.getMessageProperties().getMessageId();
+    ...
+}
+```
+
+> 要注意下这里用的message要是org.springframework.amqp.core.Message
+
+在原生API当中，也是支持`MessageId`的。当然，在实际工作中，最好还是能够添加一个具有业务意义的数据作为唯一键会更好，这样能更好的防止重复消费问题对业务的影响。比如，针对订单消息，那就用订单ID来做唯一键。在RabbitMQ中，消息的头部就是一个很好的携带数据的地方。
+
+```java
+// ==== 发送消息时，携带sequenceNumber和orderNo
+AMQP.BasicProperties.Builder builder = new AMQP.BasicProperties.Builder();
+builder.deliveryMode(MessageProperties.PERSISTENT_TEXT_PLAIN.getDeliveryMode());
+builder.priority(MessageProperties.PERSISTENT_TEXT_PLAIN.getPriority());
+//携带消息ID
+builder.messageId(""+channel.getNextPublishSeqNo());
+Map<String, Object> headers = new HashMap<>();
+//携带订单号
+headers.put("order", "123");
+builder.headers(headers);
+channel.basicPublish("", QUEUE_NAME, builder.build(), message.getBytes("UTF-8"));
+
+// ==== 接收消息时，拿到sequenceNumber
+Consumer myconsumer = new DefaultConsumer(channel) {
+   @Override
+   public void handleDelivery(String consumerTag, Envelope envelope,
+     BasicProperties properties, byte[] body)
+     throws IOException {
+                //获取消息ID
+                System.out.println("messageId:"+properties.getMessageId());
+    //获取订单ID
+     properties.getHeaders().forEach((key,value)-> System.out.println("key: "+key +"; value: "+value));
+     // (process the message components here ...)
+     //消息处理完后，进行答复。答复过的消息，服务器就不会再次转发。
+     //没有答复过的消息，服务器会一直不停转发。
+     channel.basicAck(deliveryTag, false);
+   }
+  };
+channel.basicConsume(QUEUE_NAME, false, myconsumer);
+```
+
+### 保证消息的顺序
+
+某些场景下，需要保证消息的消费顺序，例如一个下单过程，需要先完成扣款，然后扣减库存，然后通知快递发货，这个顺序不能乱。如果每个步骤都通过消息进行异步通知的话，这一组消息就必须保证他们的消费顺序是一致的。
+
+在RabbitMQ当中，针对消息顺序的设计其实是比较弱的。唯一比较好的策略就是：**单队列+单消息推送**。即一组有序消息，只发到一个队列中，利用队列的FIFO特性保证消息在队列内顺序不会乱。但是，显然，这是以极度消耗性能作为代价的，在实际适应过程中，应该尽量避免这种场景。
+
+然后在消费者进行消费时，保证只有一个消费者，同时指定**prefetch**属性为1，即每次RabbitMQ都只往客户端推送一个消息。像这样：
 
 ```properties
-spring.cloud.stream.bindings.output.destination=scstreamExchange
-spring.cloud.stream.bindings.output.group=myoutput
-
-spring.cloud.stream.bindings.output.binder=testbinder
+spring.rabbitmq.listener.simple.prefetch=1
 ```
 
- 这样就指定了output这个Binding对应的Exchange。
+而在多队列情况下，如何保证消息的顺序性，目前使用RabbitMQ的话，还没有比较好的解决方案。在使用时，应该尽量避免这种情况。
 
-> 注意：1、如果不希望每个Binding都单独指定Binder，就可以配置默认的Binder。
->
-> 2、对于binding，可以指定group所属组的属性。Group这个概念在RabbitMQ中是不存在的，但是SCStream会按照这个group属性，声明一个名为scstreamExchange.myoutput的queue队列，并与scstreamExchange建立绑定关系。
+### 消息堆积问题
 
-##### 3、SCStream的分组消费策略
+RabbitMQ一直以来都有一个缺点，就是对于**消息堆积问题**的处理不好。当RabbitMQ中有大量消息堆积时，整体性能会严重下降。而目前新推出的`Quorum`队列以及`Stream`队列，目的就在于解决这个核心问题。但是这两种队列的稳定性和周边生态都还不够完善，目前大部分企业还是围绕`Classic`经典队列构建应用。因此，在使用RabbitMQ时，还是要非常注意消息堆积的问题。尽量让消息的消费速度和生产速度保持一致。
 
- 通过Binding，即可以声明消息生产者，也可以声明消息消费者。基础的配置方式是差不多的。参见之前的示例，不难理解。
+而如果确实出现了消息堆积比较严重的场景，就需要从数据流转的各个环节综合考虑，设计适合的解决方案。
 
- 下面重点来看下这个group组属性。消费者组的概念，在RabbitMQ中是不存在的。但是，如果你接触过Kafka或者RocketMQ，那么对于组，你就不会陌生了。SCStream中的消费者分组策略，其实整体来看是一种类似于Kafka的分组消费机制。即，不同group的消费者，都会消费到所有的message消息，而在同一个goup中，每个message消息，只会被消费一次。这种分组消费的策略，严格来说，在RabbitMQ中是不存在的，RabbitMQ是通过不同类型的Exchange来实现不同的消费策略。而使用SCStream框架，就可以直接在RabbitMQ中实现这种分组消费的策略。
+首先在消息生产者端：对于生产者端，最明显的方式自然是降低消息生产的速度。但是，生产者端产生消息的速度通常是跟业务息息相关的，一般情况下不太好直接优化。但是可以选择尽量多采用批量消息的方式，降低IO频率。
+
+然后在RabbitMQ服务端：从前面的分享中也能看出，RabbitMQ本身其实也在着力于提高服务端的消息堆积能力。对于消息堆积严重的队列，可以**预先添加懒加载机制**，或者创建Sharding分片队列，这些措施都有助于优化服务端的消息堆积能力。另外，尝试使用Stream队列，也能很好的提高服务端的消息堆积能力。
+
+接下来在消息消费者端：要提升消费速度最直接的方式，就是增加消费者数量了。尤其当消费端的服务出现问题，已经有大量消息堆积时。这时，可以尽量多的申请机器，部署消费端应用，争取在最短的时间内消费掉积压的消息。但是这种方式需要注意对其他组件的性能压力。
+
+对于单个消费者端，可以通过配置提升消费者端的吞吐量。例如
 
 ```properties
-spring.cloud.stream.bindings.consumer1.group=stream
-spring.cloud.stream.bindings.consuemr2.group=stream
-spring.cloud.stream.bindings.consumer3.group=stream
-
-spring.cloud.stream.bindings.consumer4.group=stream2
+# 单次推送消息数量
+spring.rabbitmq.listener.simple.prefetch=1
+# 消费者的消费线程数量
+spring.rabbitmq.listener.simple.concurrency=5
 ```
 
-例如这样，就声明了两个消费者组。consumer1,consumer2,consumer3是一个组，consuemr4是另一个组。接下来，可以自行验证一下消息的分发过程。
+灵活配置这几个参数，能够在一定程度上调整每个消费者实例的吞吐量，减少消息堆积数量。
 
- 对于这种分组消费的策略，SCStream框架不光提供了实现，同时还提供了扩展。可以对每个组进行分区(partition，是不是感觉越来越像Kafka了？)。
+当确实遇到紧急状况，来不及调整消费者端时，可以紧急上线一个消费者组，专门用来将消息快速转录。保存到数据库或者Redis，然后再慢慢进行处理。
 
- 例如做这样的配置
-
-```properties
-#消息生产者端配置
-#启动发送者分区
-spring.cloud.stream.bindings.output.producer.partitioned=true
-#指定参与消息分区的消费端节点数量
-spring.cloud.stream.bindings.output.producer.partition-count=2
-#只有消费端分区ID为1的消费端能接收到消息
-spring.cloud.stream.bindings.output.producer.partition-key-expression=1
-
-#消息消费者端配置
-#启动消费分区
-spring.cloud.stream.bindings.input.consumer.partitioned=true
-#参与分区的消费端节点个数
-spring.cloud.stream.bindings.input.consumer.instance-count=2
-#设置该实例的消费端分区ID
-spring.cloud.stream.bindings.input.consumer.instance-index=1
-```
-
- 通过这样的分组策略，当前这个消费者实例就只会消费奇数编号的消息，而偶数编号的消息则不会发送到这个消费者中。**注意：**这并不是说偶数编号的消息就不会被消费，只是不会被当前这个实例消费而已。
-
-> SCStream框架虽然实现了这种分组策略机制，但是其实是不太严谨的，当把分区数量和分区ID不按套路分配时，并没有太多的检查和日志信息，但是就是收不到消息。
->
-> 另外，在@StreamListener注解中还有condition属性也可以配置消费者的分配逻辑，该属性支持一个SPELl表达式，只接收满足条件的消息。
-
-##### 4、使用原生消息转发机制
-
- SCStream其实自身实现了一套事件驱动的流程。这种流程，对于各种不同的MQ产品都是一样的。但是，毕竟每个MQ产品的实现机制和功能特性是不一样的，所以，SCStream还是提供了一套针对各个MQ产品的兼容机制。
-
- 在RabbitMQ的实现中，所有个性化的属性配置实现都是以spring.cloud.stream.rabbit开头，支持对binder、producer、consumer进行单独配置。
-
-```properties
-#绑定exchange
-spring.cloud.stream.binding.<bindingName>.destination=fanoutExchange
-#绑定queue
-spring.cloud.stream.binding.<bindingName>.group=myQueue
-#不自动创建queue
-spring.cloud.stream.rabbit.bindings.<bindingName>.consumer.bindQueue=false
-#不自动声明exchange(自动声明的exchange都是topic)
-spring.cloud.stream.rabbit.bindings.<bindingName>.consumer.declareExchange=false
-#队列名只声明组名(前面不带destination前缀)
-spring.cloud.stream.rabbit.bindings.<bindingName>.consumer.queueNameGroupOnly=true
-#绑定rouytingKey
-spring.cloud.stream.rabbit.bindings.<bindingName>.consumer.bindingRoutingKey=myRoutingKey
-#绑定exchange类型
-spring.cloud.stream.rabbit.bindings.<bindingName>.consumer.exchangeType=<type>
-#绑定routingKey
-spring.cloud.stream.rabbit.bindings.<bindingName>.producer.routingKeyExpression='myRoutingKey'
-```
-
- 通过这些配置可以按照RabbitMQ原生的方式进行声明。例如，SCStream自动创建的Exchange都是Topic类型的，如果想要用其他类型的Exchange交换机，就可以手动创建交换机，然后在应用中声明不自动创建交换机。
-
- 所有可配置的属性，参见github仓库中的说明。例如，如果需要声明一个Quorum仲裁队列，那么只要给这个Binding配置quorum.enabled属性，值为true就可以了。
-
-> Stream队列目前尚不支持。RabbitMQ周边生态的发展肯定是比产品自身的发展速度要慢的，由此也可见，目前阶段，Stream队列离大规模使用还是有一点距离的。
-
-##### 5、使用SCStream配置死信队列
-
- 死信(Dead letter)队列是RabbitMQ中的一个高级功能，所谓死信，就是长期没有人消费的消息。RabbitMQ中有以下几种情况会产生死信：
-
-- 消息被拒绝(basic.reject/baskc.nack)并且设置消息不重新返回队列 (配置 spring.rabbitmq.listener.default-requeue-rejected=true=false 。这个属性默认是true，就是消息处理失败后，就会重新返回队列，后续重新投递。但是这里需要注意，如果队列已经满了，那就会循环不断的报错，这时候就要考虑死信了)
-- 队列达到最大长度
-- 消息TTL过期
-
- 在RabbitMQ中，有一类专门处理死信的Exchange交换机和Queue队列。通过RabbitMQ的死信队列功能，可以很好的用来实现延迟队列或者消息补发之类的功能。
-
- RabbitMQ的死信队列实现机制，是在正常队列上声明一个死信交换机dlExchange，然后这个死信交换机dlExchange可以像正常交换机Exchange一样，去绑定队列，分发消息等。其配置方式，就是在队列中增加声明几个属性来指定死信交换机。而这几个队列属性，即可以在服务器上直接配置，也可以用原生API配置，还可以用SpringBoot的方式声明Queue队列来实现，并且在SCStream框架中也支持定制。主要就是这几个属性：
-
-```
-x-dead-letter-exchange:	mirror.dlExchange   对应的死信交换机
-x-dead-letter-routing-key:	mirror.messageExchange1.messageQueue1  死信交换机routing-key
-x-message-ttl:	3000  消息过期时间
-durable:	true  持久化，这个是必须的。
-```
-
- 配置完成后，在管理页面也能看到队列信息：
-
-![image](./imgs/RabbitMQ/3EACC74F4C77475495C7C86F59137DE9.png)
-
- 这样配置完成后，在当前队列中的消息，经过3秒无人消费，就会通过指定的死信交换机mirror.dlExchange，分发到对应的死信队列中。
-
- 关于如何配置这些属性，在之前声明Quorum仲裁队列和Stream队列时，都有说明。
-
- 而在SCStream框架中，就可以通过以下的方式进行配置：
-
-```properties
-spring.cloud.stream.rabbit.bindings.input.destination=DlqExchange
-spring.cloud.stream.rabbit.bindings.input.group=dlQueue
-
-spring.cloud.stream.rabbit.bindings.output.destination=messageExchange1
-spring.cloud.stream.rabbit.bindings.output.producer.required-groups=messageQueue1
-spring.cloud.stream.rabbit.rabbit.bindings.output.producer.autoBindDlq=true
-spring.cloud.stream.rabbit.rabbit.bindings.output.producer.ttl=3000
-spring.cloud.stream.rabbit.rabbit.bindings.output.producer.deadLetterExchange=DlqExchange
-spring.cloud.stream.rabbit.rabbit.bindings.output.producer.deadLetterQueueName=DlqExchange.dlQueue
-```
-
- 通过这样的一组配置，从output这个Binding发送的消息，经过3秒后，就会被input这个Binding对应的消费者消费到了。
-
-##### 6、扩展的事件监听机制
-
- 另外，在SCStream框架的Sink消费者端，还可以添加@EventListener注解。加入这个注解后，这个Sink消费者，不光可以消费MQ消息，还能监控很多Spring内的事件，像 AsyncConsumerStartedEvent、ApplicationReadyEvent(springBoot启动事件)、ServletRequestHandledEvent(请求响应事件)等等。而使用这些功能，我们可以将Spring的应用事件作为业务事件一样处理，这对于构建统一的Spring应用监控体系是非常有用的。
-
-##### 7、SCStream框架总结
-
- 对于事件驱动这个应用场景来说，SCStream框架绝对是一个举足轻重的产品。一方面，他极大的简化的事件驱动的开发过程，让技术人员可以减少对于不同MQ产品的适应过程，更多的关注业务逻辑。另一方面，SCStream框架对各种五花八门的MQ产品提供了一种统一的实现流程，从而可以极大的减少应用对于具体MQ产品的依赖，极大提高应用的灵活性。例如如果应用某一天想要从RabbitMQ切换成Kafka或者RocketMQ等其他的MQ产品，如果采用其他框架，需要对应用程序做非常大的改动。但是，如果使用SCStream框架，那么基本上就是换Maven依赖，调整相关配置就可以了。应用代码基本不需要做任何改动。
-
- 当然，SCStream框架使用非常方便的背后，也意味着更高的学习门槛。如果只是最简单的使用MQ产品，那你当然可以不用感知MQ产品的存在，就用SCStream框架进行快速的开发。但是，当你需要深入的使用MQ产品时，那就不光需要学习MQ产品本身，还需要学习具体MQ产品模型如何与SCStream的基础模型对应以及转换。这其实对技术反而提出了更高的要求。所以SCStream在一些技术非常扎实的大厂用得比较多，而在一些传统的IT企业，反而有点Hold不住，还不如原生API和SpringBoot集成来得更方便。
-
- 你也可以试试，通过学习，能不能Hold住这个神奇的框架。
 
