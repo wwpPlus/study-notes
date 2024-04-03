@@ -1,3 +1,8 @@
+---
+title: Promise
+date: 2023-11-16 17:26:40
+permalink: /pages/e2ab93/
+---
 # Promise
 
 > Promise 的面试题基本都是代码题，不提供参考答案，否则容易干扰思考

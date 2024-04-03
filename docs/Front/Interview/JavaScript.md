@@ -1,6 +1,11 @@
+---
+title: JavaScript
+date: 2023-11-16 17:26:40
+permalink: /pages/77bb95/
+---
 # JavaScript
 
-![js](./imgs/javascript.jpg)
+![js](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/javascript.jpg)
 
 ## 1. 根据下面 *ES6* 构造函数的书写方式，要求写出 *ES5* 的
 

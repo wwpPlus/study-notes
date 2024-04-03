@@ -1,3 +1,8 @@
+---
+title: Zookeeper
+date: 2024-03-05 10:06:47
+permalink: /pages/6a436f/
+---
 # Zookeeper
 
 ## CAP&Base理论
@@ -14,7 +19,7 @@ CAP 理论指出对于一个分布式计算系统来说，不可能同时满足�
 >
 > 在这三个基本需求中，最多只能同时满足其中的两项，P 是必须的，因此只能在 CP 和 AP 中选择，`Zookeeper` 保证的是 **CP**，对比 `Spring Cloud` 系统中的注册中心 `eureka` 实现的是 **AP**。
 
-![0](./imgs/Zookeeper/44808.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/44808.png)
 
 **BASE 理论**
 
@@ -58,13 +63,13 @@ BASE 理论是对 CAP 中的一致性和可用性进行一个权衡的结果，�
 
 `Zookeeper` 是一个**开源的分布式协调框架**，是`Apache Hadoop` 的一个子项目，**主要用来解决分布式集群中应用系统的一致性问题**。Zookeeper 的设计目标是将那些复杂且容易出错的分布式一致性服务封装起来，构成一个高效可靠的原语集，并以一系列简单易用的接口提供给用户使用。
 
-![0](./imgs/Zookeeper/44781.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/44781.png)
 
 Zookeeper本质上是一个分布式的小文件存储系统（Zookeeper=文件系统+监听机制）。提供基于类似于文件系统的目录树方式的数据存储，并且可以对树中的节点进行有效管理，从而用来维护和监控存储的数据的状态变化。通过监控这些数据状态的变化，从而可以达到**基于数据的集群管理、统一命名服务、分布式配置管理、分布式消息队列、分布式锁、分布式协调**等功能。
 
 Zookeeper从设计模式角度来理解：**是一个基于观察者模式设计的分布式服务管理框架**，它负责存储和管理大家都关心的数据，然后接受观察者的注册，一旦这些数据的状态发生变化，Zookeeper 就将负责通知已经在Zookeeper上注册的那些观察者做出相应的反应。
 
-![0](./imgs/Zookeeper/44785.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/44785.png)
 
 ## Zookeeper使用
 
@@ -72,7 +77,7 @@ Zookeeper从设计模式角度来理解：**是一个基于观察者模式设计
 
 [下载地址](https://Zookeeper.apache.org/releases.html)
 
-![0](./imgs/Zookeeper/44888.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/44888.png)
 
 1. **修改配置文件**
 
@@ -86,7 +91,7 @@ cp zoo_sample.cfg  zoo.cfg
 
 `zoo.cfg`中参数含义：
 
-![0](./imgs/Zookeeper/44894.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/44894.png)
 
 2. **启动Zookeeper server**
 
@@ -110,7 +115,7 @@ bin/zkCli.sh -server ip:port
 
 输入命令 `help` 查看`Zookeeper`支持的所有命令：
 
-![0](./imgs/Zookeeper/45179.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45179.png)
 
 [常见cli命令](https://Zookeeper.apache.org/doc/r3.8.0/ZookeeperCLI.html)
 
@@ -161,11 +166,11 @@ Zookeeper 的 ACL通过 `[scheme:id:permissions]` 来构成权限列表。
 
 取消节点的读权限后，读取`/name`节点没有权限
 
-![0](./imgs/Zookeeper/45219.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45219.png)
 
 取消节点删除子节点的权限
 
-![0](./imgs/Zookeeper/45225.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45225.png)
 
 #### 授权模式
 
@@ -182,11 +187,11 @@ echo -n fox:123456 | openssl dgst -binary -sha1 | openssl base64
 setAcl /name auth:fox:ZsWwgmtnTnx1usRF1voHFJAYGQU=:cdrwa
 ```
 
-![0](./imgs/Zookeeper/45449.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45449.png)
 
 退出客户端，重新连接之后获取`/name`会没权限，需要添加授权用户。
 
-![0](./imgs/Zookeeper/45241.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45241.png)
 
 **digest授权模式**
 
@@ -195,7 +200,7 @@ setAcl /name auth:fox:ZsWwgmtnTnx1usRF1voHFJAYGQU=:cdrwa
 setAcl /tuling/fox digest:fox:ZsWwgmtnTnx1usRF1voHFJAYGQU=:cdrwa
 ```
 
-![0](./imgs/Zookeeper/45475.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45475.png)
 
 **IP授权模式**
 
@@ -221,7 +226,7 @@ setAcl /node-ip  ip:IP1:rw,ip:IP2:a
 
 `Zookeeper` 数据模型的结构与 `Unix` 文件系统很类似，整体上可以看作是一棵树，每个节点称做一个 `ZNode`。
 
-![0](./imgs/Zookeeper/45253.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45253.png)
 
 `Zookeeper`的数据模型是**层次模型**，层次模型常见于文件系统。层次模型和`key-value`模型是两种主流的数据模型。`Zookeeper`使用文件系统模型主要基于以下两点考虑：
 
@@ -265,7 +270,7 @@ Zookeeper主要用到的是持久、持久顺序、临时、临时顺序4种节�
 
 Container容器节点：当容器中没有任何子节点，该容器节点会被zk定期删除（定时任务默认60s 检查一次)。 和持久节点的区别是 ZK 服务端启动后，会有一个单独的线程去扫描，所有的容器节点，当发现容器节点的子节点数量为 0 时，会自动删除该节点。可以用于 leader 或者锁的场景中。
 
-![0](./imgs/Zookeeper/45327.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45327.png)
 
 ```sh
 # 创建持久节点
@@ -299,7 +304,7 @@ create -t 10 /ttl
 >
 > - 在client和server通信之前，首先需要建立连接，该连接称为session。连接建立后，如果发生连接超时、授权失败，或者显式关闭连接，连接便处于closed状态，此时session结束。
 
-![0](./imgs/Zookeeper/45321.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45321.png)
 
 #### 监听通知（watcher）机制
 
@@ -362,7 +367,7 @@ create -e /master "m2:2223"
 
 `master-slave`选举也可以用这种方式
 
-![0](./imgs/Zookeeper/45382.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45382.png)
 
 master监控worker状态的设计思路
 
@@ -386,7 +391,7 @@ ls -w /workers
 quit  # worker2退出，master服务会收到子节点变化通知
 ```
 
-![0](./imgs/Zookeeper/45407.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45407.png)
 
 **使用场景——条件更新**
 
@@ -400,22 +405,22 @@ quit  # worker2退出，master服务会收到子节点变化通知
 
 使用条件更新可以避免出现客户端基于过期的数据进行数据更新的操作。
 
-![0](./imgs/Zookeeper/45535.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45535.png)
 
-![0](./imgs/Zookeeper/45439.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45439.png)
 
 #### **Zookeeper 节点特性总结**
 
 1. **同一级节点 key 名称是唯一的**：已存在`/lock`节点，再次创建会提示已经存在
 
-![0](./imgs/Zookeeper/45268.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45268.png)
 
 2. **创建节点时，必须要带上全路径**
 3. **session 关闭，临时节点清除**
 
 4. **自动创建顺序节点**
 
-![0](./imgs/Zookeeper/45266.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45266.png)
 
 5. **watch 机制，监听节点变化**
 
@@ -447,7 +452,7 @@ quit  # worker2退出，master服务会收到子节点变化通知
 
 例如：IP不容易记住，而域名容易记住。
 
-![0](./imgs/Zookeeper/45267.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45267.png)
 
 利用 Zookeeper 顺序节点的特性，制作分布式的序列号生成器，或者叫 id 生成器。（分布式环境下使用作为数据库 id，另外一种是 UUID（缺点：没有规律）），Zookeeper 可以生成有顺序的容易理解的同时支持分布式环境的编号。
 
@@ -476,7 +481,7 @@ Zookeeper 采用的是推拉结合的方式。
 1. 推：服务端会推给注册了监控节点的客户端 watcher 事件通知
 2. 拉:：客户端获得通知后，然后主动到服务端拉取最新的数据
 
-![0](./imgs/Zookeeper/45269.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45269.png)
 
 **统一集群管理**
 
@@ -487,13 +492,13 @@ Zookeeper可以实现实时监控节点状态变化：
 - 可将节点信息写入Zookeeper上的一个ZNode。
 - 监听这个ZNode可获取它的实时状态变化。
 
-![0](./imgs/Zookeeper/45264.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45264.png)
 
 **负载均衡**
 
 在Zookeeper中记录每台服务器的访问数，让访问数最少的服务器去处理最新的客户端请求
 
-![0](./imgs/Zookeeper/45265.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45265.png)
 
 ## Zookeeper集群
 
@@ -518,7 +523,7 @@ Observer应用场景：
 
 ### 集群架构
 
-![0](./imgs/Zookeeper/44906.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/44906.png)
 
 leader节点可以处理读写请求，follower只可以处理读请求。follower在接到写请求时会把写请求转发给leader来处理。
 
@@ -569,7 +574,7 @@ cd /data/Zookeeper
 vim myid
 ```
 
-![0](./imgs/Zookeeper/44927.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/44927.png)
 
 3. **启动`Zookeeper server`集群**
 
@@ -582,7 +587,7 @@ bin/zkServer.sh start
 bin/zkServer.sh status
 ```
 
-![0](./imgs/Zookeeper/44962.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/44962.png)
 
 ### Zookeeper四字命令
 
@@ -671,7 +676,7 @@ Zookeeper 的 leader 选举存在两个阶段：**一个是服务器启动时 le
 
 5. 改变服务器状态。一旦确定了 leader，每个服务器响应更新自己的状态，如果是 follower，那么就变更为 `FOLLOWING`，如果是 Leader，变更为 `LEADING`。此时 server3继续启动，直接加入变更自己为 `FOLLOWING`。
 
-![0](./imgs/Zookeeper/45570.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45570.png)
 
 **运行过程中的 leader 选举**
 
@@ -699,7 +704,7 @@ Zookeeper 使用单一的主进程 Leader 来接收和处理客户端所有事�
 
 > 注意 Observer 节点只负责同步 Leader 数据，不参与 2PC 数据同步过程。
 
-![0](./imgs/Zookeeper/45559.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45559.png)
 
 **崩溃恢复**
 
@@ -1092,7 +1097,7 @@ Dubbo分布式框架就是应用了Zookeeper的分布式的JNDI功能。在Dubbo
 -  服务提供者（`Service Provider`）在启动的时候，向Zookeeper上的指定节点`/dubbo/${serviceName}/providers`写入自己的API地址，这个操作就相当于服务的公开。
 -  服务消费者（`Consumer`）启动的时候，订阅节点`/dubbo/{serviceName}/providers`下的服务提供者的URL地址，获得所有服务提供者的API。
 
-![0](./imgs/Zookeeper/45745.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45745.png)
 
 ### 分布式节点命名
 
@@ -1208,13 +1213,13 @@ public void testMarkId() throws Exception {
 
 结果
 
-![img](./imgs/Zookeeper/45808.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45808.png)
 
 #### 基于Zookeeper实现SnowFlakeID算法
 
 SnowFlake算法是一种著名的分布式服务器用户ID生成算法。SnowFlake算法所生成的ID是一个64bit的长整型数字。这个64bit被划分成四个部分，其中后面三个部分分别表示时间戳、工作机器ID、序列号。
 
-![0](./imgs/Zookeeper/45839.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/45839.png)
 
 SnowFlakeID的四个部分，具体介绍如下：
 
@@ -1398,7 +1403,7 @@ public class SnowflakeIdGenerator {
 
 可以利用数据库的**唯一索引**来实现，唯一索引天然具有排他性
 
-![0](./imgs/Zookeeper/46070.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/46070.png)
 
 基于数据库实现分布式锁存在的问题：
 
@@ -1409,7 +1414,7 @@ public class SnowflakeIdGenerator {
 
 使用**临时 znode** 来表示获取锁的请求，创建 znode成功的用户拿到锁。
 
-![0](./imgs/Zookeeper/46025.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/46025.png)
 
 上述设计存在的问题：如果所有的锁请求者都 watch 锁持有者，当代表锁持有者的 znode 被删除以后，**所有的锁请求者都会通知到**，但是只有一个锁请求者能拿到锁。这就是**羊群效应**。
 
@@ -1417,7 +1422,7 @@ public class SnowflakeIdGenerator {
 
 使用**临时顺序 znode** 来表示获取锁的请求，创建最小后缀数字 znode 的用户成功拿到锁。（公平锁的实现）
 
-![0](./imgs/Zookeeper/46033.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/46033.png)
 
 > 在实际的开发中，如果需要使用到分布式锁，建议直接使用Curator客户端中的各种官方实现的分布式锁，例如其中的`InterProcessMutex`可重入锁。
 
@@ -1425,7 +1430,7 @@ public class SnowflakeIdGenerator {
 
 工作流程
 
-![image-20240124170726667](./imgs/Zookeeper/image-20240124170726667.png)
+![image-20240124170726667](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/image-20240124170726667.png)
 
 **Zookeeper分布式锁的优缺点**
 
@@ -1439,7 +1444,7 @@ public class SnowflakeIdGenerator {
 
 用于**服务注册**和**服务发现**，基于 Zookeeper 本身的特性可以实现注册中心
 
-![0](./imgs/Zookeeper/46101.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/46101.png)
 
 1. 在父pom文件中指定Spring Cloud版本
 
@@ -1509,7 +1514,7 @@ spring:
 
 注册到Zookeeper的服务实例元数据信息如下：
 
-![0](./imgs/Zookeeper/46142.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Zookeeper/46142.png)
 
 > 如果address有问题，会出现找不到服务的情况，可以通过`instance-host`配置指定
 

@@ -1,6 +1,11 @@
+---
+title: HTML
+date: 2023-11-16 17:26:40
+permalink: /pages/e3260c/
+---
 # HTML
 
-![html](./imgs/html.jpg)
+![html](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/html.jpg)
 
 ## 1. 什么是 \<!DOCTYPE>？是否需要在 *HTML5* 中使用？
 

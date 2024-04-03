@@ -1,3 +1,8 @@
+---
+title: Linux
+date: 2023-11-16 17:26:39
+permalink: /pages/00ce2a/
+---
 # Linux
 
 ## 基本操作

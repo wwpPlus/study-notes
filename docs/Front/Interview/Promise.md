@@ -1,6 +1,11 @@
+---
+title: Promise
+date: 2023-11-16 17:26:40
+permalink: /pages/f9216a/
+---
 # Promise
 
-![promise](./imgs/promise.jpg)
+![promise](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/promise.jpg)
 
 > Promise 的面试题基本都是代码题，不提供参考答案，否则容易干扰思考
 >

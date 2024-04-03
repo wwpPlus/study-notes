@@ -1,3 +1,8 @@
+---
+title: Design-Pattern
+date: 2023-11-16 17:26:39
+permalink: /pages/c81b2a/
+---
 # 设计模式
 
 ## 设计模式简介
@@ -138,7 +143,7 @@
 
 FactoryPatternDemo 类使用 ShapeFactory 来获取 Shape 对象。它将向 ShapeFactory 传递信息（CIRCLE / RECTANGLE / SQUARE），以便获取它所需对象的类型。
 
-![Factory](./imgs/Design-Pattern/Factory.jpg)
+![Factory](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Factory.jpg)
 
 **步骤 1**
 
@@ -291,7 +296,7 @@ Inside Square::draw() method.
 
 AbstractFactoryPatternDemo 类使用 FactoryProducer 来获取 AbstractFactory 对象。它将向 AbstractFactory 传递形状信息 Shape（CIRCLE / RECTANGLE / SQUARE），以便获取它所需对象的类型。同时它还向 AbstractFactory 传递颜色信息 Color（RED / GREEN / BLUE），以便获取它所需对象的类型。
 
-![AbstractFactory](./imgs/Design-Pattern/AbstractFactory.jpg)
+![AbstractFactory](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/AbstractFactory.jpg)
 
 **步骤 1**
 
@@ -574,7 +579,7 @@ Inside Blue::fill() method.
 
 SingleObject 类提供了一个静态方法，供外界获取它的静态实例。SingletonPatternDemo 类使用 SingleObject 类来获取 SingleObject 对象。
 
-![Single](./imgs/Design-Pattern/Single.jpg)
+![Single](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Single.jpg)
 
 **步骤 1**
 
@@ -662,7 +667,7 @@ Hello World!
 
 然后我们创建一个 Meal 类，带有 Item 的 ArrayList 和一个通过结合 Item 来创建不同类型的 Meal 对象的 MealBuilder。BuilderPatternDemo 类使用 MealBuilder 来创建一个 Meal。
 
-![Builder](./imgs/Design-Pattern/Builder.jpg)
+![Builder](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Builder.jpg)
 
 **步骤 1**
 
@@ -926,7 +931,7 @@ Total Cost: 85.5
 
 PrototypePatternDemo 类使用 ShapeCache 类来获取 Shape 对象。
 
-![Prototype](./imgs/Design-Pattern/Prototype.jpg)
+![Prototype](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Prototype.jpg)
 
 **步骤 1**
 
@@ -1116,7 +1121,7 @@ Shape : Rectangle
 
 AudioPlayer 使用适配器类 MediaAdapter 传递所需的音频类型，不需要知道能播放所需格式音频的实际类。AdapterPatternDemo 类使用 AudioPlayer 类来播放各种格式。
 
-![Adapter](./imgs/Design-Pattern/Adapter.jpg)
+![Adapter](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Adapter.jpg)
 
 **步骤 1**
 
@@ -1284,7 +1289,7 @@ Invalid media. avi format not supported
 #### 实现
 我们有一个作为桥接实现的 DrawAPI 接口和实现了 DrawAPI 接口的实体类 RedCircle、GreenCircle。Shape 是一个抽象类，将使用 DrawAPI 的对象。BridgePatternDemo 类使用 Shape 类来画出不同颜色的圆。
 
-![Bridge](./imgs/Design-Pattern/Bridge.jpg)
+![Bridge](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Bridge.jpg)
 
 **步骤 1**
 
@@ -1386,7 +1391,7 @@ Drawing Circle[  color: green, radius: 10, x: 100, 100]
 #### 实现
 我们将创建一个 Person 对象、Criteria 接口和实现了该接口的实体类，来过滤 Person 对象的列表。CriteriaPatternDemo 类使用 Criteria 对象，基于各种标准和它们的结合来过滤 Person 对象的列表。
 
-![Criteria](./imgs/Design-Pattern/Filter.jpg)
+![Criteria](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Filter.jpg)
 
 **步骤 1**
 
@@ -1647,7 +1652,7 @@ Person : [ Name : Laura, Gender : Female, Marital Status : Married ]
 #### 实现
 我们有一个类 Employee，该类被当作组合模型类。CompositePatternDemo 类使用 Employee 类来添加部门层次结构，并打印所有员工。
 
-![Composite](./imgs/Design-Pattern/Composite.jpg)
+![Composite](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Composite.jpg)
 
 **步骤 1**
 
@@ -1781,7 +1786,7 @@ RedShapeDecorator 是实现了 ShapeDecorator 的实体类。
 
 DecoratorPatternDemo 类使用 RedShapeDecorator 来装饰 Shape 对象。
 
-![Decorator](./imgs/Design-Pattern/Decorator.jpg)
+![Decorator](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Decorator.jpg)
 
 **步骤 1**
 
@@ -1931,7 +1936,7 @@ Border Color: Red
 
 ShapeMaker 类使用实体类来代表用户对这些类的调用。FacadePatternDemo 类使用 ShapeMaker 类来显示结果。
 
-![Facade](./imgs/Design-Pattern/Facade.jpg)
+![Facade](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Facade.jpg)
 
 **步骤 1**
 
@@ -2065,7 +2070,7 @@ ShapeFactory 有一个 Circle 的 HashMap，其中键名为 Circle 对象的颜�
 
 FlyWeightPatternDemo 类使用 ShapeFactory 来获取 Shape 对象。它将向 ShapeFactory 传递信息（red / green / blue/ black / white），以便获取它所需对象的颜色。
 
-![FlyWeight](./imgs/Design-Pattern/FlyWeight.jpg)
+![FlyWeight](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/FlyWeight.jpg)
 
 **步骤 1**
 
@@ -2229,7 +2234,7 @@ Circle: Draw() [Color : Blue, x : 95, y :82, radius :100
 
 ProxyPatternDemo 类使用 ProxyImage 来获取要加载的 Image 对象，并按照需求进行显示。
 
-![Proxy](./imgs/Design-Pattern/Proxy.jpg)
+![Proxy](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Proxy.jpg)
 
 **步骤 1**
 
@@ -2347,7 +2352,7 @@ Displaying test_10mb.jpg
 #### 实现
 我们创建抽象类 AbstractLogger，带有详细的日志记录级别。然后我们创建三种类型的记录器，都扩展了 AbstractLogger。每个记录器消息的级别是否属于自己的级别，如果是则相应地打印出来，否则将不打印并把消息传给下一个记录器。
 
-![Chain of Responsibility](./imgs/Design-Pattern/Chain%20of%20Responsibility.jpg)
+![Chain of Responsibility](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Chain%20of%20Responsibility.jpg)
 
 **步骤 1**
 
@@ -2501,14 +2506,14 @@ Standard Console::Logger: This is an error information.
 
 命令模式结构示意图:
 
-![命令模式结构](./imgs/Design-Pattern/命令模式结构.jpg)
+![命令模式结构](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/命令模式结构.jpg)
 
 #### 实现
 我们首先创建作为命令的接口 Order，然后创建作为请求的 Stock 类。实体命令类 BuyStock 和 SellStock，实现了 Order 接口，将执行实际的命令处理。创建作为调用对象的类 Broker，它接受订单并能下订单。
 
 Broker 对象使用命令模式，基于命令的类型确定哪个对象执行哪个命令。CommandPatternDemo 类使用 Broker 类来演示命令模式。
 
-![Command](./imgs/Design-Pattern/Command.jpg)
+![Command](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Command.jpg)
 
 **步骤 1**
 
@@ -2656,7 +2661,7 @@ Stock [ Name: ABC, Quantity: 10 ] sold
 
 InterpreterPatternDemo，我们的演示类使用 Expression 类创建规则和演示表达式的解析。
 
-![Interpreter](./imgs/Design-Pattern/Interpreter.jpg)
+![Interpreter](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Interpreter.jpg)
 
 **步骤 1**
 
@@ -2800,7 +2805,7 @@ Julie is a married women? true
 
 IteratorPatternDemo，我们的演示类使用实体类 NamesRepository 来打印 NamesRepository 中存储为集合的 Names。
 
-![Iterator](./imgs/Design-Pattern/Iterator.jpg)
+![Iterator](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Iterator.jpg)
 
 **步骤 1**
 
@@ -2914,7 +2919,7 @@ Name : Lora
 
 MediatorPatternDemo，我们的演示类使用 User 对象来显示他们之间的通信。
 
-![Mediator](./imgs/Design-Pattern/Mediator.jpg)
+![Mediator](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Mediator.jpg)
 
 **步骤 1**
 
@@ -3012,7 +3017,7 @@ Thu Jan 31 16:05:46 IST 2013 [John] : Hello! Robert!
 
 MementoPatternDemo，我们的演示类使用 CareTaker 和 Originator 对象来显示对象的状态恢复。
 
-![Memento](./imgs/Design-Pattern/Memento.jpg)
+![Memento](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Memento.jpg)
 
 **步骤 1**
 
@@ -3149,7 +3154,7 @@ Second saved State: State #3
 
 ObserverPatternDemo，我们的演示类使用 Subject 和实体类对象来演示观察者模式。
 
-![Observer](./imgs/Design-Pattern/Observer.jpg)
+![Observer](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Observer.jpg)
 
 **步骤 1**
 
@@ -3316,7 +3321,7 @@ Binary String: 1010
 
 StatePatternDemo，我们的演示类使用 Context 和状态对象来演示 Context 在状态改变时的行为变化。
 
-![State](./imgs/Design-Pattern/State.jpg)
+![State](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/State.jpg)
 
 **步骤 1**
 
@@ -3425,7 +3430,7 @@ Stop State
 
 NullPatternDemo，我们的演示类使用 CustomerFactory 来演示空对象模式的用法。
 
-![Null](./imgs/Design-Pattern/Null.jpg)
+![Null](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Null.jpg)
 
 **步骤 1**
 
@@ -3562,7 +3567,7 @@ Not Available in Customer Database
 
 StrategyPatternDemo，我们的演示类使用 Context 和策略对象来演示 Context 在它所配置或使用的策略改变时的行为变化。
 
-![Strategy](./imgs/Design-Pattern/Strategy.jpg)
+![Strategy](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Strategy.jpg)
 
 **步骤 1**
 
@@ -3681,7 +3686,7 @@ public class StrategyPatternDemo {
 
 TemplatePatternDemo，我们的演示类使用 Game 来演示模板模式的用法。
 
-![Template](./imgs/Design-Pattern/Template.jpg)
+![Template](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Template.jpg)
 
 **步骤 1**
 
@@ -3812,7 +3817,7 @@ Football Game Finished!
 
 VisitorPatternDemo，我们的演示类使用 Computer、ComputerPartVisitor 类来演示访问者模式的用法。
 
-![Visitor](./imgs/Design-Pattern/Visitor.jpg)
+![Visitor](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Design-Pattern/Visitor.jpg)
 
 **步骤 1**
 

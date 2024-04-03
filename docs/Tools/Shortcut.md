@@ -1,3 +1,8 @@
+---
+title: Shortcut
+date: 2023-11-16 17:26:40
+permalink: /pages/be1cd8/
+---
 # 快捷键
 
 ## Windows快捷键

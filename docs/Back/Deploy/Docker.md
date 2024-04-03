@@ -1,8 +1,13 @@
+---
+title: Docker
+date: 2023-11-16 17:26:39
+permalink: /pages/28c483/
+---
 # Docker
 
 ## Docker 的架构图
 
-![01](./imgs/Docker/01.png)
+![01](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/01.png)
 
 ## Docker 安装
 
@@ -64,7 +69,7 @@ rm -rf /var/lib/docker
 2. 进入管理控制台设置密码，开通
 3. 查看镜像加速器
 
-![02](./imgs/Docker/02.jpg)
+![02](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/02.jpg)
 
 4. 配置镜像加速
 
@@ -88,7 +93,7 @@ docker run hello-world
 
 **run 干了什么？**
 
-![03](./imgs/Docker/03.jpg)
+![03](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/03.jpg)
 
 ## Docker 常用命令
 
@@ -300,7 +305,7 @@ ls
 
 ### 常用命令
 
-![1](./imgs/Docker/1.png)
+![1](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/1.png)
 
 | 命令    | 描述                                                                                  |
 | ------- | ------------------------------------------------------------------------------------- |
@@ -449,11 +454,11 @@ curl localhost:9200
 ## 思考：如果我们要使用 kibana , 如果配置连接上我们的es呢？网络该如何配置呢？见网络部分
 ```
 
-![2](./imgs/Docker/2.png)
+![2](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/2.png)
 
 ### 部署 Redis 集群
 
-![25](./imgs/Docker/25.png)
+![25](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/25.png)
 
 ```shell
 ## 创建网卡
@@ -538,7 +543,7 @@ docker commit -m="提交的描述信息" -a="作者" 容器id 要创建的目标
 
 > 微服务打包成镜像流程：开发应用=>DockerFile=>打包为镜像=>上传到仓库（私有仓库，公有仓库）=> 下载镜像 => 启动<br>
 
-![21](./imgs/Docker/21.png)
+![21](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/21.png)
 
 ### DockerFile 概念
 
@@ -718,7 +723,7 @@ CMD /usr/local/apache-tomcat-9.0.22/bin/startup.sh && tail -F
 
 **当前文件状态**
 
-![14](./imgs/Docker/14.png)
+![14](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/14.png)
 
 **1. 构建镜像**
 
@@ -735,7 +740,7 @@ docker images
 docker run -d -p 9090 :8080 --name mydiytomcat -v /home/kuangshen/build/tomcat/test:/usr/local/apache-tomcat-9.0.22/webapps/test -v /home/kuangshen/build/tomcat/tomcat9logs/:/usr/local/apache-tomcat-9.0.22/logs --privileged=true diytomcat
 ```
 
-![13](./imgs/Docker/13.png)
+![13](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/13.png)
 
 > 备注：Docker 挂载主机目录 Docker 访问出现 cannot open directory .: Permission denied<br>
 > 解决办法：在挂载目录后多加一个--privileged=true 参数即可
@@ -1007,7 +1012,7 @@ docker inspect 0e97e1891a3d
 ## 7、这个卷在主机对应的默认位置
 ```
 
-![9](./imgs/Docker/9.png)
+![9](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/9.png)
 
 > 注意：如果访问出现了 cannot open directory: Permission denied
 > 解决办法：在挂载目录后多加一个 --privileged=true 参数即可
@@ -1026,9 +1031,9 @@ docker inspect 0e97e1891a3d
 
 **1、先启动一个父容器 docker01，然后在 dataVolumeContainer2 新增文件**
 
-![10](./imgs/Docker/10.png)
+![10](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/10.png)
 
-![11](./imgs/Docker/11.png)
+![11](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/11.png)
 
 > 退出不停止：ctrl+P+Q
 
@@ -1108,7 +1113,7 @@ total 0
 
 **6、新建 docker04 继承 docker03，然后再删除 docker03，看下是否可以访问！**
 
-![12](./imgs/Docker/12.png)
+![12](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/12.png)
 
 ```shell
 [root@2119f4f23a92 /]## cd dataVolumeContainer2
@@ -1158,7 +1163,7 @@ total 0
 
 **网络模型图**
 
-![22](./imgs/Docker/22.png)
+![22](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/22.png)
 
 > 结论：tomcat1 和 tomcat2 共用一个路由器。就是 docker0。任何一个容器启动默认都是 docker0 网络。<br>
 > docker 默认会给容器分配一个可用 ip。<br>
@@ -1200,7 +1205,7 @@ docker exec -it tomcat03 cat /etc/hosts
 
 #### 网络模式
 
-![23](./imgs/Docker/23.png)
+![23](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/23.png)
 
 #### 自定义网卡
 
@@ -1228,7 +1233,7 @@ docker exec -it tomcat-net-01 ping tomcat-net-02
 
 ### 网络连通
 
-![24](./imgs/Docker/24.png)
+![24](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/24.png)
 
 > docker0 和自定义网络是不连通的，使用自定义网络的好处就是网络隔离。<br>
 > 如上图，如何让 tomcat-net-01 访问 tomcat1？<br>
@@ -1321,12 +1326,12 @@ docker run -d -p 8088:9000 \ --restart=always -v /var/run/docker.sock:/var/run/d
 
 3. 首次登陆需要注册用户，给 admin 用户设置密码：
 
-![3](./imgs/Docker/3.png)
+![3](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/3.png)
 
 1. 单机版这里选择 local 即可，选择完毕，点击 Connect 即可连接到本地 docker：
 
-![4](./imgs/Docker/4.png)
+![4](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/4.png)
 
 5. 登录成功！
 
-![5](./imgs/Docker/5.png)
+![5](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Docker/5.png)

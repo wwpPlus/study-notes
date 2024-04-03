@@ -1,3 +1,8 @@
+---
+title: Vue
+date: 2023-11-16 17:26:40
+permalink: /pages/678074/
+---
 # Vue
 
 ## 1. 谈一谈对 *MVVM* 的理解？

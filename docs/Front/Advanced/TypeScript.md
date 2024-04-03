@@ -1,3 +1,8 @@
+---
+title: TypeScript
+date: 2023-11-16 17:26:40
+permalink: /pages/351a94/
+---
 # TypeScript
 
 TypeScript 是 JavaScript 的一个超集，支持 ECMAScript 6 标准。
@@ -39,7 +44,7 @@ tsc tsc app.ts
 ```
 
 ts转换为js
-![转换过程](./imgs/typescript/ts_transform.jpg)
+![转换过程](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/typescript/ts_transform.jpg)
 
 ## 数据类型
 

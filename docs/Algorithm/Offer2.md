@@ -1,3 +1,8 @@
+---
+title: Offer2
+date: 2023-11-19 19:52:50
+permalink: /pages/0a5a03/
+---
 # 剑指Offer Ⅱ
 - [原题链接](https://leetcode.cn/studyplan/coding-interviews-special/)
 
@@ -12,7 +17,7 @@
 整数除法的结果应当截去（truncate）其小数部分，例如：truncate(8.345) = 8 以及 truncate(-2.7335) = -2
 假设我们的环境只能存储 32 位有符号整数，其数值范围是 [−231, 231−1]。本题中，如果除法结果溢出，则返回 231 − 1
 
-![两数相除](./imgs/剑指offer2/1.jpg)
+![两数相除](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/1.jpg)
 
 ```java
 class Solution {
@@ -58,7 +63,7 @@ class Solution {
 
 输入为 非空 字符串且只包含数字 1 和 0。
 
-![二进制加法](./imgs/剑指offer2/2.jpg)
+![二进制加法](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/2.jpg)
 
 ```java
 class Solution {
@@ -93,7 +98,7 @@ class Solution {
 Brian Kernighan 算法：对于任意整数 xxx，令 x=x & (x−1)x=x~\&~(x-1)x=x & (x−1)，该运算将 xxx 的二进制表示的最后一个 111 变成 000。
 因此，对 xxx 重复该操作，直到 xxx 变成 000，则操作次数即为 xxx 的「一比特数」。
 
-![前 n 个数字二进制中 1 的个数](./imgs/剑指offer2/3.jpg)
+![前 n 个数字二进制中 1 的个数](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/3.jpg)
 
 ```java
 class Solution {
@@ -130,7 +135,7 @@ class Solution {
 
 给你一个整数数组 nums ，除某个元素仅出现 一次 外，其余每个元素都恰出现 三次 。请你找出并返回那个只出现了一次的元素。
 
-![只出现一次的数字](./imgs/剑指offer2/4.jpg)
+![只出现一次的数字](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/4.jpg)
 
 哈希法
 
@@ -176,7 +181,7 @@ class Solution {
 
 给定一个字符串数组 words，请计算当两个字符串 words[i] 和 words[j] 不包含相同字符时，它们长度的乘积的最大值。假设字符串中只包含英语的小写字母。如果没有不包含相同字符的一对字符串，返回 0。
 
-![单词长度的最大乘积](./imgs/剑指offer2/5.jpg)
+![单词长度的最大乘积](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/5.jpg)
 
 ```java
 class Solution {
@@ -206,7 +211,7 @@ class Solution {
 
 给定一个已按照 升序排列  的整数数组 numbers ，请你从数组中找出两个数满足相加之和等于目标数 target 。
 
-![排序数组中两个数字之和](./imgs/剑指offer2/6.jpg)
+![排序数组中两个数字之和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/6.jpg)
 
 ```java
 class Solution {
@@ -231,7 +236,7 @@ class Solution {
 
 注意：答案中不可以包含重复的三元组。
 
-![数组中和为 0 的三个数](./imgs/剑指offer2/7.jpg)
+![数组中和为 0 的三个数](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/7.jpg)
 
 ```java
 class Solution {
@@ -277,7 +282,7 @@ class Solution {
 
 找出该数组中满足其和 ≥ target 的长度最小的 连续子数组 [numsl, numsl+1, ..., numsr-1, numsr] ，并返回其长度。如果不存在符合条件的子数组，返回 0 。
 
-![和大于等于 target 的最短子数组](./imgs/剑指offer2/8.jpg)
+![和大于等于 target 的最短子数组](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/8.jpg)
 
 ```java
 class Solution {
@@ -299,7 +304,7 @@ class Solution {
 
 给定一个正整数数组 nums和整数 k ，请找出该数组内乘积小于 k 的连续的子数组的个数。
 
-![乘积小于 K 的子数组](./imgs/剑指offer2/9.jpg)
+![乘积小于 K 的子数组](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/9.jpg)
 
 ```java
 class Solution {
@@ -323,7 +328,7 @@ class Solution {
 
 给定一个整数数组和一个整数 k ，请找到该数组中和为 k 的连续子数组的个数。
 
-![和为 k 的子数组](./imgs/剑指offer2/10.jpg)
+![和为 k 的子数组](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/10.jpg)
 
 ```java
 class Solution {
@@ -345,7 +350,7 @@ class Solution {
 
 给定一个二进制数组 nums , 找到含有相同数量的 0 和 1 的最长连续子数组，并返回该子数组的长度。
 
-![0 和 1 个数相同的子数组](./imgs/剑指offer2/11.jpg)
+![0 和 1 个数相同的子数组](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/11.jpg)
 
 ```java
 class Solution {
@@ -376,7 +381,7 @@ class Solution {
 
 如果数组有多个中心下标，应该返回 最靠近左边 的那一个。如果数组不存在中心下标，返回 -1 。
 
-![左右两边子数组的和相等](./imgs/剑指offer2/12.jpg)
+![左右两边子数组的和相等](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/12.jpg)
 
 ```java
 class Solution {
@@ -402,7 +407,7 @@ class Solution {
 - NumMatrix(int[][] matrix) 给定整数矩阵 matrix 进行初始化
 - int sumRegion(int row1, int col1, int row2, int col2) 返回左上角 (row1, col1) 、右下角 (row2, col2) 的子矩阵的元素总和。
 
-![二维子矩阵的和](./imgs/剑指offer2/13.jpg)
+![二维子矩阵的和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/13.jpg)
 
 ```java
 class NumMatrix {
@@ -432,7 +437,7 @@ class NumMatrix {
 
 换句话说，第一个字符串的排列之一是第二个字符串的 子串 。
 
-![字符串中的变位词](./imgs/剑指offer2/14.jpg)
+![字符串中的变位词](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/14.jpg)
 
 ```java
 class Solution {
@@ -475,7 +480,7 @@ class Solution {
 
 变位词 指字母相同，但排列不同的字符串。
 
-![字符串中的所有变位词](./imgs/剑指offer2/15.jpg)
+![字符串中的所有变位词](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/15.jpg)
 
 ```java
 class Solution {
@@ -516,7 +521,7 @@ class Solution {
 
 给定一个字符串 s ，请你找出其中不含有重复字符的 最长连续子字符串 的长度。
 
-![不含重复字符的最长子字符串](./imgs/剑指offer2/16.jpg)
+![不含重复字符的最长子字符串](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/16.jpg)
 
 ```java
 class Solution {
@@ -544,7 +549,7 @@ class Solution {
 
 > 注意： 对于 t 中重复字符，我们寻找的子字符串中该字符数量必须不少于 t 中该字符数量。
 
-![含有所有字符的最短字符串](./imgs/剑指offer2/17.jpg)
+![含有所有字符的最短字符串](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/17.jpg)
 
 ```java
 class Solution {
@@ -586,7 +591,7 @@ class Solution {
 
 本题中，将空字符串定义为有效的 回文串 。
 
-![有效的回文](./imgs/剑指offer2/18.jpg)
+![有效的回文](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/18.jpg)
 
 ```java
 class Solution {
@@ -614,7 +619,7 @@ class Solution {
 
 给定一个非空字符串 s，请判断如果 最多 从字符串中删除一个字符能否得到一个回文字符串。
 
-![最多删除一个字符得到回文](./imgs/剑指offer2/19.jpg)
+![最多删除一个字符得到回文](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/19.jpg)
 
 ```java
 class Solution {
@@ -646,7 +651,7 @@ class Solution {
 
 具有不同开始位置或结束位置的子串，即使是由相同的字符组成，也会被视作不同的子串。
 
-![回文子字符串的个数](./imgs/剑指offer2/20.jpg)
+![回文子字符串的个数](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/20.jpg)
 
 ```java
 class Solution {
@@ -675,7 +680,7 @@ class Solution {
 
 给定一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
 
-![删除链表的倒数第 n 个结点](./imgs/剑指offer2/21.jpg)
+![删除链表的倒数第 n 个结点](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/21.jpg)
 
 ```java
 /**
@@ -710,7 +715,7 @@ class Solution {
 
 给定一个链表，返回链表开始入环的第一个节点。 从链表的头节点开始沿着 next 指针进入环的第一个节点为环的入口节点。如果链表无环，则返回 null。
 
-![链表中环的入口节点](./imgs/剑指offer2/22.jpg)
+![链表中环的入口节点](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/22.jpg)
 
 ```java
 /**
@@ -754,7 +759,7 @@ public class Solution {
 
 给定两个单链表的头节点 headA 和 headB ，请找出并返回两个单链表相交的起始节点。如果两个链表没有交点，返回 null 。
 
-![两个链表的第一个重合节点](./imgs/剑指offer2/23.jpg)
+![两个链表的第一个重合节点](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/23.jpg)
 
 ```java
 /**
@@ -800,7 +805,7 @@ public class Solution {
 
 给定单链表的头节点 head ，请反转链表，并返回反转后的链表的头节点。
 
-![反转链表](./imgs/剑指offer2/24.jpg)
+![反转链表](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/24.jpg)
 
 ```java
 /**
@@ -833,7 +838,7 @@ class Solution {
 
 可以假设除了数字 0 之外，这两个数字都不会以零开头。
 
-![链表中的两数相加](./imgs/剑指offer2/25.jpg)
+![链表中的两数相加](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/25.jpg)
 
 ```java
 /**
@@ -892,7 +897,7 @@ class Solution {
 
 不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
 
-![重排链表](./imgs/剑指offer2/26.jpg)
+![重排链表](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/26.jpg)
 
 ```java
 /**
@@ -954,7 +959,7 @@ class Solution {
 
 如果一个链表是回文，那么链表节点序列从前往后看和从后往前看是相同的。
 
-![回文链表](./imgs/剑指offer2/27.jpg)
+![回文链表](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/27.jpg)
 
 ```java
 /**
@@ -1014,7 +1019,7 @@ class Solution {
 
 给定位于列表第一级的头节点，请扁平化列表，即将这样的多级双向链表展平成普通的双向链表，使所有结点出现在单级双链表中。
 
-![展平多级双向链表](./imgs/剑指offer2/28.jpg)
+![展平多级双向链表](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/28.jpg)
 
 ```java
 /*
@@ -1065,7 +1070,7 @@ class Solution {
 
 如果列表为空（给定的节点是 null），需要创建一个循环有序列表并返回这个节点。否则。请返回原先给定的节点。
 
-![排序的循环链表](./imgs/剑指offer2/29.jpg)
+![排序的循环链表](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/29.jpg)
 
 ```java
 /*
@@ -1131,7 +1136,7 @@ class Solution {
 - remove(val)：当元素 val 存在时返回 true ，并从集合中移除该项，否则返回 false 。
 - getRandom：随机返回现有集合中的一项。每个元素应该有 相同的概率 被返回。
 
-![插入、删除和随机访问都是 O(1) 的容器](./imgs/剑指offer2/30.jpg)
+![插入、删除和随机访问都是 O(1) 的容器](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/30.jpg)
 
 ```java
 class RandomizedSet {
@@ -1188,7 +1193,7 @@ class RandomizedSet {
 - int get(int key) 如果关键字 key 存在于缓存中，则返回关键字的值，否则返回 -1 。
 - void put(int key, int value) 如果关键字已经存在，则变更其数据值；如果关键字不存在，则插入该组「关键字-值」。当缓存容量达到上限时，它应该在写入新数据之前删除最久未使用的数据值，从而为新的数据值留出空间。
 
-![最近最少使用缓存](./imgs/剑指offer2/31.jpg)
+![最近最少使用缓存](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/31.jpg)
 
 ```java
 class LRUCache {
@@ -1259,7 +1264,7 @@ class LRUCache {
 
 注意：若 s 和 t 中每个字符出现的次数都相同且字符顺序不完全相同，则称 s 和 t 互为变位词（字母异位词）。
 
-![有效的变位词](./imgs/剑指offer2/32.jpg)
+![有效的变位词](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/32.jpg)
 
 ```java
 class Solution {
@@ -1288,7 +1293,7 @@ class Solution {
 
 注意：若两个字符串中每个字符出现的次数都相同，则称它们互为变位词。
 
-![变位词组](./imgs/剑指offer2/33.jpg)
+![变位词组](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/33.jpg)
 
 ```java
 class Solution {
@@ -1313,7 +1318,7 @@ class Solution {
 
 给定一组用外星语书写的单词 words，以及其字母表的顺序 order，只有当给定的单词在这种外星语中按字典序排列时，返回 true；否则，返回 false。
 
-![外星语言是否排序](./imgs/剑指offer2/34.jpg)
+![外星语言是否排序](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/34.jpg)
 
 ```java
 class Solution {
@@ -1347,7 +1352,7 @@ class Solution {
 
 给定一个 24 小时制（小时:分钟 "HH:MM"）的时间列表，找出列表中任意两个时间的最小时间差并以分钟数表示。
 
-![最小时间差](./imgs/剑指offer2/35.jpg)
+![最小时间差](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/35.jpg)
 
 ```java
 class Solution {
@@ -1380,7 +1385,7 @@ class Solution {
 
 有效的算符包括 +、-、*、/ 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。
 
-![后缀表达式](./imgs/剑指offer2/36.jpg)
+![后缀表达式](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/36.jpg)
 
 ```java
 class Solution {
@@ -1420,7 +1425,7 @@ class Solution {
 
 找出碰撞后剩下的所有小行星。碰撞规则：两个行星相互碰撞，较小的行星会爆炸。如果两颗行星大小相同，则两颗行星都会爆炸。两颗移动方向相同的行星，永远不会发生碰撞。
 
-![小行星碰撞](./imgs/剑指offer2/37.jpg)
+![小行星碰撞](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/37.jpg)
 
 ```java
 class Solution {
@@ -1446,7 +1451,7 @@ class Solution {
 
 请根据每日 气温 列表 temperatures ，重新生成一个列表，要求其对应位置的输出为：要想观测到更高的气温，至少需要等待的天数。如果气温在这之后都不会升高，请在该位置用 0 来代替。
 
-![每日温度](./imgs/剑指offer2/38.jpg)
+![每日温度](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/38.jpg)
 
 ```java
 class Solution {
@@ -1473,7 +1478,7 @@ class Solution {
 
 求在该柱状图中，能够勾勒出来的矩形的最大面积。
 
-![直方图最大矩形面积](./imgs/剑指offer2/39.jpg)
+![直方图最大矩形面积](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/39.jpg)
 
 ```java
 class Solution {
@@ -1505,7 +1510,7 @@ class Solution {
 
 注意：此题 matrix 输入格式为一维 01 字符串数组。
 
-![矩阵中最大的矩形](./imgs/剑指offer2/40.jpg)
+![矩阵中最大的矩形](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/40.jpg)
 
 ```java
 class Solution {
@@ -1561,7 +1566,7 @@ class Solution {
 `MovingAverage(int size)` 用窗口大小 size 初始化对象。
 `double next(int val)` 成员函数 next 每次调用的时候都会往滑动窗口增加一个整数，请计算并返回数据流中最后 size 个值的移动平均值，即滑动窗口里所有数字的平均值。
 
-![滑动窗口的平均值](./imgs/剑指offer2/41.jpg)
+![滑动窗口的平均值](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/41.jpg)
 
 ```java
 class MovingAverage {
@@ -1597,7 +1602,7 @@ class MovingAverage {
 
 **保证** 每次对 ping 的调用都使用比之前更大的 t 值。
 
-![最近请求次数](./imgs/剑指offer2/42.jpg)
+![最近请求次数](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/42.jpg)
 
 ```java
 class RecentCounter {
@@ -1627,7 +1632,7 @@ class RecentCounter {
 `CBTInserter.insert(int v)`  向树中插入一个新节点，节点类型为 TreeNode，值为 v 。使树保持完全二叉树的状态，并返回插入的新节点的父节点的值；
 `CBTInserter.get_root()` 将返回树的根节点。
 
-![往完全二叉树添加节点](./imgs/剑指offer2/43.jpg)
+![往完全二叉树添加节点](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/43.jpg)
 
 ```java
 /**
@@ -1684,7 +1689,7 @@ class CBTInserter {
 
 给定一棵二叉树的根节点 root ，请找出该二叉树中每一层的最大值。
 
-![二叉树每层的最大值](./imgs/剑指offer2/44.jpg)
+![二叉树每层的最大值](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/44.jpg)
 
 计数法：记录当前层和下一层的节点数量
 
@@ -1762,7 +1767,7 @@ class Solution {
 
 假设二叉树中至少有一个节点。
 
-![二叉树最底层最左边的值](./imgs/剑指offer2/45.jpg)
+![二叉树最底层最左边的值](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/45.jpg)
 
 ```java
 class Solution {
@@ -1797,7 +1802,7 @@ class Solution {
 
 给定一个二叉树的 根节点 root，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
 
-![二叉树的右侧视图](./imgs/剑指offer2/46.jpg)
+![二叉树的右侧视图](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/46.jpg)
 
 ```java
 class Solution {
@@ -1837,7 +1842,7 @@ class Solution {
 
 节点 node 的子树为 node 本身，以及所有 node 的后代。
 
-![二叉树剪枝](./imgs/剑指offer2/47.jpg)
+![二叉树剪枝](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/47.jpg)
 
 ```java
 /**
@@ -1876,7 +1881,7 @@ class Solution {
 
 请设计一个算法来实现二叉树的序列化与反序列化。这里不限定你的序列 / 反序列化算法执行逻辑，只需要保证一个二叉树可以被序列化为一个字符串并且将这个字符串反序列化为原始的树结构。
 
-![序列化与反序列化二叉树](./imgs/剑指offer2/48.jpg)
+![序列化与反序列化二叉树](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/48.jpg)
 
 ```java
 /**
@@ -1936,7 +1941,7 @@ public class Codec {
 
 **叶节点** 是指没有子节点的节点。
 
-![从根节点到叶节点的路径数字之和](./imgs/剑指offer2/49.jpg)
+![从根节点到叶节点的路径数字之和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/49.jpg)
 
 ```java
 /**
@@ -1979,7 +1984,7 @@ class Solution {
 
 给定一个二叉树的根节点 root ，返回其 最大路径和，即所有路径上节点值之和的最大值。
 
-![二叉树中的最大路径和](./imgs/剑指offer2/51.jpg)
+![二叉树中的最大路径和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/51.jpg)
 
 不使用全局变量
 
@@ -2055,7 +2060,7 @@ class Solution {
 
 **路径** 不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。
 
-![向下的路径节点之和](./imgs/剑指offer2/50.jpg)
+![向下的路径节点之和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/50.jpg)
 
 ```java
 /**
@@ -2100,7 +2105,7 @@ class Solution {
 
 给你一棵二叉搜索树，请 按中序遍历 将其重新排列为一棵递增顺序搜索树，使树中最左边的节点成为树的根节点，并且每个节点没有左子节点，只有一个右子节点。
 
-![展平二叉搜索树](./imgs/剑指offer2/52.jpg)
+![展平二叉搜索树](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/52.jpg)
 
 ```java
 /**
@@ -2149,7 +2154,7 @@ class Solution {
 
 节点 p 的后继是值比 p.val 大的节点中键值最小的节点，即按中序遍历的顺序节点 p 的下一个节点。
 
-![二叉搜索树中的中序后继](./imgs/剑指offer2/53.jpg)
+![二叉搜索树中的中序后继](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/53.jpg)
 
 **时间复杂度O(n)**
 
@@ -2224,7 +2229,7 @@ class Solution {
 - 节点的右子树仅包含键 大于 节点键的节点。
 - 左右子树也必须是二叉搜索树。
 
-![所有大于等于节点的值之和](./imgs/剑指offer2/54.jpg)
+![所有大于等于节点的值之和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/54.jpg)
 
 ```java
 /**
@@ -2273,7 +2278,7 @@ class Solution {
 
 可以假设 next() 调用总是有效的，也就是说，当调用 next() 时，BST 的中序遍历中至少存在一个下一个数字。
 
-![二叉搜索树迭代器](./imgs/剑指offer2/55.jpg)
+![二叉搜索树迭代器](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/55.jpg)
 
 ```java
 /**
@@ -2328,7 +2333,7 @@ class BSTIterator {
 
 给定一个二叉搜索树的 根节点 root 和一个整数 k , 请判断该二叉搜索树中是否存在两个节点它们的值之和等于 k 。假设二叉搜索树中节点的值均唯一。
 
-![二叉搜索树中两个节点之和](./imgs/剑指offer2/56.jpg)
+![二叉搜索树中两个节点之和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/56.jpg)
 
 ```java
 /**
@@ -2374,7 +2379,7 @@ class Solution {
 
 如果存在则返回 true，不存在返回 false。
 
-![值和下标之差都在给定的范围内](./imgs/剑指offer2/57.jpg)
+![值和下标之差都在给定的范围内](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/57.jpg)
 
 **使用TreeSet二叉搜索树 时间复杂度O(nlogk)**
 
@@ -2446,7 +2451,7 @@ MyCalendar 有一个 book(int start, int end)方法。它意味着在 start 到 
 
 请按照以下步骤调用 MyCalendar 类: `MyCalendar cal = new MyCalendar(); MyCalendar.book(start, end)`
 
-![日程表](./imgs/剑指offer2/58.jpg)
+![日程表](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/58.jpg)
 
 ```java
 class MyCalendar {
@@ -2482,7 +2487,7 @@ class MyCalendar {
 
 ### 数据流中的第 K 大元素
 
-![数据流中的第 K 大元素](./imgs/剑指offer2/59.jpg)
+![数据流中的第 K 大元素](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/59.jpg)
 
 设计一个找到数据流中第 k 大元素的类（class）。注意是排序后的第 k 大元素，不是第 k 个不同的元素。
 
@@ -2526,7 +2531,7 @@ class KthLargest {
 
 给定一个整数数组 nums 和一个整数 k ，请返回其中出现频率前 k 高的元素。可以按 任意顺序 返回答案。
 
-![出现频率最高的 k 个数字](./imgs/剑指offer2/60.jpg)
+![出现频率最高的 k 个数字](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/60.jpg)
 
 ```java
 class Solution {
@@ -2561,7 +2566,7 @@ class Solution {
 
 请找到和最小的 k 个数对 (u1,v1),  (u2,v2)  ...  (uk,vk) 。
 
-![和最小的 k 个数对](./imgs/剑指offer2/61.jpg)
+![和最小的 k 个数对](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/61.jpg)
 
 **使用大根堆 时间复杂度O(k^2logk)**
 
@@ -2629,7 +2634,7 @@ Trie（发音类似 "try"）或者说 前缀树 是一种树形数据结构，�
 - `boolean search(String word)` 如果字符串 word 在前缀树中，返回 true（即，在检索之前已经插入）；否则，返回 false 。
 - `boolean startsWith(String prefix)` 如果之前已经插入的字符串 word 的前缀之一为 prefix ，返回 true ；否则，返回 false 。
 
-![实现前缀树](./imgs/剑指offer2/62.jpg)
+![实现前缀树](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/62.jpg)
 
 ```java
 class Trie {
@@ -2702,7 +2707,7 @@ class Trie {
 
 需要输出替换之后的句子。
 
-![替换单词](./imgs/剑指offer2/63.jpg)
+![替换单词](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/63.jpg)
 
 ```java
 class Solution {
@@ -2763,7 +2768,7 @@ class Solution {
 - `void buildDict(String[] dictionary) `使用字符串数组 dictionary 设定该数据结构，dictionary 中的字符串互不相同
 - `bool search(String searchWord) `给定一个字符串 searchWord ，判定能否只将字符串中 一个 字母换成另一个字母，使得所形成的新字符串能够与字典中的任一字符串匹配。如果可以，返回 true ；否则，返回 false 。
 
-![神奇的字典](./imgs/剑指offer2/64.jpg)
+![神奇的字典](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/64.jpg)
 
 ```java
 class MagicDictionary {
@@ -2835,7 +2840,7 @@ class MagicDictionary {
 
 给定一个单词数组 words ，返回成功对 words 进行编码的最小助记字符串 s 的长度 。
 
-![最短的单词编码](./imgs/剑指offer2/65.jpg)
+![最短的单词编码](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/65.jpg)
 
 ```java
 class Solution {
@@ -2889,7 +2894,7 @@ class Solution {
 - `void insert(String key, int val) `插入 key-val 键值对，字符串表示键 key ，整数表示值 val 。如果键 key 已经存在，那么原来的键值对将被替代成新的键值对。
 - `int sum(string prefix) `返回所有以该前缀 prefix 开头的键 key 的值的总和。
 
-![单词之和](./imgs/剑指offer2/66.jpg)
+![单词之和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/66.jpg)
 
 ```java
 class MapSum {
@@ -2953,7 +2958,7 @@ class MapSum {
 
 给你一个整数数组` nums `，返回` nums[i] XOR nums[j] `的最大运算结果，其中` 0 ≤ i ≤ j < n `。
 
-![最大的异或](./imgs/剑指offer2/67.jpg)
+![最大的异或](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/67.jpg)
 
 ```java
 class Solution {
@@ -3008,7 +3013,7 @@ class Solution {
 
 请必须使用时间复杂度为` O(log n) `的算法。
 
-![查找插入位置](./imgs/剑指offer2/68.jpg)
+![查找插入位置](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/68.jpg)
 
 ```java
 class Solution {
@@ -3039,7 +3044,7 @@ class Solution {
 
 给定由整数组成的山峰数组 arr ，返回任何满足 `arr[0] < arr[1] < ... arr[i - 1] < arr[i] > arr[i + 1] > ... > arr[arr.length - 1] `的下标 i ，即山峰顶部。
 
-![山峰数组的顶部](./imgs/剑指offer2/69.jpg)
+![山峰数组的顶部](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/69.jpg)
 
 ```java
 class Solution {
@@ -3068,7 +3073,7 @@ class Solution {
 
 你设计的解决方案必须满足` O(log n) `时间复杂度和` O(1) `空间复杂度。
 
-![排序数组中只出现一次的数字](./imgs/剑指offer2/70.jpg)
+![排序数组中只出现一次的数字](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/70.jpg)
 
 ```java
 class Solution {
@@ -3100,7 +3105,7 @@ class Solution {
 
 也就是说，选取下标 i 的概率为 `w[i] / sum(w)` 。
 
-![按权重生成随机数](./imgs/剑指offer2/71.jpg)
+![按权重生成随机数](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/71.jpg)
 
 ```java
 class Solution {
@@ -3150,7 +3155,7 @@ class Solution {
 
 如果平方根不是整数，输出只保留整数的部分，小数部分将被舍去。
 
-![求平方根](./imgs/剑指offer2/72.jpg)
+![求平方根](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/72.jpg)
 
 ```java
 class Solution {
@@ -3182,7 +3187,7 @@ class Solution {
 
 返回她可以在 h 小时内吃掉所有香蕉的最小速度 k（k 为整数）。
 
-![狒狒吃香蕉](./imgs/剑指offer2/73.jpg)
+![狒狒吃香蕉](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/73.jpg)
 
 ```java
 class Solution {
@@ -3216,7 +3221,7 @@ class Solution {
 
 以数组 intervals 表示若干个区间的集合，其中单个区间为 `intervals[i] = [starti, endi]` 。请你合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间。
 
-![合并区间](./imgs/剑指offer2/74.jpg)
+![合并区间](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/74.jpg)
 
 ```java
 class Solution {
@@ -3249,7 +3254,7 @@ class Solution {
 
 对 arr1 中的元素进行排序，使 arr1 中项的相对顺序和 arr2 中的相对顺序相同。未在 arr2 中出现过的元素需要按照升序放在 arr1 的末尾。
 
-![数组相对排序](./imgs/剑指offer2/75.jpg)
+![数组相对排序](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/75.jpg)
 
 ```java
 class Solution {
@@ -3283,7 +3288,7 @@ class Solution {
 
 请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
 
-![数组中的第 k 大的数字](./imgs/剑指offer2/76.jpg)
+![数组中的第 k 大的数字](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/76.jpg)
 
 ```java
 class Solution {
@@ -3321,7 +3326,7 @@ class Solution {
 
 给定链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表 。
 
-![链表排序](./imgs/剑指offer2/77.jpg)
+![链表排序](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/77.jpg)
 
 ```java
 /**
@@ -3381,7 +3386,7 @@ class Solution {
 
 请将所有链表合并到一个升序链表中，返回合并后的链表。
 
-![合并排序链表](./imgs/剑指offer2/78.jpg)
+![合并排序链表](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/78.jpg)
 
 ```java
 /**
@@ -3423,7 +3428,7 @@ class Solution {
 
 解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。
 
-![所有子集](./imgs/剑指offer2/79.jpg)
+![所有子集](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/79.jpg)
 
 ```java
 class Solution {
@@ -3451,7 +3456,7 @@ class Solution {
 
 给定两个整数 n 和 k，返回` 1 ... n `中所有可能的 k 个数的组合。
 
-![含有 k 个元素的组合](./imgs/剑指offer2/80.jpg)
+![含有 k 个元素的组合](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/80.jpg)
 
 ```java
 class Solution {
@@ -3486,7 +3491,7 @@ candidates 中的数字可以无限制重复被选取。如果至少一个所选
 
 对于给定的输入，保证和为 target 的唯一组合数少于 150 个。
 
-![允许重复选择元素的组合](./imgs/剑指offer2/81.jpg)
+![允许重复选择元素的组合](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/81.jpg)
 
 ```java
 class Solution {
@@ -3521,7 +3526,7 @@ class Solution {
 
 candidates 中的每个数字在每个组合中只能使用一次，解集不能包含重复的组合。 
 
-![含有重复元素集合的组合](./imgs/剑指offer2/82.jpg)
+![含有重复元素集合的组合](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/82.jpg)
 
 ```java
 class Solution {
@@ -3557,7 +3562,7 @@ class Solution {
 
 给定一个不含重复数字的整数数组 nums ，返回其**所有可能的全排列** 。可以 按**任意顺序** 返回答案。
 
-![没有重复元素集合的全排列](./imgs/剑指offer2/83.jpg)
+![没有重复元素集合的全排列](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/83.jpg)
 
 ```java
 class Solution {
@@ -3594,7 +3599,7 @@ class Solution {
 
 给定一个可包含重复数字的整数集合 nums ，按**任意顺序** 返回它所有不重复的全排列。
 
-![含有重复元素集合的全排列](./imgs/剑指offer2/84.jpg)
+![含有重复元素集合的全排列](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/84.jpg)
 
 ```java
 class Solution {
@@ -3634,7 +3639,7 @@ class Solution {
 
 正整数 n 代表生成括号的对数，请设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
 
-![生成匹配的括号](./imgs/剑指offer2/85.jpg)
+![生成匹配的括号](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/85.jpg)
 
 ```java
 class Solution {
@@ -3663,7 +3668,7 @@ class Solution {
 
 回文串 是正着读和反着读都一样的字符串。
 
-![分割回文串](./imgs/剑指offer2/86.jpg)
+![分割回文串](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/86.jpg)
 
 ```java
 class Solution {
@@ -3719,7 +3724,7 @@ class Solution {
 
 例如：`"0.1.2.201"` 和 `"192.168.1.1"` 是 有效 IP 地址，但是 `"0.011.255.245"`、`"192.168.1.312"` 和 `"192.168@1.1"` 是 无效 IP 地址。
 
-![复原 IP 地址](./imgs/剑指offer2/87.jpg)
+![复原 IP 地址](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/87.jpg)
 
 ```java
 class Solution {
@@ -3757,7 +3762,7 @@ class Solution {
 
 请找出达到楼层顶部的最低花费。在开始时，你可以选择从下标为 0 或 1 的元素作为初始阶梯。
 
-![爬楼梯的最少成本](./imgs/剑指offer2/88.jpg)
+![爬楼梯的最少成本](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/88.jpg)
 
 ```java
 class Solution {
@@ -3778,7 +3783,7 @@ class Solution {
 
 给定一个代表每个房屋存放金额的非负整数数组 nums ，请计算 **不触动警报装置的情况下** ，一夜之内能够偷窃到的最高金额。
 
-![打家劫舍](./imgs/剑指offer2/89.jpg)
+![打家劫舍](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/89.jpg)
 
 ```java
 class Solution {
@@ -3801,7 +3806,7 @@ class Solution {
 
 给定一个代表每个房屋存放金额的非负整数数组 nums ，请计算 **在不触动警报装置的情况下** ，今晚能够偷窃到的最高金额。
 
-![打家劫舍 II](./imgs/剑指offer2/90.jpg)
+![打家劫舍 II](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/90.jpg)
 
 ```java
 class Solution {
@@ -3836,7 +3841,7 @@ class Solution {
 
 请计算出粉刷完所有房子最少的花费成本。
 
-![粉刷房子](./imgs/剑指offer2/91.jpg)
+![粉刷房子](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/91.jpg)
 ```java
 class Solution {
     public int minCost(int[][] costs) {
@@ -3873,7 +3878,7 @@ class Solution {
 
 返回使 s 单调递增 的最小翻转次数。
 
-![将字符串翻转到单调递增](./imgs/剑指offer2/92.jpg)
+![将字符串翻转到单调递增](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/92.jpg)
 
 使用动态规划
 
@@ -3938,7 +3943,7 @@ class Solution {
 
 （回想一下，子序列是从原序列  arr 中派生出来的，它从 arr 中删掉任意数量的元素（也可以不删），而不改变其余元素的顺序。例如， `[3, 5, 8] 是 [3, 4, 5, 6, 7, 8]` 的一个子序列）
 
-![最长的斐波那契子序列的长度](./imgs/剑指offer2/93.jpg)
+![最长的斐波那契子序列的长度](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/93.jpg)
 
 ```java
 class Solution {
@@ -3975,7 +3980,7 @@ class Solution {
 
 返回符合要求的 **最少分割次数** 。
 
-![分割回文串 II](./imgs/剑指offer2/94.jpg)
+![分割回文串 II](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/94.jpg)
 
 ```java
 class Solution {
@@ -4023,7 +4028,7 @@ class Solution {
 - 例如，`"ace" 是 "abcde"` 的子序列，但 `"aec" 不是 "abcde" 的子序列`。
 两个字符串的 公共子序列 是这两个字符串所共同拥有的子序列。
 
-![最长公共子序列](./imgs/剑指offer2/95.jpg)
+![最长公共子序列](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/95.jpg)
 
 ```java
 class Solution {
@@ -4090,7 +4095,7 @@ class Solution {
 交织 是 `s1 + t1 + s2 + t2 + s3 + t3 + ...` 或者 `t1 + s1 + t2 + s2 + t3 + s3 + ...`
 提示：a + b 意味着字符串 a 和 b 连接。
 
-![交错字符串](./imgs/剑指offer2/96.jpg)
+![交错字符串](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/96.jpg)
 
 ```java
 class Solution {
@@ -4136,7 +4141,7 @@ class Solution {
 
 题目数据保证答案符合 32 位带符号整数范围。
 
-![不同的子序列](./imgs/剑指offer2/97.jpg)
+![不同的子序列](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/97.jpg)
 
 ```java
 class Solution {
@@ -4170,7 +4175,7 @@ class Solution {
 
 问总共有多少条不同的路径？
 
-![不同路径](./imgs/剑指offer2/98.jpg)
+![不同路径](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/98.jpg)
 
 ```java
 class Solution {
@@ -4209,7 +4214,7 @@ class Solution {
 
 **说明：**一个机器人每次只能向下或者向右移动一步。
 
-![最小路径和](./imgs/剑指offer2/99.jpg)
+![最小路径和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/99.jpg)
 
 ```java
 class Solution {
@@ -4252,7 +4257,7 @@ class Solution {
 
 每一步只能移动到下一行中相邻的结点上。相邻的结点 在这里指的是 下标 与 上一层结点下标 相同或者等于 上一层结点下标 + 1 的两个结点。也就是说，如果正位于当前行的下标 i ，那么下一步可以移动到下一行的下标 i 或 i + 1 。
 
-![三角形最小路径和](./imgs/剑指offer2/100.jpg)
+![三角形最小路径和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/100.jpg)
 
 ```java
 class Solution {
@@ -4280,7 +4285,7 @@ class Solution {
 
 给定一个非空的正整数数组 nums ，请判断能否将这些数字分成元素和相等的两部分。
 
-![分割等和子集](./imgs/剑指offer2/101.jpg)
+![分割等和子集](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/101.jpg)
 
 > 0-1 背包问题
 
@@ -4316,7 +4321,7 @@ class Solution {
 例如，**nums = [2, 1]** ，可以在 2 之前添加 '+' ，在 1 之前添加 '-' ，然后串联起来得到表达式 **"+2-1"** 。
 返回可以通过上述方法构造的、运算结果等于 target 的不同 表达式 的数目。
 
-![目标和](./imgs/剑指offer2/102.jpg)
+![目标和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/102.jpg)
 
 ```java
 class Solution {
@@ -4355,7 +4360,7 @@ class Solution {
 
 你可以认为每种硬币的数量是无限的。
 
-![零钱兑换](./imgs/剑指offer2/103.jpg)
+![零钱兑换](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/103.jpg)
 
 ```java
 class Solution {
@@ -4405,7 +4410,7 @@ class Solution {
 
 题目数据保证答案符合 32 位整数范围。
 
-![组合总和 Ⅳ](./imgs/剑指offer2/104.jpg)
+![组合总和 Ⅳ](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/104.jpg)
 
 ```java
 class Solution {
@@ -4438,7 +4443,7 @@ class Solution {
 
 找到给定的二维数组中最大的岛屿面积。如果没有岛屿，则返回面积为 0 。
 
-![105](./imgs/剑指offer2/105.jpg)
+![105](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/105.jpg)
 
 ```java
 class Solution {
@@ -4510,7 +4515,7 @@ class Solution {
 
 如果图是二分图，返回 true ；否则，返回 false 。
 
-![ 判断二分图](./imgs/剑指offer2/106.jpg)
+![ 判断二分图](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/106.jpg)
 
 ```java
 class Solution {
@@ -4567,7 +4572,7 @@ class Solution {
 
 两个相邻元素间的距离为 1 。
 
-![01 矩阵](./imgs/剑指offer2/107.jpg)
+![01 矩阵](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/107.jpg)
 
 ```java
 class Solution {
@@ -4613,7 +4618,7 @@ class Solution {
 
 给定两个长度相同但内容不同的单词 beginWord 和 endWord 和一个字典 wordList ，找到从 beginWord 到 endWord 的 最短转换序列 中的 单词数目 。如果不存在这样的转换序列，返回 0。
 
-![单词接龙](./imgs/剑指offer2/108.jpg)
+![单词接龙](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/108.jpg)
 
 ```java
 class Solution {
@@ -4715,7 +4720,7 @@ class Solution {
 
 字符串 target 代表可以解锁的数字，请给出解锁需要的最小旋转次数，如果无论如何不能解锁，返回 -1 。
 
-![打开转盘锁](./imgs/剑指offer2/109.jpg)
+![打开转盘锁](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/109.jpg)
 
 ```java
 class Solution {
@@ -4817,7 +4822,7 @@ class Solution {
 
 graph 的第 i 个数组中的单元都表示有向图中 i 号节点所能到达的下一些结点（译者注：有向图是有方向的，即规定了 a→b 你就不能从 b→a ），若为空，就是没有下一个节点了。
 
-![所有可能的路径](./imgs/剑指offer2/110.jpg)
+![所有可能的路径](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/110.jpg)
 
 ```java
 class Solution {
@@ -4851,7 +4856,7 @@ class Solution {
 
 > 注意：输入总是有效的。可以假设除法运算中不会出现除数为 0 的情况，且不存在任何矛盾的结果。
 
-![除法求值](./imgs/剑指offer2/111.jpg)
+![除法求值](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/111.jpg)
 
 ```java
 class Solution {
@@ -4918,7 +4923,7 @@ class Solution {
 
 对于每个单元格，你可以往上，下，左，右四个方向移动。 不能 在 对角线 方向上移动或移动到 边界外（即不允许环绕）。
 
-![矩阵中的最长递增路径](./imgs/剑指offer2/112.jpg)
+![矩阵中的最长递增路径](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/112.jpg)
 
 ```java
 class Solution {
@@ -4963,7 +4968,7 @@ class Solution {
 
 可能会有多个正确的顺序，只要任意返回一种就可以了。如果不可能完成所有课程，返回一个空数组。
 
-![课程表 II](./imgs/剑指offer2/113.jpg)
+![课程表 II](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/113.jpg)
 
 ```java
 class Solution {
@@ -5013,7 +5018,7 @@ class Solution {
 - 在第一个不同字母处，如果 s 中的字母在这门外星语言的字母顺序中位于 t 中字母之前，那么 s 的字典顺序小于 t 。
 - 如果前面 `min(s.length, t.length) `字母都相同，那么 `s.length < t.length `时，s 的字典顺序也小于 t 。
  
-![火星词典](./imgs/剑指offer2/114.jpg)
+![火星词典](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/114.jpg)
 
 ```java
 class Solution {
@@ -5078,7 +5083,7 @@ class Solution {
 如果 nums 是序列的唯一最短 超序列 ，则返回 true ，否则返回 false 。
 子序列 是一个可以通过从另一个序列中删除一些元素或不删除任何元素，而不改变其余元素的顺序的序列。
 
-![序列重建](./imgs/剑指offer2/115.jpg)
+![序列重建](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/115.jpg)
 
 ```java
 class Solution {
@@ -5133,7 +5138,7 @@ class Solution {
 
 返回矩阵中 省份 的数量。
 
-![省份数量](./imgs/剑指offer2/116.jpg)
+![省份数量](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/116.jpg)
 
 **图搜索**
 
@@ -5232,7 +5237,7 @@ class Solution {
 
 字母异位词（anagram），一种把某个字符串的字母的位置（顺序）加以改换所形成的新词。
 
-![相似字符串组](./imgs/剑指offer2/117.jpg)
+![相似字符串组](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/117.jpg)
 
 ```java
 class Solution {
@@ -5304,7 +5309,7 @@ class Solution {
 
 请找出一条可以删去的边，删除后可使得剩余部分是一个有着 n 个节点的树。如果有多个答案，则返回数组 edges 中最后出现的边。
 
-![冗余连接](./imgs/剑指offer2/118.jpg)
+![冗余连接](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/118.jpg)
 
 ```java
 class Solution {
@@ -5343,7 +5348,7 @@ class Solution {
 
 给定一个未排序的整数数组 nums ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
 
-![最长连续序列](./imgs/剑指offer2/119.jpg)
+![最长连续序列](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/剑指offer2/119.jpg)
 
 ```java
 class Solution {

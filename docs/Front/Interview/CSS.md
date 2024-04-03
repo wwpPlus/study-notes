@@ -1,6 +1,11 @@
+---
+title: CSS
+date: 2023-11-16 17:26:40
+permalink: /pages/478903/
+---
 # CSS
 
-![css](./imgs/css.jpg)
+![css](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/css.jpg)
 
 ## 1. 介绍下 *BFC* 及其应用
 

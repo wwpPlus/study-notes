@@ -1,3 +1,8 @@
+---
+title: Network
+date: 2023-11-16 17:26:40
+permalink: /pages/b8acc7/
+---
 # 网络
 
 > 对于前端而言，网络部分代码不多，以概念为主。

@@ -1,3 +1,8 @@
+---
+title: lottery
+date: 2024-03-05 10:07:52
+permalink: /pages/a33dfc/
+---
 # Lottery
 ## Lottery梳理
 
@@ -19,37 +24,37 @@
 
 ### 基本流程
 
-![抽奖系统](./imgs/lottery/抽奖系统.png)
+![抽奖系统](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/lottery/抽奖系统.png)
 
 ### 参与活动
 
 组合模式搭建用于量化人群的规则引擎
 
-![image-20231120151121588](./imgs/lottery/image-20231120151121588.png)
+![image-20231120151121588](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/lottery/image-20231120151121588.png)
 
 ### 抽奖策略
 
 策略模式配置抽奖策略
 
-![image-20231120151338186](./imgs/lottery/image-20231120151338186.png)
+![image-20231120151338186](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/lottery/image-20231120151338186.png)
 
 ### 抽奖流程
 
 模版模式处理抽奖流程
 
-![image-20231120151402768](./imgs/lottery/image-20231120151402768.png)
+![image-20231120151402768](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/lottery/image-20231120151402768.png)
 
 ### 活动状态
 
 状态模式处理活动状态变更
 
-![image-20231120151559158](./imgs/lottery/image-20231120151559158.png)
+![image-20231120151559158](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/lottery/image-20231120151559158.png)
 
 ### 发放奖品
 
 工厂模式发放各类别奖品
 
-![image-20231120151702995](./imgs/lottery/image-20231120151702995.png)
+![image-20231120151702995](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/lottery/image-20231120151702995.png)
 
 ### Id生成
 
@@ -58,13 +63,13 @@
 - 雪花算法、阿帕奇工具包 RandomStringUtils、日期拼接
 - 三种方式生成ID，分别对应订单号、策略ID、活动号
 
-![image-20231120151837274](./imgs/lottery/image-20231120151837274.png)
+![image-20231120151837274](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/lottery/image-20231120151837274.png)
 
 ### 对象转换
 
 使用 MapStruct 做对象转换操作处理
 
-![image-20231120152512949](./imgs/lottery/image-20231120152512949.png)
+![image-20231120152512949](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/lottery/image-20231120152512949.png)
 
 ## Lottery部署
 

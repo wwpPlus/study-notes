@@ -1,3 +1,8 @@
+---
+title: ES6
+date: 2023-11-16 17:26:40
+permalink: /pages/3aa5d6/
+---
 # ES6
 
 ES6， 全称 ECMAScript 6.0 ，是 JavaScript 的下一个版本标准，2015.06 发版。

@@ -1,3 +1,8 @@
+---
+title: RabbitMQ
+date: 2024-03-31 20:22:09
+permalink: /pages/6c832f/
+---
 # RabbitMQ
 
 ## 消息队列
@@ -16,13 +21,13 @@
 
 以电商应用为例，应用中有订单系统、库存系统、物流系统、支付系统。用户创建订单后，如果耦合调用库存系统、物流系统、支付系统，任何一个子系统出了故障，都会造成下单操作异常。当转变成基于消息队列的方式后，系统间调用的问题会减少很多，比如物流系统因为发生故障，需要几分钟来修复。在 这几分钟的时间里，物流系统要处理的内存被缓存在消息队列中，用户的下单操作可以正常完成。当物流系统恢复后，继续处理订单信息即可，中单用户感受不到物流系统的故障，提升系统的可用性。
 
-![image-20240330143342627](./imgs/RabbitMQ/image-20240330143342627.png)
+![image-20240330143342627](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240330143342627.png)
 
 - 异步处理
 
 有些服务间调用是异步的，例如 A 调用 B，B 需要花费很长时间执行，但是 A 需要知道 B 什么时候可以执行完，以前一般有两种方式，A 过一段时间去调用 B 的查询 api 查询。或者 A 提供一个 `callback api`， B 执行完之后调用 api 通知 A 服务。这两种方式都不是很优雅，使用消息总线，可以很方便解决这个问题， A 调用 B 服务后，只需要**监听** B 处理完成的消息，当 B 处理完成后，会发送一条消息给 MQ，MQ 会将此消息转发给 A 服务。这样 A 服务既不用循环调用 B 的查询 api，也不用提供 `callback api`。同样 B 服务也不 用做这些操作。A 服务还能及时的得到异步处理成功的消息。
 
-![image-20240330143540426](./imgs/RabbitMQ/1711887999808.jpg)
+![image-20240330143540426](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/1711887999808.jpg)
 
 ### MQ分类
 
@@ -58,7 +63,7 @@
 
 缺点：商业版需要收费，学习成本较高
 
-![img](./imgs/RabbitMQ/90D2FA430B2C4BC2AB9E14AE619D4200.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/90D2FA430B2C4BC2AB9E14AE619D4200.png)
 
 ## RabbitMQ
 
@@ -76,7 +81,7 @@
 
 ### RabbitMQ组件
 
-![image-20240330145309912](./imgs/RabbitMQ/image-20240330145309912.png)
+![image-20240330145309912](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240330145309912.png)
 
 | 名称         | 描述                                                         |
 | ------------ | :----------------------------------------------------------- |
@@ -224,7 +229,7 @@ public class Worker01 {
 // C2 消费者启动等待消费......
 ```
 
-![image-20240330150427376](./imgs/RabbitMQ/image-20240330150427376.png)
+![image-20240330150427376](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240330150427376.png)
 
 **启动发送线程**
 
@@ -250,7 +255,7 @@ public class Task01 {
 
 通过程序执行发现生产者总共发送 4 个消息，消费者 1 和消费者 2 分别分得两个消息，并且 是按照有序的一个接收一次消息
 
-![image-20240330150651051](./imgs/RabbitMQ/image-20240330150651051.png)
+![image-20240330150651051](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240330150651051.png)
 
 ### 消息应答
 
@@ -264,13 +269,13 @@ public class Task01 {
 
 消息发送后立即被认为已经传送成功，这种模式需要在**高吞吐量和数据传输安全性方面做权衡**，因为这种模式如果消息在接收到之前，消费者那边出现连接或者 `channel` 关闭，那么消息就丢失了，当然另一方面这种模式消费者那边可以传递过载的消息，**没有对传递的消息数量进行限制**， 当然这样有可能使得消费者这边由于接收太多还来不及处理的消息，导致这些消息的积压，最终使得内存耗尽，这些消费者线程被操作系统杀死，**所以这种模式仅适用在消费者可以高效并以某种速率能够处理这些消息的情况下使用。**
 
-![image-20240330151201756](./imgs/RabbitMQ/image-20240330151201756.png)
+![image-20240330151201756](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240330151201756.png)
 
 #### 消息自动重新入队
 
 如果消费者由于某些原因失去连接(其通道已关闭，连接已关闭或 TCP 连接丢失)，导致消息**未发送 ACK 确认**，`RabbitMQ` 将了解到消息未完全处理，并将对其重新排队。如果此时其他消费者可以处理，它将很快将其重新分发给另一个消费者。这样，即使某个消费者偶尔死亡，也可以确 保不会丢失任何消息。
 
-![image-20240330151304835](./imgs/RabbitMQ/image-20240330151304835.png)
+![image-20240330151304835](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240330151304835.png)
 
 #### 手动应答示例
 
@@ -372,13 +377,13 @@ public class Work04 {
 
 正常情况下消息发送方发送两个消息 C1 和 C2 分别接收到消息并进行处理
 
-![image-20240330152504197](./imgs/RabbitMQ/image-20240330152504197.png)
+![image-20240330152504197](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240330152504197.png)
 
 在发送者发送消息 dd，发出消息之后的把 C2 消费者停掉，按理说该 C2 来处理该消息，但是由于它处理时间较长，在还未处理完，也就是说 C2 还没有执行 ack 代码的时候，C2 被停掉了，此时会看到消息被 C1 接收到了，说明消息 dd 被重新入队，然后分配给能处理消息的 C1 处理了
 
-![image-20240330152630164](./imgs/RabbitMQ/image-20240330152630164.png)
+![image-20240330152630164](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240330152630164.png)
 
-![image-20240330152640740](./imgs/RabbitMQ/image-20240330152640740.png)
+![image-20240330152640740](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240330152640740.png)
 
 ### RabbitMQ持久化
 
@@ -388,7 +393,7 @@ public class Work04 {
 
 > 但是需要注意的就是如果之前声明的队列不是持久化的，需要把原先队列先删除，或者重新创建一个持久化的队列，不然就会出现错误
 
-![image-20240330153042180](./imgs/RabbitMQ/image-20240330153042180.png)
+![image-20240330153042180](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240330153042180.png)
 
 **消息实现持久化**
 
@@ -412,7 +417,7 @@ channel.basicPublish("", TASK_QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAI
 
 通常，增加预取将提高向消费者传递消息的速度。**虽然自动应答传输消息速率是最佳的，但是，在这种情况下已传递但尚未处理的消息的数量也会增加，从而增加了消费者的 RAM 消耗**(随机存取存储器)应该小心使用具有无限预处理 的自动确认模式或手动确认模式，消费者消费了大量的消息如果没有确认的话，会导致消费者连接节点的内存消耗变大，所以找到合适的预取值是一个反复试验的过程，不同的负载该值取值也不同 100 到 300 范 围内的值通常可提供最佳的吞吐量，并且不会给消费者带来太大的风险。预取值为 1 是最保守的。当然这 将使吞吐量变得很低，特别是消费者连接延迟很严重的情况下，特别是在消费者连接等待时间较长的环境中。对于大多数应用来说，稍微高一点的值将是最佳的。
 
-![image-20240331180105945](./imgs/RabbitMQ/image-20240331180105945.png)
+![image-20240331180105945](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331180105945.png)
 
 
 
@@ -498,7 +503,7 @@ public static void publishMessageBatch() throws Exception {
 
 异步确认虽然编程逻辑比上两个要复杂，但是性价比最高，无论是可靠性还是效率都没得说， 他是利用**回调函数**来达到消息可靠性传递的，这个中间件也是通过函数回调来保证是否投递成功。
 
-![image-20240331180758925](./imgs/RabbitMQ/image-20240331180758925.png)
+![image-20240331180758925](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331180758925.png)
 
 ```java
 public static void publishMessageAsync() throws Exception {
@@ -591,7 +596,7 @@ RabbitMQ 消息传递模型的核心思想是：**生产者生产的消息从不
 
 生产者只能将消息发送到交换机(`exchange`)，交换机工作的内容非常简单，一方面它接收来自生产者的消息，另一方面将它们推入队列。交换机必须确切知道如何处理收到的消息。是应该把这些消息放到特定队列还是说把他们到许多队列中还是说应该丢弃它们。这就的由交换机的类型来决定。
 
-![image-20240331181318218](./imgs/RabbitMQ/image-20240331181318218.png)
+![image-20240331181318218](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331181318218.png)
 
 交换机类型：
 
@@ -606,7 +611,7 @@ Fanout是将接收到的所有**消息广播**到它知道的所有队列中。
 
 **示例：使用Fanout广播到两个队列中**
 
-![image-20240331181639109](./imgs/RabbitMQ/image-20240331181639109.png)
+![image-20240331181639109](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331181639109.png)
 
 `EmitLog` 发送消息给两个消费者接收
 
@@ -699,7 +704,7 @@ public class ReceiveLogs02 {
 
 Fanout 这种交换类型并不能给我们带来很大的灵活性-它只能进行**无意识的广播**，在这里我们将使用 direct 这种类型来进行替换，这种类型的工作方式是，消息只去到它绑定的 `routingKey` 队列中去。
 
-![image-20240331182306533](./imgs/RabbitMQ/image-20240331182306533.png)
+![image-20240331182306533](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331182306533.png)
 
 ```java
 public class EmitLogDirect {
@@ -780,7 +785,7 @@ public class ReceiveLogsDirect02 {
 - `*` 可以代替一个单词
 - `#` 可以替代零个或多个单词
 
-![image-20240331182724771](./imgs/RabbitMQ/image-20240331182724771.png)
+![image-20240331182724771](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331182724771.png)
 
 ```java
 public class EmitLogTopic {
@@ -864,7 +869,7 @@ public class ReceiveLogsTopic02 {
 
 这是RabbitMQ最为经典的队列类型。在单机环境中，拥有比较高的消息可靠性。
 
-![image](./imgs/RabbitMQ/56DE9E00653447DBAF78687F8BD25A3F.png)
+![image](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/56DE9E00653447DBAF78687F8BD25A3F.png)
 
 经典队列可以选择是否持久化(**Durability**)以及是否自动删除(**Auto delete**)两个属性。
 
@@ -872,13 +877,13 @@ public class ReceiveLogsTopic02 {
 
 仲裁队列，是RabbitMQ从3.8.0版本，引入的一个新的队列类型。仲裁队列相比Classic经典队列，在分布式环境下对消息的可靠性保障更高。
 
-![image](./imgs/RabbitMQ/D5C38F9FAC6A4D21BAE50FE38C1786D7.png)
+![image](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/D5C38F9FAC6A4D21BAE50FE38C1786D7.png)
 
 Quorum是基于Raft一致性协议实现的一种新型的分布式消息队列，他实现了持久化，多备份的FIFO队列，主要就是针对RabbitMQ的镜像模式设计的。简单理解就是quorum队列中的消息需要有集群中多半节点同意确认后，才会写入到队列中。这种队列类似于RocketMQ当中的DLedger集群。这种方式可以保证消息在集群内部不会丢失。同时，Quorum是以牺牲很多高级队列特性为代价，来进一步保证消息在分布式环境下的高可靠。
 
 Quorum队列与普通队列的区别：
 
-![image](./imgs/RabbitMQ/BCD97037405A4DFC90E6B0977E95E9E8.png)
+![image](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/BCD97037405A4DFC90E6B0977E95E9E8.png)
 
 Quorum队列大部分功能都是在Classic队列基础上做减法，比如`Non-durable queues`表示是非持久化的内存队列。`Exclusivity`表示独占队列，即表示队列只能由声明该队列的`Connection`连接来进行使用，包括队列创建、删除、收发消息等，并且独占队列会在声明该队列的Connection断开后自动删除。
 
@@ -907,7 +912,7 @@ Quorum队列的消息是必须持久化的，所以durable参数必须设定为t
 
 Stream队列是RabbitMQ自3.9.0版本开始引入的一种新的数据队列类型，也是目前官方最为推荐的队列类型。这种队列类型的消息是持久化到磁盘并且具备分布式备份的，更适合于消费者多，读消息非常频繁的场景。
 
-![image](./imgs/RabbitMQ/821A925807514CEF854DB38FBF3C4AAF.png)
+![image](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/821A925807514CEF854DB38FBF3C4AAF.png)
 
 ```java
 Map<String,Object> params = new HashMap<>();
@@ -957,7 +962,7 @@ RabbitMQ一直以来有一个让人诟病的地方，就是当队列中积累的
 - 队列达到最大长度(队列满了，无法再添加数据到 mq 中)
 - 消息被拒绝(`basic.reject` 或 `basic.nack`)并且 `requeue=false`
 
-![image-20240331183209989](./imgs/RabbitMQ/image-20240331183209989.png)
+![image-20240331183209989](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331183209989.png)
 
 ### 延迟队列
 
@@ -979,7 +984,7 @@ RabbitMQ一直以来有一个让人诟病的地方，就是当队列中积累的
 
 但对于数据量比较大，并且时效性较强的场景，如：**“订单十分钟内未支付则关闭“**，短期内未支付的订单数据可能会有很多，活动期间甚至会达到百万甚至千万级别，对这么庞大的数据量仍旧使用轮询的方式显然是不可取的，很可能在一秒内无法完成所有订单的检查，同时会给数据库带来很大压力，无法满足业务要求而且性能低下。
 
-![image-20240331183931296](./imgs/RabbitMQ/image-20240331183931296.png)
+![image-20240331183931296](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331183931296.png)
 
 ### TTL
 
@@ -1004,7 +1009,7 @@ RabbitMQ一直以来有一个让人诟病的地方，就是当队列中积累的
 
 创建两个队列 QA 和 QB，两者队列 TTL 分别设置为 10S 和 40S，然后在创建一个交换机 X 和死信交 换机 Y，它们的类型都是 direct，创建一个死信队列 QD，它们的绑定关系如下：
 
-![image-20240331184459281](./imgs/RabbitMQ/image-20240331184459281.png)
+![image-20240331184459281](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331184459281.png)
 
 添加依赖
 
@@ -1168,7 +1173,7 @@ public class DeadLetterQueueConsumer {
 
 发起一个请求 `http://localhost:8080/ttl/sendMsg/嘻嘻嘻`
 
-![image-20240331185402869](./imgs/RabbitMQ/image-20240331185402869.png)
+![image-20240331185402869](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331185402869.png)
 
 1. 第一条消息在 10S 后变成了死信消息，然后被消费者消费掉
 2. 第二条消息在 40S 之后变成了死信消息， 然后被消费掉，这样一个延时队列就打造完成了。
@@ -1179,7 +1184,7 @@ public class DeadLetterQueueConsumer {
 
 新增了一个队列 QC，绑定关系如下，该队列不设置 TTL 时间
 
-![image-20240331185532598](./imgs/RabbitMQ/image-20240331185532598.png)
+![image-20240331185532598](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331185532598.png)
 
 配置类
 
@@ -1223,7 +1228,7 @@ public void sendMsg(@PathVariable String message,@PathVariable String ttlTime) {
 
 发起请求`http://localhost:8080/ttl/sendExpirationMsg/你好 1/20000 http://localhost:8080/ttl/sendExpirationMsg/你好 2/2000`
 
-![image-20240331185734615](./imgs/RabbitMQ/image-20240331185734615.png)
+![image-20240331185734615](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331185734615.png)
 
 看起来似乎没什么问题，但是在最开始的时候，就介绍过如果使用在消息属性上设置 TTL 的方式，消息可能并不会按时“死亡“，因为 **RabbitMQ 只会检查第一个消息是否过期**，如果过期则丢到死信队列， **如果第一个消息的延时时长很长，而第二个消息的延时时长很短，第二个消息并不会优先得到执行。**
 
@@ -1235,11 +1240,11 @@ public void sendMsg(@PathVariable String message,@PathVariable String ttlTime) {
 /usr/lib/rabbitmq/lib/rabbitmq_server-3.8.8/plugins rabbitmq-plugins enable rabbitmq_delayed_message_exchange
 ```
 
-![image-20240331190340940](./imgs/RabbitMQ/image-20240331190340940.png)
+![image-20240331190340940](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331190340940.png)
 
 新增了一个队列 `delayed.queue`,一个自定义交换机 `delayed.exchange`，绑定关系如下:
 
-![image-20240331190402437](./imgs/RabbitMQ/image-20240331190402437.png)
+![image-20240331190402437](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331190402437.png)
 
 **配置类**
 
@@ -1304,7 +1309,7 @@ public void receiveDelayedQueue(Message message){
 
 发起请求： `http://localhost:8080/ttl/sendDelayMsg/come on baby1/20000 http://localhost:8080/ttl/sendDelayMsg/come on baby2/2000`
 
-![image-20240331190701259](./imgs/RabbitMQ/image-20240331190701259.png)
+![image-20240331190701259](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331190701259.png)
 
 发现第二个消息被先消费掉了，符合预期
 
@@ -1344,7 +1349,7 @@ channel.queueDeclare("myqueue", false, false, false, args);
 
 **内存开销对比**
 
-![image-20240331193117743](./imgs/RabbitMQ/image-20240331193117743.png)
+![image-20240331193117743](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/image-20240331193117743.png)
 
 在发送 1 百万条消息，每条消息大概占 1KB 的情况下，普通队列占用内存是 1.2GB，而惰性队列仅仅占用 1.5MB
 
@@ -1362,7 +1367,7 @@ channel.queueDeclare("myqueue", false, false, false, args);
 
 #### 容易丢失消息的环节
 
-![image.png](./imgs/RabbitMQ/WEBRESOURCE826481ef2e4ca511e97b8a95fcc2e61a.png)
+![image.png](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RabbitMQ/WEBRESOURCE826481ef2e4ca511e97b8a95fcc2e61a.png)
 
  其中，1，2，4三个场景都是跨网络的，而跨网络就肯定会有丢消息的可能。
 

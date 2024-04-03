@@ -1,3 +1,8 @@
+---
+title: JavaScript
+date: 2023-11-16 17:26:40
+permalink: /pages/8d6d1a/
+---
 # JavaScript
 
 ## JavaScript基础
@@ -1340,7 +1345,7 @@ moveBar.onmousedown = function (e) {
 
 运行结果
 
-![可拖动的便笺](./imgs/javascript/可拖动的便笺.jpg)
+![可拖动的便笺](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/javascript/可拖动的便笺.jpg)
 
 ##### 事件传播机制
 
@@ -1504,7 +1509,7 @@ function handler(e) {
 
 运行结果
 
-![代办事项](./imgs/javascript/代办事项.jpg)
+![代办事项](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/javascript/代办事项.jpg)
 
 ## 案例
 

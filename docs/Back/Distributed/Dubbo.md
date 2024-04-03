@@ -1,3 +1,8 @@
+---
+title: Dubbo
+date: 2024-03-21 21:23:31
+permalink: /pages/3634f1/
+---
 # Dubbo3.0
 
 - [手写Dubbo地址](https://gitee.com/archguide/rpc-zhouyu)
@@ -53,7 +58,7 @@
 
 **项目结构**
 
-![img](./imgs/Dubbo/8561.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Dubbo/8561.png)
 
 **`pom`文件**
 
@@ -475,7 +480,7 @@ dubbo.registry.address=zookeeper://127.0.0.1:2181
 
 而`dubbo`协议也有自己的格式，比如：
 
-![img](./imgs/Dubbo/8566.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Dubbo/8566.png)
 
 `dubbo`协议在`Dubbo`框架内使用还是比较舒服的，并且`dubbo`协议相比于`http1.x`协议，性能会更好，因为请求中没有多余的无用的字节，都是必要的字节，并且每个`Dubbo`请求和响应中都有一个**请求ID**，这样可以基于一个`Socket`连接同时发送多个`Dubbo`请求，不用担心请求和响应对不上，所以`dubbo`协议成为了`Dubbo`框架中的**默认协议**。
 
@@ -830,7 +835,7 @@ dubbo:
 
 确定好实例信息后之后，就进行最终的应用注册了，就把实例信息存入注册中心的**`/services/应用名目录`**下：
 
-![img](./imgs/Dubbo/8585.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Dubbo/8585.png)
 
 可以看出`services`节点下存的是应用名，应用名的节点下存的是实例ip和实例port，而ip和port这个节点中的内容就是实例的一些基本信息。
 
@@ -850,7 +855,7 @@ dubbo:
 
 在`Dubbo2.7`中就有了元数据中心，它其实就是用来减轻注册中心的压力的，Dubbo会把服务信息完整的存一份到元数据中心，元数据中心也可以用`Zookeeper`来实现，在暴露完元数据服务之后，在注册实例信息到注册中心之前，就会把`MetadataInfo`存入元数据中心，比如：
 
-![img](./imgs/Dubbo/8586.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Dubbo/8586.png)
 
 节点内容为：
 
@@ -961,7 +966,7 @@ private DemoService demoService;
 4. `RegistryDirectory`对象也会监听**`/dubbo/服务接口名/providers/`**节点的数据变化，一旦发生了变化就要进行相应的改变
 5. 最后将`RegistryDirectory`对象生成一个`ClusterInvoker`对象，到时候调用`ClusterInvoker`对象的`invoke()`方法就会进行负载均衡选出某一个`Invoker`进行调用
 
-![img](./imgs/Dubbo/8587.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Dubbo/8587.png)
 
 #### 应用级服务引入
 
@@ -1115,7 +1120,7 @@ Triple协议是基于`Http2`协议的，也就是在使用Triple协议发送数�
 
 因为Triple协议是基于`HTTP2`协议的，所以我们得先大概了解一下`HTTP2`，我们比较熟悉的是`HTTP1`，比如一个`HTTP1`的请求数据格式如下：
 
-![img](./imgs/Dubbo/8593.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Dubbo/8593.png)
 
 表示在使用`HTTP1`协议时，需要把要发送的数据组织成上面这个格式，比如，我现在想要发送"`hello`"这个字符串，你可以这样发：
 
@@ -1144,7 +1149,7 @@ hello
 
 为了解决这两个严重影响性能的问题，HTTP2`出来了`，你不就是要发送请求行、请求头、请求体吗，那HTTP2这么来设计，HTTP2设计了**帧**的概念，比如分为：
 
-![img](./imgs/Dubbo/8594.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Dubbo/8594.png)
 
 1. 帧长度，用三个字节来存一个数字，这个数字表示当前帧的实际传输的数据的大小，3个字节表示的最大数字是2的24次方（16M），所以一个帧最大为9字节+16M。
 2. 帧类型，占一个字节，可以分为数据帧和控制帧

@@ -1,3 +1,8 @@
+---
+title: Webpack
+date: 2023-11-16 17:26:40
+permalink: /pages/b5d3e4/
+---
 # webpack
 
 参考文献
@@ -10,7 +15,7 @@
 - 这样的代码要想在浏览器运行必须经过编译成浏览器能识别的 JS、Css 等语法，才能运行。所以我们需要打包工具帮我们做完这些事。
 - 除此之外，打包工具还能压缩代码、做兼容性处理、提升代码性能等。
 
-![webpack](./imgs/webpack/webpack.jpg)
+![webpack](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/webpack/webpack.jpg)
 
 具体功能：
 

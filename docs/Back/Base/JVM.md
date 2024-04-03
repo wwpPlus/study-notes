@@ -1,3 +1,8 @@
+---
+title: JVM
+date: 2024-03-05 10:06:47
+permalink: /pages/d0b82f/
+---
 # JVM
 
 ## Java类加载机制
@@ -30,7 +35,7 @@ public class Math {
 
 **通过Java命令执行代码的大体流程如下：**
 
-![img](./imgs/JVM/102280.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/102280.png)
 
 其中loadClass的类加载过程有如下几步：
 
@@ -42,7 +47,7 @@ public class Math {
 - 解析：将**符号引用**替换为直接引用，该阶段会把一些静态方法(符号引用，比如`main()`方法)替换为指向数据所存内存的指针或句柄等(直接引用)，这是所谓的**静态链接**过程(类加载期间完成)，**动态链接**是在程序运行期间完成的将符号引用替换为直接引用
 - **初始化**：对类的静态变量初始化为指定的值，执行静态代码块
 
-![img](./imgs/JVM/102279.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/102279.png)
 
 类被加载到方法区中后主要包含 **运行时常量池、类型信息、字段信息、方法信息、类加载器的引用、对应class实例的引用**等信息。
 
@@ -205,7 +210,7 @@ public Launcher() {
 
 JVM类加载器是有亲子层级结构的，如下图
 
-![img](./imgs/JVM/102278.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/102278.png)
 
 这里类加载其实就有一个**双亲委派机制**，加载某个类时会先委托父加载器寻找目标类，找不到再委托上层父加载器加载，如果所有父加载器在自己的加载类路径下都找不到目标类，则在自己的类加载路径中查找并载入目标类。
 
@@ -452,7 +457,7 @@ java.lang.SecurityException: Prohibited package name: java.lang
 
 #### Tomcat自定义加载器详解
 
-![img](./imgs/JVM/102281.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/102281.png)
 
 tomcat的几个主要类加载器：
 
@@ -579,19 +584,19 @@ com.tuling.jvm.MyClassLoaderTest$MyClassLoader@66d3c617
 
 **补充：Hotspot源码JVM启动执行main方法流程**
 
-![img](./imgs/JVM/106918.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/106918.png)
 
 ## JDK体系结构
 
-![0](./imgs/JVM/94563.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/94563.png)
 
 ### Java语言的跨平台特性
 
-![0](./imgs/JVM/94569.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/94569.png)
 
 ### JVM整体结构及内存模型
 
-![0](./imgs/JVM/95302.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/95302.png)
 
 **补充一个问题：**
 
@@ -609,7 +614,7 @@ com.tuling.jvm.MyClassLoaderTest$MyClassLoader@66d3c617
 
 ### JVM内存参数设置
 
-![0](./imgs/JVM/77391.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/77391.png)
 
 Spring Boot程序的JVM参数设置格式(Tomcat启动直接加在bin目录下`catalina.sh`文件里)：
 
@@ -671,7 +676,7 @@ java.lang.StackOverflowError
 
 #### 日均百万级订单交易系统如何设置JVM参数
 
-![0](./imgs/JVM/94575.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/94575.png)
 
 > JVM参数大小设置并没有固定标准，需要根据实际项目情况分析
 >
@@ -683,7 +688,7 @@ java.lang.StackOverflowError
 
 对象创建的主要流程:
 
-![0](./imgs/JVM/123315.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/123315.png)
 
 #### 1.类加载检查
 
@@ -738,11 +743,11 @@ new指令对应到语言层面上讲是，new关键词、对象克隆、对象�
 
 **32位对象头**
 
-![0](./imgs/JVM/123316.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/123316.png)
 
 **64位对象头**
 
-![0](./imgs/JVM/123317.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/123317.png)
 
 对象头在`hotspot`的C++源码`markOop.hpp`文件里的注释如下：
 
@@ -885,7 +890,7 @@ Space losses: 3 bytes internal + 4 bytes external = 7 bytes total
 
 **对象内存分配流程图**
 
-![0](./imgs/JVM/123318.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/123318.png)
 
 #### 对象栈上分配
 
@@ -1092,7 +1097,7 @@ Heap
 
 当然，如果`minor gc`之后剩余存活的需要挪动到老年代的对象大小还是大于老年代可用空间，那么也会触发`full gc`，`full gc`完之后如果还是没有空间放`minor gc`之后的存活对象，则也会发生`OOM`
 
-![0](./imgs/JVM/123319.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/123319.png)
 
 ### 对象内存回收
 
@@ -1133,7 +1138,7 @@ public class ReferenceCountingGc {
 - 方法区中常量：比如：字符串常量池里的引用。
 - 本地方法栈中JNI指针：（即一般说的`native`方法）。
 
-![0](./imgs/JVM/2383.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2383.png)
 
 #### 常见引用类型
 
@@ -1224,7 +1229,7 @@ protected void finalize() throws Throwable {
 
 ### 垃圾收集算法
 
-![0](./imgs/JVM/95317.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/95317.png)
 
 **分代收集理论**
 
@@ -1238,7 +1243,7 @@ protected void finalize() throws Throwable {
 
 为了解决效率问题，“复制”收集算法出现了。它可以将内存分为大小相同的两块，每次使用其中的一块。当这一块的内存使用完后，就将还存活的对象复制到另一块去，然后再把使用的空间一次清理掉。这样就使每次的内存回收都是对内存区间的一半进行回收。
 
-![0](./imgs/JVM/95776.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/95776.png)
 
 #### 标记-清除算法
 
@@ -1247,17 +1252,17 @@ protected void finalize() throws Throwable {
 1. **效率问题  (如果需要标记的对象太多，效率不高)**
 2. **空间问题（标记清除后会产生大量不连续的碎片）**
 
-![0](./imgs/JVM/94592.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/94592.png)
 
 #### 标记-整理算法
 
 根据老年代的特点提出的一种标记算法，标记过程仍然与“标记-清除”算法一样，但后续步骤不是直接对可回收对象回收，而是让所有存活的对象向一端移动，然后直接清理掉端边界以外的内存。
 
-![0](./imgs/JVM/94590.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/94590.png)
 
 ### 垃圾收集器
 
-![0](./imgs/JVM/95765.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/95765.png)
 
 **如果说收集算法是内存回收的方法论，那么垃圾收集器就是内存回收的具体实现。**
 
@@ -1271,7 +1276,7 @@ protected void finalize() throws Throwable {
 
 **新生代采用复制算法，老年代采用标记-整理算法。**
 
-![0](./imgs/JVM/95646.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/95646.png)
 
 虚拟机的设计者们当然知道`Stop The World`带来的不良用户体验，所以在后续的垃圾收集器设计中停顿时间在不断缩短（仍然还有停顿，寻找最优秀的垃圾收集器的过程仍然在继续）。
 
@@ -1291,7 +1296,7 @@ protected void finalize() throws Throwable {
 
 **新生代采用复制算法，老年代采用标记-整理算法。**
 
-![0](./imgs/JVM/78078.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/78078.png)
 
 **`Parallel Old`收集器是`Parallel Scavenge`收集器的老年代版本**。使用多线程和“标记-整理”算法。在注重吞吐量以及CPU资源的场合，都可以优先考虑 `Parallel Scavenge`收集器和`Parallel Old`收集器(**JDK8默认的新生代和老年代收集器**)。
 
@@ -1303,7 +1308,7 @@ protected void finalize() throws Throwable {
 
 **新生代采用复制算法**
 
-![0](./imgs/JVM/92873.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/92873.png)
 
 它是许多运行在`Server`模式下的虚拟机的首要选择，除了`Serial`收集器外，只有它能与`CMS`收集器（真正意义上的并发收集器）配合工作。
 
@@ -1321,7 +1326,7 @@ protected void finalize() throws Throwable {
 - **并发清理：** 开启用户线程，同时GC线程开始对未标记的区域做清扫。这个阶段如果有新增对象会被标记为黑色不做任何处理。
 - **并发重置：**重置本次GC过程中的标记数据。
 
-![0](./imgs/JVM/78070.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/78070.png)
 
 从它的名字就可以看出它是一款优秀的垃圾收集器，主要优点：**并发收集、低停顿**。但是它有下面几个明显的缺点：
 
@@ -1350,9 +1355,9 @@ protected void finalize() throws Throwable {
 
 **G1 (Garbage-First)是一款面向服务器的垃圾收集器，主要针对配备多颗处理器及大容量内存的机器。以极高概率满足GC停顿时间要求的同时,还具备高吞吐量性能特征.**
 
-![0](./imgs/JVM/95353.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/95353.png)
 
-![0](./imgs/JVM/95354.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/95354.png)
 
 G1将Java堆划分为多个大小相等的独立区域（**`Region`**），JVM目标是不超过2048个`Region`(JVM源码里`TARGET_REGION_NUMBER` 定义)，实际可以超过该值，但是不推荐。
 
@@ -1384,7 +1389,7 @@ G1收集器一次GC(主要值`Mixed GC`)的运作过程大致分为以下几个�
 
 > CMS回收阶段是跟用户线程一起并发执行的，G1因为内部实现太复杂暂时没实现并发回收，不过到了`ZGC`，`Shenandoah`就实现了并发收集，`Shenandoah`可以看成是G1的升级版本
 
-![0](./imgs/JVM/95399.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/95399.png)
 
 **G1收集器在后台维护了一个优先列表，每次根据允许的收集时间，优先选择回收价值最大的Region(这也就是它的名字Garbage-First的由来)，比如一个Region花200ms能回收10M垃圾，另外一个Region花50ms能回收20M垃圾，在回收时间有限情况下，G1当然会优先选择后面这个Region回收**。这种使用Region划分内存空间以及有优先级的区域回收方式，保证了G1收集器在有限时间内可以尽可能高的收集效率。
 
@@ -1479,7 +1484,7 @@ ZGC（`The Z Garbage Collector`）是[JDK 11](https://www.zhihu.com/search?q=JDK
 2. 中页面指32MB的页面空间，当对象大小在256KB和4M之间，对象分配在中页面。
 3. 大页面指受操作系统控制的大页，当对象大于4M，对象分配在大页面。
 
-![0](./imgs/JVM/2394.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2394.png)
 
 ZGC对于不同页面回收的策略也不同。**简单地说，小页面优先回收；中页面和大页面则尽量不回收。**
 
@@ -1498,7 +1503,7 @@ ZGC对于不同页面回收的策略也不同。**简单地说，小页面优先
 
 NUMA对应的有UMA，UMA即**`Uniform Memory Access Architecture`**，NUMA就是`Non Uniform Memory Access Architecture`。UMA表示内存只有一块，所有CPU都去访问这一块内存，那么就会存在竞争问题（争夺内存总线访问权），有竞争就会有锁，有锁效率就会受到影响，而且CPU核心数越多，竞争就越激烈。NUMA的话每个CPU对应有一块内存，且这块内存在主板上离这个CPU是最近的，每个CPU优先访问这块内存，那效率自然就提高了：
 
-![0](./imgs/JVM/95934.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/95934.png)
 
 服务器的NUMA架构在中大型系统上一直非常盛行，也是高性能的解决方案，尤其在系统延迟方面表现都很优秀。ZGC是能自动感知NUMA架构并充分利用NUMA架构特性的。
 
@@ -1506,7 +1511,7 @@ NUMA对应的有UMA，UMA即**`Uniform Memory Access Architecture`**，NUMA就�
 
 `Colored Pointers`：即颜色指针，ZGC的核心设计之一。以前的垃圾回收器的GC信息都保存在对象头中，而ZGC的GC信息保存在指针中。
 
-![0](./imgs/JVM/2382.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2382.png)
 
 **为什么有2个mark标记？**
 
@@ -1534,7 +1539,7 @@ NUMA对应的有UMA，UMA即**`Uniform Memory Access Architecture`**，NUMA就�
 
 - 重定位(`remap`)：因为对象的内存地址发生了变化，所以所有指向对象老地址的指针都要调整到对象新的地址上。
 
-![0](./imgs/JVM/2378.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2378.png)
 
 **ZGC标记阶段**
 
@@ -1546,7 +1551,7 @@ NUMA对应的有UMA，UMA即**`Uniform Memory Access Architecture`**，NUMA就�
 
 ###### ZGC并发标记算法
 
-![0](./imgs/JVM/2387.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2387.png)
 
 1. **初始阶段：**在ZGC初始化之后，此时地址视图为`Remapped`，程序正常运行，在内存中分配对象，满足一定条件后垃圾回收启动。
 
@@ -1568,15 +1573,15 @@ NUMA对应的有UMA，UMA即**`Uniform Memory Access Architecture`**，NUMA就�
 
 转发表(类似于`HashMap`)，对象转移和插转发表做原子操作
 
-![0](./imgs/JVM/2381.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2381.png)
 
-![0](./imgs/JVM/2379.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2379.png)
 
 ###### ZGC重定位算法
 
 **并发标记对象的重定位：**下次GC中的并发标记（同时做上次并发标记对象的重定位），技术上：指针着色中M0和M1区分
 
-![0](./imgs/JVM/2380.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2380.png)
 
 ##### 读屏障
 
@@ -1590,7 +1595,7 @@ NUMA对应的有UMA，UMA即**`Uniform Memory Access Architecture`**，NUMA就�
 
 读屏障是JVM向应用代码插入一小段代码的技术。当应用线程从堆中读取对象引用时，就会执行这段代码。需要注意的是，仅“从堆中读取对象引用”才会触发这段代码。
 
-![0](./imgs/JVM/2386-170904456204076.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2386-170904456204076.png)
 
 ##### ZGC存在的问题
 
@@ -1642,7 +1647,7 @@ ZGC目前有4中机制触发GC：
 
 **下图有连线的可以搭配使用**
 
-![0](./imgs/JVM/95881.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/95881.png)
 
 > **JDK 1.8默认使用 Parallel(年轻代和老年代都是)**
 >
@@ -1671,7 +1676,7 @@ ZGC目前有4中机制触发GC：
 
 大型电商系统后端现在一般都是拆分为多个子系统部署的，比如，商品系统，库存系统，订单系统，促销系统，会员系统等等。这里以比较核心的订单系统为例 
 
-![0](./imgs/JVM/78582.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/78582.png)
 
 **对于8G内存，我们一般是分配4G内存给JVM，正常的JVM参数配置如下：**
 
@@ -1687,7 +1692,7 @@ ZGC目前有4中机制触发GC：
 -Xms3072M -Xmx3072M -Xmn2048M -Xss1M -XX:MetaspaceSize=256M -XX:MaxMetaspaceSize=256M -XX:SurvivorRatio=8
 ```
 
-![0](./imgs/JVM/78583.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/78583.png)
 
 这样就降低了因为对象动态年龄判断原则导致的对象频繁进入老年代的问题，其实**很多优化无非就是让短期存活的对象尽量都留在`survivor`里，不要进入老年代，这样在`minor gc`的时候这些对象都会被回收，不会进到老年代从而导致`full gc`**。
 
@@ -1735,7 +1740,7 @@ ZGC目前有4中机制触发GC：
 
 - **白色**： 表示对象尚未被垃圾收集器访问过。 显然在可达性分析刚刚开始的阶段， 所有的对象都是白色的， 若在分析结束的阶段， 仍然是白色的对象， 即代表不可达。
 
-![0](./imgs/JVM/95383.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/95383.png)
 
  ```java
  /**
@@ -1879,7 +1884,7 @@ void pre_load_barrier(oop* field) {
 
 `hotSpot`使用的卡页是2^9大小，即512字节
 
-![0](./imgs/JVM/95719.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/95719.png)
 
 一个卡页中可包含多个对象，只要有一个对象的字段存在跨代指针，其对应的卡表的元素标识就变成1，表示该元素变脏，否则为0。GC时，只要筛选本收集区的卡表中变脏的元素加入`GCRoots`里。
 
@@ -1897,7 +1902,7 @@ void pre_load_barrier(oop* field) {
 
 此命令可以用来查看内存信息，实例个数以及占用内存大小
 
-![0](./imgs/JVM/96322.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96322.png)
 
 ```sh
 jmap -histo 14660  #查看历史生成的实例
@@ -1906,7 +1911,7 @@ jmap -histo:live 14660  #查看当前存活的实例，执行过程中可能会�
 
 打开log.txt，文件内容如下：
 
-![0](./imgs/JVM/96302.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96302.png)
 
 | 参数 | 含义 |
 | --- | --- |
@@ -1917,7 +1922,7 @@ jmap -histo:live 14660  #查看当前存活的实例，执行过程中可能会�
 
 堆信息
 
-![0](./imgs/JVM/96304.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96304.png)
 
 堆内存dump
 
@@ -1925,7 +1930,7 @@ jmap -histo:live 14660  #查看当前存活的实例，执行过程中可能会�
 jmap -dump:format=b,file=eureka.hprof 14660
 ```
 
-![0](./imgs/JVM/96320.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96320.png)
 
 也可以设置内存溢出自动导出dump文件(内存很大的时候，可能会导不出来)
 
@@ -1955,7 +1960,7 @@ public class OOMTest {
 
 **可以用`jvisualvm`命令工具导入该dump文件分析**
 
-![0](./imgs/JVM/96300.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96300.png)
 
 ### Jstack
 
@@ -1999,7 +2004,7 @@ public class DeadLockTest {
 }
 ```
 
-![0](./imgs/JVM/96306.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96306.png)
 
 | 属性            | 值                              |
 | --------------- | ------------------------------- |
@@ -2009,11 +2014,11 @@ public class DeadLockTest {
 | 本地线程标识nid | nid=0x2d64                      |
 | 线程状态        | java.lang.Thread.State: BLOCKED |
 
-![0](./imgs/JVM/96308.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96308.png)
 
 还可以用`jvisualvm`自动检测死锁
 
-![0](./imgs/JVM/96309.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96309.png)
 
 **远程连接`jvisualvm`**
 
@@ -2070,11 +2075,11 @@ public class Math {
 
 1. 使用命令`top -p`  ，显示你的java进程的内存情况，pid是java进程号，比如19663
 
-![0](./imgs/JVM/96310.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96310.png)
 
 2. 按`H`，获取每个线程的内存情况 
 
-![0](./imgs/JVM/96324.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96324.png)
 
 3. 找到内存和cpu占用最高的线程`tid`，比如19664
 
@@ -2082,7 +2087,7 @@ public class Math {
 
 5. 执行 `jstack 19663|grep -A 10 4cd0`，得到线程堆栈信息中 `4cd0` 这个线程所在行的后面10行，从堆栈中可以发现导致cpu飙高的调用方法
 
-![0](./imgs/JVM/96326.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96326.png)
 
 6. 查看对应的堆栈信息找出可能存在问题的代码
 
@@ -2090,11 +2095,11 @@ public class Math {
 
 查看正在运行的Java应用程序的扩展参数 ，查看jvm的参数
 
-![0](./imgs/JVM/96331.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96331.png)
 
 查看java系统参数
 
-![0](./imgs/JVM/96333.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96333.png)
 
 ### Jstat
 
@@ -2109,7 +2114,7 @@ jstat [-命令选项] [vmid] [间隔时间(毫秒)] [查询次数]
 
 `jstat -gc pid` **最常用**，可以评估程序内存使用及GC压力整体情况
 
-![0](./imgs/JVM/96314.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96314.png)
 
 | 指标 | 描述                          |
 | ---- | ----------------------------- |
@@ -2133,7 +2138,7 @@ jstat [-命令选项] [vmid] [间隔时间(毫秒)] [查询次数]
 
 #### 堆内存统计
 
-![0](./imgs/JVM/96312.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96312.png)
 
 | 指标  | 描述               |
 | ----- | ------------------ |
@@ -2150,7 +2155,7 @@ jstat [-命令选项] [vmid] [间隔时间(毫秒)] [查询次数]
 
 #### 新生代垃圾回收统计
 
-![0](./imgs/JVM/96317.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96317.png)
 
 | 指标 | 描述                       |
 | ---- | -------------------------- |
@@ -2160,7 +2165,7 @@ jstat [-命令选项] [vmid] [间隔时间(毫秒)] [查询次数]
 
 #### 新生代内存统计
 
-![0](./imgs/JVM/96315.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96315.png)
 
 | 指标  | 描述               |
 | ----- | ------------------ |
@@ -2170,17 +2175,17 @@ jstat [-命令选项] [vmid] [间隔时间(毫秒)] [查询次数]
 
 #### 老年代垃圾回收统计
 
-![0](./imgs/JVM/96319.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96319.png)
 
 #### 老年代内存统计
 
-![0](./imgs/JVM/96318.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96318.png)
 
 #### 元数据空间统计
 
-![0](./imgs/JVM/96316.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96316.png)
 
-![0](./imgs/JVM/96321.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96321.png)
 
 | 指标 | 描述                   |
 | ---- | ---------------------- |
@@ -2233,7 +2238,7 @@ JVM参数设置如下：
 -Xms1536M -Xmx1536M -Xmn512M -Xss256K -XX:SurvivorRatio=6  -XX:MetaspaceSize=256M -XX:MaxMetaspaceSize=256M  -XX:+UseParNewGC  -XX:+UseConcMarkSweepGC  -XX:CMSInitiatingOccupancyFraction=75 -XX:+UseCMSInitiatingOccupancyOnly     
 ```
 
-![0](./imgs/JVM/96307.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96307.png)
 
 可以结合**对象挪动到老年代那些规则**推理下这个程序可能存在的一些问题
 
@@ -2245,7 +2250,7 @@ JVM参数设置如下：
 jstat -gc 13456 2000 10000
 ```
 
-![0](./imgs/JVM/96359.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96359.png)
 
 对于对象动态年龄判断机制导致的`full gc`较为频繁可以先试着优化下JVM参数
 
@@ -2255,11 +2260,11 @@ jstat -gc 13456 2000 10000
 -Xms1536M -Xmx1536M -Xmn1024M -Xss256K -XX:SurvivorRatio=6  -XX:MetaspaceSize=256M -XX:MaxMetaspaceSize=256M  -XX:+UseParNewGC  -XX:+UseConcMarkSweepGC  -XX:CMSInitiatingOccupancyFraction=92 -XX:+UseCMSInitiatingOccupancyOnly
 ```
 
-![0](./imgs/JVM/96350.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96350.png)
 
 结果：优化完发现没什么变化，**`full gc`的次数比`minor gc`的次数还多了**
 
-![0](./imgs/JVM/96366.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96366.png)
 
 可以推测下`full gc`比`minor gc`还多的原因有哪些？
 
@@ -2271,7 +2276,7 @@ jstat -gc 13456 2000 10000
 
 最快速度分析完这些我们推测的原因以及优化后，我们发现`young gc`和`full gc`依然很频繁了，而且看到有大量的对象频繁的被挪动到老年代，这种情况我们可以借助`jmap`命令大概看下是什么对象
 
-![0](./imgs/JVM/96303.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96303.png)
 
 查到了有大量`User`对象产生，这个可能是问题所在，但不确定，还必须找到对应的代码确认，如何去找对应的代码了？
 
@@ -2348,7 +2353,7 @@ wget https://arthas.gitee.io/arthas-boot.jar
 
 用`java -jar`运行即可，可以识别机器上所有Java进程(我们这里之前已经运行了一个Arthas测试程序，代码见下方)
 
-![0](./imgs/JVM/96552.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96552.png)
 
 ```java
 package com.tuling.jvm;
@@ -2440,33 +2445,33 @@ public class Arthas {
 
 选择进程序号1，进入进程信息操作
 
-![0](./imgs/JVM/96569.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96569.png)
 
 输入**`dashboard`**可以查看整个进程的运行情况，线程、内存、GC、运行环境信息：
 
-![0](./imgs/JVM/96574.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96574.png)
 
 输入**`thread`**可以查看线程详细情况
 
-![0](./imgs/JVM/96580.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96580.png)
 
 输入 **`thread`加上线程ID** 可以查看线程堆栈
 
-![0](./imgs/JVM/96586.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96586.png)
 
 输入 **`thread -b`** 可以查看线程死锁
 
-![0](./imgs/JVM/96592.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96592.png)
 
 **输入` jad`加类的全名 可以反编译，这样可以方便我们查看线上代码是否是正确的版本**
 
-![0](./imgs/JVM/96602.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96602.png)
 
 **使用 `ognl` 命令可以对线上代码进行修改**
 
-![0](./imgs/JVM/96607.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96607.png)
 
-![0](./imgs/JVM/96615.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/96615.png)
 
 更多命令使用可以用help命令查看，或[查看文档](https://alibaba.github.io/arthas/commands.html#arthas)
 
@@ -2493,7 +2498,7 @@ java -jar -Xloggc:./gc-%t.log -XX:+PrintGCDetails -XX:+PrintGCDateStamps  -XX:+P
 
 下图中是截取的JVM刚启动的一部分GC日志 
 
-![0](./imgs/JVM/clipboard.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/clipboard.png)
 
 > 1. 第一行红框，是项目的配置参数。这里不仅配置了打印GC日志，还有相关的VM内存参数。 
 >
@@ -2552,19 +2557,19 @@ public class HeapTest {
 
 上面的这些参数，能够帮查看分析GC的垃圾收集情况。但是如果GC日志很多很多，成千上万行。就算你一目十行，看完了，脑子也是一片空白。所以可以借助一些功能来帮助我们分析，这里推荐一个[gceasy](https://gceasy.io)，可以上传gc文件，然后他会利用可视化的界面来展现GC情况。具体下图所示 
 
-![0](./imgs/JVM/80219.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/80219.png)
 
 上图我们可以看到年轻代，老年代，以及永久代的内存分配，和最大使用情况。 
 
-![0](./imgs/JVM/80221.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/80221.png)
 
 上图我们可以看到堆内存在GC之前和之后的变化，以及其他信息。
 
 这个工具还提供基于机器学习的JVM智能优化建议，当然现在这个功能需要付费
 
-![0](./imgs/JVM/80273.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/80273.png)
 
-![0](./imgs/JVM/80276.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/80276.png)
 
 **JVM参数汇总查看命令**
 
@@ -2579,17 +2584,17 @@ Class常量池可以理解为是Class文件中的资源仓库。 Class文件中�
 
 一个class文件的16进制大体结构如下图：
 
-![0](./imgs/JVM/80047.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/80047.png)
 
 对应的含义如下，细节可以查下`oracle`官方文档
 
-![0](./imgs/JVM/80124.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/80124.png)
 
 当然一般不会去人工解析这种16进制的字节码文件，我们一般可以通过`javap`命令生成更可读的JVM字节码指令文件：
 
 `javap -v Math.class`
 
-![0](./imgs/JVM/1.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/1.png)
 
 红框标出的就是class常量池信息，常量池中主要存放两大类常量：**字面量和符号引用**。
 
@@ -2718,11 +2723,11 @@ System.out.println(s1 == s2);
 
 1. 在 JDK 1.6 中，调用 `intern()` 首先会在字符串池中寻找 `equal()` 相等的字符串，假如字符串存在就返回该字符串在字符串池中的引用；假如字符串不存在，虚拟机会重新在永久代上创建一个实例，将 `StringTable` 的一个表项指向这个新创建的实例。
 
-![0](./imgs/JVM/2.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2.png)
 
 2. 在 JDK 1.7 (及以上版本)中，由于字符串池不在永久代了，`intern()` 做了一些修改，更方便地利用堆中的对象。字符串存在时和 JDK 1.6一样，但是字符串不存在时不再需要重新创建实例，可以直接指向堆上的实例。
 
-![0](./imgs/JVM/3.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/3.png)
 
 > 由上面两个图，也不难理解为什么 JDK 1.6 字符串池溢出会抛出 `OutOfMemoryError: PermGen space` ，而在 JDK 1.7 及以上版本抛出 `OutOfMemoryError: Java heap space` 。
 
@@ -2898,15 +2903,15 @@ public class Test {
 
 跨语言（语言无关性）：JVM只识别字节码，所以JVM其实跟语言是解耦的，也就是没有直接关联，JVM运行不是翻译Java文件，而是识别class文件，这个一般称之为字节码。还有像`Groovy 、Kotlin、Scala`等等语言，它们其实也是编译成字节码，所以它们也可以在JVM上面跑，这个就是JVM的跨语言特征。Java的跨语言性一定程度上奠定了非常强大的java语言生态圈。
 
-![0](./imgs/JVM/2444.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2444.png)
 
 **解释执行与JIT**
 
-![0](./imgs/JVM/2436.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2436.png)
 
 Java程序在运行的时候，主要就是执行字节码指令，一般这些指令会按照顺序解释执行，这种就是**解释执行**。
 
-![0](./imgs/JVM/2461.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2461.png)
 
 但是那些被频繁调用的代码，比如调用次数很高或者在 for 循环里的那些代码,如果按照解释执行，效率是非常低的。（这个就是Java以前被C、C++开发者吐槽慢的原因）
 
@@ -2914,7 +2919,7 @@ Java程序在运行的时候，主要就是执行字节码指令，一般这些�
 
 **C1、C2与Graal编译器**
 
-![0](./imgs/JVM/2440.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2440.png)
 
 在JDK1.8中 HotSpot 虚拟机中，内置了两个 JIT，分别为 C1 编译器和 C2 编译器。
 
@@ -2932,15 +2937,15 @@ Java7及以后引入了分层编译，这种方式综合了 C1 的启动性能�
 
 1. **通过 `java -version` 命令行可以直接查看到当前系统使用的编译模式(默认分层编译)**
 
-![0](./imgs/JVM/2442.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2442.png)
 
 2. **使用“`-Xint`”参数强制虚拟机运行于只有解释器的编译模式**
 
-![0](./imgs/JVM/2441.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2441.png)
 
 3. **使用“`-Xcomp`”强制虚拟机运行于只有 JIT 的编译模式下**
 
-![0](./imgs/JVM/2438.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2438.png)
 
 ### 热点代码
 
@@ -2952,7 +2957,7 @@ JVM提供了一个参数“`-XX:ReservedCodeCacheSize`”，用来限制 `CodeCa
 
 **通过 `java -XX:+PrintFlagsFinal –version`查询:**
 
-![0](./imgs/JVM/2450.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2450.png)
 
 **热点探测**
 
@@ -2964,11 +2969,11 @@ JVM提供了一个参数“`-XX:ReservedCodeCacheSize`”，用来限制 `CodeCa
 
 用于统计方法被调用的次数，方法调用计数器的默认阈值在客户端模式下是 1500 次，在服务端模式下是 10000 次(我们用的都是服务端，java –version查询)，可通过 `-XX: CompileThreshold` 来设定
 
-![0](./imgs/JVM/2448.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2448.png)
 
 **通过 `java -XX:+PrintFlagsFinal –version`查询**
 
-![0](./imgs/JVM/2457.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2457.png)
 
 - **回边计数器**
 
@@ -2978,9 +2983,9 @@ JVM提供了一个参数“`-XX:ReservedCodeCacheSize`”，用来限制 `CodeCa
 
 **通过 `java -XX:+PrintFlagsFinal –version`查询先关参数:**
 
-![0](./imgs/JVM/2447.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2447.png)
 
-![0](./imgs/JVM/2455.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2455.png)
 
 其中`OnStackReplacePercentage`默认值为140，`InterpreterProfilePercentage`默认值为33，如果都取默认值，那Server模式虚拟机回边计数器的阈值为10700.
 
@@ -2996,11 +3001,11 @@ JIT 编译运用了一些经典的编译优化技术来实现代码的优化，�
 
 **例如以下方法：**
 
-![0](./imgs/JVM/2453.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2453.png)
 
 **最终会被优化为：**
 
-![0](./imgs/JVM/2459.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2459.png)
 
 JVM 会自动识别热点方法，并对它们使用方法内联进行优化。我们可以通过 `-XX:CompileThreshold` 来设置热点方法的阈值。
 
@@ -3008,15 +3013,15 @@ JVM 会自动识别热点方法，并对它们使用方法内联进行优化。�
 
 而方法体的大小阈值，我们也可以通过参数设置来优化：经常执行的方法，默认情况下，方法体大小小于 325 字节的都会进行内联，我们可以通过 `-XX:FreqInlineSize=N` 来设置大小值；
 
-![0](./imgs/JVM/2443.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2443.png)
 
 不是经常执行的方法，默认情况下，方法大小小于 35 字节才会进行内联，我们也可以通过 `-XX:MaxInlineSize=N` 来重置大小值。
 
-![0](./imgs/JVM/2451.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2451.png)
 
 **代码演示**
 
-![0](./imgs/JVM/2445.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2445.png)
 
 设置 VM 参数：`-XX:+PrintCompilation -XX:+UnlockDiagnosticVMOptions -XX:+PrintInlining` 
 
@@ -3027,13 +3032,13 @@ JVM 会自动识别热点方法，并对它们使用方法内联进行优化。�
 -XX:+PrintInlining # 将内联方法打印出来
 ```
 
-![0](./imgs/JVM/2439.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2439.png)
 
 如果循环太少，则不会触发方法内联
 
-![0](./imgs/JVM/2456.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2456.png)
 
-![0](./imgs/JVM/2454.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2454.png)
 
 **热点方法的优化可以有效提高系统性能，一般我们可以通过以下几种方式来提高方法内联：**
 
@@ -3045,33 +3050,33 @@ JVM 会自动识别热点方法，并对它们使用方法内联进行优化。�
 
 在非线程安全的情况下，尽量不要使用线程安全容器，比如 `StringBuffer`。由于 `StringBuffer` 中的 `append` 方法被 `Synchronized` 关键字修饰，会使用到锁，从而导致性能下降。
 
-![0](./imgs/JVM/2449.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2449.png)
 
 但实际上，在以下代码测试中，`StringBuffer` 和 `StringBuilder` 的性能基本没什么区别。这是因为在局部方法中创建的对象只能被当前线程访问，无法被其它线程访问，这个变量的读写肯定不会有竞争，这个时候 JIT 编译会对这个对象的方法锁进行锁消除。
 
 下代码测试中，`StringBuffer` 和 `StringBuilder` 的性能基本没什么区别。这是因为在局部方法中创建的对象只能被当前线程访问，无法被其它线程访问，这个变量的读写肯定不会有竞争，这个时候 JIT 编译会对这个对象的方法锁进行锁消除。
 
-![0](./imgs/JVM/2458.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2458.png)
 
-![0](./imgs/JVM/2466.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2466.png)
 
 我们把锁消除关闭---测试发现性能差别有点大
 
 `-XX:-EliminateLocks` 关闭锁消除
 
-![0](./imgs/JVM/2465.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2465.png)
 
 #### 标量替换
 
 逃逸分析证明一个对象不会被外部访问，如果这个对象可以被拆分的话，当程序真正执行的时候可能不创建这个对象，而直接创建它的成员变量来代替。将对象拆分后，可以分配对象的成员变量在栈或寄存器上，原本的对象就无需分配内存空间了。这种编译优化就叫做**标量替换**（前提是需要开启**逃逸分析**）。
 
-![0](./imgs/JVM/2446.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2446.png)
 
 `-XX:+DoEscapeAnalysis`开启逃逸分析（jdk1.8默认开启）、`-XX:+EliminateAllocations`开启标量替换（jdk1.8默认开启）
 
 #### 逃逸分析
 
-![0](./imgs/JVM/2435.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2435.png)
 
 **逃逸分析的原理：**分析对象动态作用域，当一个对象在方法中定义后，它可能被外部方法所引用。
 
@@ -3085,23 +3090,23 @@ JVM 会自动识别热点方法，并对它们使用方法内联进行优化。�
 
 如下图中`foo`方法如果使用标量替换的话，那么最后执行的话就是`foo1`方法的效果。
 
-![0](./imgs/JVM/2467.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2467.png)
 
 **逃逸分析代码示例**
 
-​    ![0](./imgs/JVM/2437.png)
+​    ![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2437.png)
 
 这段代码在调用的过程中`Myboject`这个对象属于不可逃逸，JVM可以做栈上分配，所以运行速度非常快！JVM默认会做逃逸分析、会进行标量替换，会进行栈上分配。
 
-![0](./imgs/JVM/2463.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2463.png)
 
 然后关闭逃逸分析`-XX:-DoEscapeAnalysis`          
 
-![0](./imgs/JVM/2460.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2460.png)
 
 然后关闭标量替换`-XX:-EliminateAllocations`
 
-![0](./imgs/JVM/2462.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2462.png)
 
 测试结果可见，开启逃逸分析对代码的执行性能有很大的影响！那为什么有这个影响？
 
@@ -3117,13 +3122,13 @@ JVM 会自动识别热点方法，并对它们使用方法内联进行优化。�
 
 **开启逃逸分析**
 
-![0](./imgs/JVM/2464.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2464.png)
 
 可以看到没有GC日志（因为进行了栈上分配）
 
 **关闭逃逸分析**
 
-![0](./imgs/JVM/2452.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/JVM/2452.png)
 
 > 可以看到关闭了逃逸分析，JVM在频繁的进行垃圾回收（GC），正是这一块的操作导致性能有较大的差别。
 

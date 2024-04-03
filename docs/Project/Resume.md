@@ -1,3 +1,8 @@
+---
+title: Resume
+date: 2024-03-05 10:08:57
+permalink: /pages/1e0b40/
+---
 # 简历
 
 ## 基本信息

@@ -1,3 +1,8 @@
+---
+title: Colossal-AI
+date: 2023-11-16 17:26:39
+permalink: /pages/a2ac81/
+---
 # Colossal简介
 
 ## 分布式训练
@@ -6,7 +11,7 @@
 
 - 模型规模迅速增加：与较小的模型相比，超大型模型通常能提供更优越的性能。
 
-![模型与参数量](./imgs/colossalai/model_parameters.jpg)
+![模型与参数量](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/colossalai/model_parameters.jpg)
 
 - 数据集规模迅速增加
 
@@ -29,7 +34,7 @@
 
 假设有2台机器（也称为节点），每台机器有4个GPU。当在这两台机器上初始化分布式环境时，基本上启动了8个进程（每台机器上有4个进程），每个进程被绑定到一个 GPU 上。
 
-![分布式系统](./imgs/colossalai/distributed%20systems.jpg)
+![分布式系统](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/colossalai/distributed%20systems.jpg)
 
 可以创建一个新的进程组。这个新的进程组可以包含任何进程的子集。
 
@@ -38,7 +43,7 @@
 - peer-to-peer: 一个进程向另一个进程发送数据。
 - collective: 一组进程一起执行分散、聚集、all-reduce、广播等操作。
 
-![Collective communication](./imgs/colossalai/Collective%20communication.jpg)
+![Collective communication](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/colossalai/Collective%20communication.jpg)
 
 ## 关键技术：异构训练再升级
 
@@ -48,7 +53,7 @@
 
 - 但如下图左边所示，当 GPU 内存不足以满足其相应的模型数据要求时，即使当时 CPU 上仍有可用内存，系统也会崩溃。
 
-![ZeRO-offload](./imgs/colossalai/ZeRO-offload.jpg)
+![ZeRO-offload](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/colossalai/ZeRO-offload.jpg)
 
 - Colossal-AI 团队从头搭建了如 ZeRO 等核心关键技术，并针对 DeepSpeed 在 CPU 和 GPU 内存之间仅使用静态划分模型数据、对不同训练配置使用固定内存布局等问题做了诸多改进，进一步挖掘高效的 GPU 与 CPU 内存高效协同方案
 
@@ -60,13 +65,13 @@
   
   - warmup：有助于减缓模型在初始阶段对mini-batch的提前过拟合现象，保持分布的平稳,有助于保持模型深层的稳定性
 
-![warmup_to_non-warmup](./imgs/colossalai/warmup_to_non-warmup.jpg)
+![warmup_to_non-warmup](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/colossalai/warmup_to_non-warmup.jpg)
 
 其中非模型的内存使用量其实难以获取，因为非模型数据的生存周期并不归用户管理，现有的深度学习框架没有暴露非模型数据的追踪接口给用户。其次，CUDA context 等非框架开销也需要统计。
 
 Colossal-AI 通过采样方式在 warmup 阶段获得 CPU 和 GPU 内存的使用情况。非模型数据的使用可以通过统计两个时刻之间系统最大内存使用 - 模型内存使用获得。模型的内存使用情况可以通过查询内存管理器得知，如下图黑色实线所示。
 
-![sampling_warmup_cpu_gpu](./imgs/colossalai/sampling_warmup_cpu_gpu.jpg)
+![sampling_warmup_cpu_gpu](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/colossalai/sampling_warmup_cpu_gpu.jpg)
 
 而所有模型数据张量则交给内存管理器管理，每个张量标记一个状态信息，包括 HOLD，COMPUTE，FREE 等。并根据动态查询到的内存使用情况，不断动态转换张量状态，调整张量位置，最终实现对 GPU 显存和 CPU 内存的高效利用，实现在硬件极其有限的情况下，最大化模型容量和平衡训练速度，对于 AI 民主化和低成本微调大模型下游任务等意义巨大。
 
@@ -96,7 +101,7 @@ Colossal-AI 通过高效多维并行和异构并行等技术，让用户仅需�
 
 4. 异构系统的并行：依靠 CPU 甚至是 NVMe 磁盘来训练大型模型。主要的想法是，在不使用张量时，将其卸载回 CPU 内存或 NVMe 磁盘。通过使用异构系统架构，有可能在一台机器上容纳一个巨大的模型。
 
-![Parallelism of heterogeneous systems](./imgs/colossalai/Parallelism%20of%20heterogeneous%20systems.jpg)
+![Parallelism of heterogeneous systems](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/colossalai/Parallelism%20of%20heterogeneous%20systems.jpg)
 
 ### 其他优化方案
 
@@ -104,7 +109,7 @@ Colossal-AI 通过高效多维并行和异构并行等技术，让用户仅需�
 
   - 半精度浮点格式（FP16）具有较低的算法复杂度和较高的计算效率。此外，FP16 仅需要 FP32 所需的一半存储空间，并节省了内存和网络带宽，从而为大 batch size 和大模型提供了更多内存。然而，还有其他操作，如缩减，需要 FP32 的动态范围，以避免数值溢出/下溢。因此，引入自动混合精度，尝试将每个操作与其相应的数据类型相匹配，这可以减少内存占用并提高训练效率。
 
-![AMP](./imgs/colossalai/AMP.jpg)
+![AMP](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/colossalai/AMP.jpg)
 
 - 梯度累积：梯度累积是一种常见的增大训练 batch size 的方式。 在训练大模型时，内存经常会成为瓶颈，并且 batch size 通常会很小（如2），这导致收敛性无法保证。梯度累积将多次迭代的梯度累加，并仅在达到预设迭代次数时更新参数。
   
@@ -116,7 +121,7 @@ Colossal-AI 通过高效多维并行和异构并行等技术，让用户仅需�
 
   - 每个 GPU 只拥有线性层中权重的一部分参数。为了得到线性层权重的梯度向量的正确范数，每个 GPU 中的每个梯度向量的范数应该相加。更复杂的是，偏置的分布不同于权重的分布。通信组在求和运算中有所不同。
 
-![Parameter distribution](./imgs/colossalai/parameter%20distribution.jpg)
+![Parameter distribution](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/colossalai/parameter%20distribution.jpg)
 
 - 基于Chunk内存管理的零冗余优化器 (ZeRO)：零冗余优化器 (ZeRO) 通过对三个模型状态（优化器状态、梯度和参数）进行划分而不是复制他们，消除了数据并行进程中的内存冗余。该方法与传统的数据并行相比，内存效率得到了极大的提高，而计算粒度和通信效率得到了保留。
 
@@ -163,7 +168,7 @@ Colossal-AI提供了轻量级的Chunk搜索机制，帮助用户自动找到内�
 
 ### Colossal-AI 的工作流
 
-![Colossal-AI workflow](./imgs/colossalai/Colossal-AI%20workflow.jpg)
+![Colossal-AI workflow](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/colossalai/Colossal-AI%20workflow.jpg)
 
 1. 准备一个配置文件，指定您要使用的功能和参数。
 

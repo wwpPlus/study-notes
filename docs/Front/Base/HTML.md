@@ -1,3 +1,8 @@
+---
+title: HTML
+date: 2023-11-16 17:26:40
+permalink: /pages/d2f50e/
+---
 # HTML
 
 ## HTML 基础
@@ -101,7 +106,7 @@
 
 运行结果
 
-![布局](./imgs/html/布局.jpg)
+![布局](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/html/布局.jpg)
 
 ### 速查列表
 

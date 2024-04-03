@@ -1,3 +1,8 @@
+---
+title: EfficientNet
+date: 2023-11-16 17:26:39
+permalink: /pages/c3610e/
+---
 # EfficientNet
 
 ## 名词解释
@@ -39,7 +44,7 @@ Global Average Pool全局平均池化，就是将某个通道的特征取平均�
 在论文中经常能看到这个温度参数的身影，那么他都有什么用处呢？比如经常看到下面这样的式子：
 
 里面的beta就是temperature parameter，它可以起到平滑softmax输出结果的作用，举例子如下：
-![beta](./imgs/efficientnet/beta.jpg)
+![beta](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/efficientnet/beta.jpg)
 > 当beta>1的时候，可以将输出结果变得平滑，当beta<1的时候，可以让输出结果变得差异更大一下，更尖锐一些。如果beta比较大，则分类的crossentropy损失会很大，可以在不同的迭代次数里，使用不同的beta数值，有点类似于学习率的效果。
 
 ### end to end
@@ -50,11 +55,11 @@ Global Average Pool全局平均池化，就是将某个通道的特征取平均�
 
 ### 基本网络架构
 
-![EfficientNet](./imgs/efficientnet/efficientNet.jpg)
+![EfficientNet](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/efficientnet/efficientNet.jpg)
 
 ### 流程图
 
-![Efficient Process](./imgs/efficientnet/efficient_process.jpg)
+![Efficient Process](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/efficientnet/efficient_process.jpg)
 
 ### Depthwise卷积
 
@@ -70,7 +75,7 @@ Global Average Pool全局平均池化，就是将某个通道的特征取平均�
 
 ### BiFPN
 
-![BiFPN](./imgs/efficientnet/FPN%20PAN%20NAS-FPN%20BiFPN.jpg)
+![BiFPN](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/efficientnet/FPN%20PAN%20NAS-FPN%20BiFPN.jpg)
 
 ## CenterNet
 

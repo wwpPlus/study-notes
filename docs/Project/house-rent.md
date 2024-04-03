@@ -1,3 +1,8 @@
+---
+title: house-rent
+date: 2023-11-16 17:26:40
+permalink: /pages/6e6f76/
+---
 # 微服务房屋租赁系统
 
 系统地址
@@ -24,15 +29,15 @@
 
 管理员功能图，管理员拥有系统的所有管理功能，包括登录/退出、房屋信息管理、房主信息管理、公告信息管理、合同信息管理、租客信息管理、维修信息管理、看房信息管理、收租信息管理、租赁信息管理。
 
-![管理员功能](./imgs/house-rent/管理员功能.jpg)
+![管理员功能](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/管理员功能.jpg)
 
 普通用户功能图，普通用户的功能包括查看个人租赁信息、修改密码、登录/退出、查看合同信息、查看公告信息、申请看房、取消申请看房、添加维修信息。
 
-![普通用户功能](./imgs/house-rent/普通用户功能.jpg)
+![普通用户功能](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/普通用户功能.jpg)
 
 本系统支持基本的房屋租赁服务功能需求，其总体需求功能图。
 
-![总体需求](./imgs/house-rent/总体需求.jpg)
+![总体需求](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/总体需求.jpg)
 
 ### 2.2 功能性需求分析
 
@@ -47,13 +52,13 @@
 - 权限认证：包括身份验证、token 令牌的生成；
 - 信息汇总：包括租客人数在线统计、房屋信息统计、公告统计、维修统计、公告信息展示
 
-![基础服务功能](./imgs/house-rent/基础服务功能.jpg)
+![基础服务功能](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/基础服务功能.jpg)
 
 #### 2.2.2 信息管理服务
 
 本服务主要围绕信息检索功能实现，该微服务包括户主信息管理、租客信息管理、房屋信息管理、管理员信息管理、公告信息管理。
 
-![信息管理服务功能图](./imgs/house-rent/信息管理服务功能.jpg)
+![信息管理服务功能图](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/信息管理服务功能.jpg)
 
 - 户主信息管理：主要包括户主信息的增、删、改、查，添加完户主信息后才可以在房屋信息管理中发布房源信息，本系统的户主信息管理支持按照户主姓名和身份证号的高级查询，支持批量删除操作；
 - 租客信息管理：主要包括租客信息的增、删、改、查，新用户只有在管理员新增租客信息后才能够进行登录访问且每个租客都具有一个初始登录密码，在租客登录后可以进行修改密码，本模块支持按照租客姓名和身份证号的高级查询和租客信息的批量删除操作；
@@ -65,7 +70,7 @@
 
 租赁服务是通过线下运营方式抽象出的业务模型，用户对房屋资源的租赁过程。
 
-![房屋租赁流程](./imgs/house-rent/房屋租赁流程.jpg)
+![房屋租赁流程](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/房屋租赁流程.jpg)
 
 1. 首先需要管理员已经为租客开通了账号，租客通过已开通的账号登入系统，在看房在线申请中查看未被租赁的房屋资源；
 2. 租客可以看到之前申请过的看房记录，同时也可以对未被租赁的房源提出看房申请；
@@ -75,7 +80,7 @@
 6. 如果房租到期，租客没有按时交租系统会有 5 天的等待时间，如果超过 5 天租客还未交租，管理员会终止合同使租客退租；如果租客在此期间进行了交租操作，那么就会刷新房屋的租赁时间使租客实现续租。
    根据房屋租赁业务流程可以设计出租赁服务的功能框架图。
 
-![租赁服务功能图](./imgs/house-rent/租赁服务功能.jpg)
+![租赁服务功能图](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/租赁服务功能.jpg)
 
 ## 3.系统功能详细设计与实现
 
@@ -83,17 +88,17 @@
 
 基础服务包括身份验证和信息统计汇总，用户在进入房屋租赁系统首页时，会利用 js 动态获取客户端用 LayUI 保存的 token 令牌，如果该令牌为空说明用户尚未登录，此时将重定向到登录界面；如果用户登录成功，那么服务端在接收用户登录信息的同时，会先从数据库中检索是否存在该用户以及用户信息是否正确，如果用户不存在或者用户信息不匹配，就返回对应的错误信息，反之，用户存在且信息验证通过，此时服务端利用 JWT 生成一个有效时间为 60min 的签名秘钥，并返回到客户端保存在客户端，以便在其他页面进行身份验证，减轻了服务端的响应压力，身份验证执行流程。
 
-![身份验证流程](./imgs/house-rent/身份验证流程.jpg)
+![身份验证流程](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/身份验证流程.jpg)
 
 登录时可选择对应身份，管理员和普通租户对应不同的首页界面。
 
 管理员首页：
 
-![管理员首页](./imgs/house-rent/管理员首页.jpg)
+![管理员首页](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/管理员首页.jpg)
 
 普通租户首页：
 
-![普通租户首页](./imgs/house-rent/普通租户首页.jpg)
+![普通租户首页](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/普通租户首页.jpg)
 
 ### 3.2 信息管理服务
 
@@ -101,23 +106,23 @@
 
 - 房主信息管理包括按姓名和身份证号的高级查询、批量删除、房主信息修改、房主信息新增。
 
-![房主信息管理](./imgs/house-rent/房主信息管理.jpg)
+![房主信息管理](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/房主信息管理.jpg)
 
 - 租客信息管理包括按租客姓名和身份证号的高级查询、租客信息的批量删除、租客信息的修改、租客信息新增。
 
-![租客信息管理](./imgs/house-rent/租客信息管理.jpg)
+![租客信息管理](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/租客信息管理.jpg)
 
 - 房屋信息管理包括按照房屋编号和房屋装态的高级查询、房屋信息的批量删除、房屋信息修改、房屋信息新增。
 
-![房屋信息管理](./imgs/house-rent/房屋信息管理.jpg)
+![房屋信息管理](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/房屋信息管理.jpg)
 
 - 管理员管理包括密码修改、删除管理员、添加管理员。
 
-![管理员信息管理](./imgs/house-rent/管理员信息管理.jpg)
+![管理员信息管理](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/管理员信息管理.jpg)
 
 - 公告信息管理包括发布公告、批量删除公告。
 
-![公告信息管理](./imgs/house-rent/公告信息管理.jpg)
+![公告信息管理](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/公告信息管理.jpg)
 
 ### 3.3 租赁服务
 
@@ -125,40 +130,40 @@
 
 - 租客进入我的租赁信息及合同信息查看。
 
-![租赁信息](./imgs/house-rent/租赁信息.jpg)
+![租赁信息](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/租赁信息.jpg)
 
 - 租客报修记录。
 
-![报修记录](./imgs/house-rent/报修记录.jpg)
+![报修记录](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/报修记录.jpg)
 
 - 租客房租列表。
 
-![房租列表](./imgs/house-rent/房租列表.jpg)
+![房租列表](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/房租列表.jpg)
 
 - 租客看房申请。
 
-![看房申请列表](./imgs/house-rent/看房申请列表.jpg)
+![看房申请列表](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/看房申请列表.jpg)
 
 - 管理员看房申请管理。
 
-![看房申请管理](./imgs/house-rent/看房申请管理.jpg)
+![看房申请管理](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/看房申请管理.jpg)
 
 - 管理员管理租赁。
 
-![租赁管理](./imgs/house-rent/租赁管理.jpg)
+![租赁管理](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/租赁管理.jpg)
 
 - 收租管理。
 
-![收租管理](./imgs/house-rent/收租管理.jpg)
+![收租管理](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/收租管理.jpg)
 
 - 报修管理。
 
-![报修管理](./imgs/house-rent/报修管理.jpg)
+![报修管理](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/报修管理.jpg)
 
 - 维修数据统计。
 
-![维修统计](./imgs/house-rent/维修统计.jpg)
+![维修统计](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/维修统计.jpg)
 
 - 收租数据统计。
 
-![收租统计](./imgs/house-rent/收租统计.jpg)
+![收租统计](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/house-rent/收租统计.jpg)

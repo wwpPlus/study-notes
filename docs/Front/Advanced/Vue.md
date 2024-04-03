@@ -1,9 +1,14 @@
+---
+title: Vue
+date: 2023-11-16 17:26:40
+permalink: /pages/26c58d/
+---
 # Vue
 
 ## Vue 生命周期
 
 [官方文档](https://v2.cn.vuejs.org/v2/guide/)
-![](./imgs/Vue/1.jpg)
+![](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Vue/1.jpg)
 
 ## Vue基础
 

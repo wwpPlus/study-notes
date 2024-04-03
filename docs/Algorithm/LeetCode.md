@@ -1,3 +1,8 @@
+---
+title: LeetCode
+date: 2023-11-16 17:26:39
+permalink: /pages/4dde8d/
+---
 # LeetCode 刷题
 
 ## 栈
@@ -6,7 +11,7 @@
 
 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
 
-![42](./imgs/leetcode/42.jpg)
+![42](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/42.jpg)
 
 ```java
 class Solution {
@@ -41,7 +46,7 @@ class Solution {
 - 清空任意一个水壶
 - 从一个水壶向另外一个水壶倒水，直到装满或者倒空
 
-![365](./imgs/leetcode/365.jpg)
+![365](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/365.jpg)
 
 ```java
 class Solution {
@@ -93,7 +98,7 @@ class Solution {
 
 此外，你可以认为原始数据不包含数字，所有的数字只表示重复的次数 k ，例如不会出现像 3a 或 2[4] 的输入。
 
-![394. 字符串解码](./imgs/leetcode/394.jpg)
+![394. 字符串解码](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/394.jpg)
 
 ```java
 class Solution {
@@ -153,7 +158,7 @@ class Solution {
 - `StockSpanner()` 初始化类对象。
 - `int next(int price)` 给出今天的股价 `price` ，返回该股票当日价格的 **跨度** 。
 
-![901](./imgs/leetcode/901.jpg)
+![901](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/901.jpg)
 
 ```java
 class StockSpanner {
@@ -188,7 +193,7 @@ class StockSpanner {
 
 由于答案可能很大，因此 **返回答案模 `10^9 + 7`** 。
 
-![907](./imgs/leetcode/907.jpg)
+![907](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/907.jpg)
 
 ```java
 class Solution {
@@ -235,10 +240,10 @@ class Solution {
 
 请你返回一个整数数组 `answer` ，其中 `answer[i]`是 `nums[i]` 的第二大整数。
 
-![2454](./imgs/leetcode/2454.jpg)
+![2454](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2454.jpg)
 
 **思路**
-![思路](./imgs/leetcode/2454_1.jpg)
+![思路](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2454_1.jpg)
 
 ```java
 class Solution {
@@ -285,7 +290,7 @@ class Solution {
 
 请你返回满足 **美丽塔** 要求的方案中，**高度和的最大值** 。
 
-![2865](./imgs/leetcode/2865.jpg)
+![2865](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2865.jpg)
 
 ```java
 class Solution {
@@ -416,7 +421,7 @@ Deque 接口扩展(继承)了 Queue 接口。在将双端队列用作队列时�
 - 将 `6` 添加到 `[1, 2, 3, 4, 5]` 的中间位置，结果数组为 `[1, 2, **6**, 3, 4, 5]` 。
 - 从 `[1, 2, **3**, 4, 5, 6]` 的中间位置弹出元素，返回 `3` ，数组变为 `[1, 2, 4, 5, 6]` 。
 
-![1670](./imgs/leetcode/1670.jpg)
+![1670](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1670.jpg)
 
 ```java
 class FrontMiddleBackQueue {
@@ -511,7 +516,7 @@ class FrontMiddleBackQueue {
 
 我们可以通过求出剩余卡牌点数之和的最小值，来求出拿走卡牌点数之和的最大值。
 
-![1423](./imgs/leetcode/1423.jpg)
+![1423](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1423.jpg)
 
 ```java
 class Solution {
@@ -553,7 +558,7 @@ class Solution {
 
 只有在平面中存在环使得机器人永远无法离开时，返回 `true`。否则，返回 `false`。
 
-![1041](./imgs/leetcode/1041.jpg)
+![1041](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1041.jpg)
 
 ```java
 class Solution {
@@ -582,7 +587,7 @@ class Solution {
 
 给定一个由整数坐标组成的数组 queens ，表示黑皇后的位置；以及一对坐标 king ，表示白国王的位置，返回所有可以攻击国王的皇后的坐标(任意顺序)。
 
-![1222. 可以攻击国王的皇后](./imgs/leetcode/1222.jpg)
+![1222. 可以攻击国王的皇后](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1222.jpg)
 
 ```java
 class Solution {
@@ -624,7 +629,7 @@ class Solution {
 
 注意，骑士行动时可以垂直移动两个格子且水平移动一个格子，或水平移动两个格子且垂直移动一个格子。下图展示了骑士从某个格子出发可能的八种行动路线。
 
-![2596. 检查骑士巡视方案](./imgs/leetcode/2596.jpg)
+![2596. 检查骑士巡视方案](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2596.jpg)
 
 ```java
 class Solution {
@@ -693,7 +698,7 @@ class Solution {
 
 返回其总持续时间（以秒为单位）可被 60 整除的歌曲对的数量。形式上，我们希望下标数字 i 和 j 满足 i < j 且有 `(time[i] + time[j]) % 60 == 0`。
 
-![总持续时间可被 60 整除的歌曲](./imgs/leetcode/1010.jpg)
+![总持续时间可被 60 整除的歌曲](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1010.jpg)
 
 ```java
 class Solution {
@@ -720,7 +725,7 @@ class Solution {
 
 请你统计并返回能够与至少一台其他服务器进行通信的服务器的数量。
 
-![1267. 统计参与通信的服务器](./imgs/leetcode/1267.jpg)
+![1267. 统计参与通信的服务器](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1267.jpg)
 
 ```java
 class Solution {
@@ -758,7 +763,7 @@ class Solution {
 
 要想发出蛙鸣 "croak"，青蛙必须 依序 输出 ‘c’, ’r’, ’o’, ’a’, ’k’ 这 5 个字母。如果没有输出全部五个字母，那么它就不会发出声音。如果字符串 croakOfFrogs 不是由若干有效的 "croak" 字符混合而成，请返回 -1 。
 
-![数青蛙](./imgs/leetcode/1419.jpg)
+![数青蛙](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1419.jpg)
 
 ```java
 class Solution {
@@ -813,7 +818,7 @@ class Solution {
 
 给你两个字符串，`word1` 和 `word2` 。如果 `word1` 和 `word2` **接近** ，就返回 `true` ；否则，返回 `false` 。
 
-![1657](./imgs/leetcode/1657.jpg)
+![1657](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1657.jpg)
 
 ```java
 class Solution {
@@ -856,7 +861,7 @@ class Solution {
 
 请注意秘密数字和朋友猜测的数字都可能含有重复数字。
 
-![299](./imgs/leetcode/299.jpg)
+![299](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/299.jpg)
 
 ```java
 class Solution {
@@ -887,7 +892,7 @@ class Solution {
 
 返回平面上所有回旋镖的数量。
 
-![447](./imgs/leetcode/447.jpg)
+![447](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/447.jpg)
 
 ```java
 class Solution {
@@ -919,7 +924,7 @@ class Solution {
 
 注意，某些子字符串可能是重复的，但你统计时也必须算上这些重复的子字符串（也就是说，你必须统计 `s` 的所有子字符串中的唯一字符）。
 
-![828](./imgs/leetcode/828.jpg)
+![828](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/828.jpg)
 
 ```java
 class Solution {
@@ -968,7 +973,7 @@ class Solution {
 - 南表示 -Y 方向。
 - 西表示 -X 方向。
 
-![模拟行走机器人](./imgs/leetcode/874.jpg)
+![模拟行走机器人](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/874.jpg)
 
 ```java
 class Solution {
@@ -1005,7 +1010,7 @@ class Solution {
 
 给你一个由 **不同** 正整数组成的数组 `nums` ，请你返回满足 `a * b = c * d` 的元组 `(a, b, c, d)` 的数量。其中 `a`、`b`、`c` 和 `d` 都是 `nums` 中的元素，且 `a != b != c != d` 。
 
-![1726](./imgs/leetcode/1726.jpg)
+![1726](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1726.jpg)
 
 **思路与算法：**统计数组中所有不同元素的乘积组合数目，然后计算在相同乘积的**数对**可以构成**同积元组**的数目，并求和即可得到最终的结果。
 
@@ -1039,7 +1044,7 @@ class Solution {
 - `int popSmallest()` **移除** 并返回该无限集中的最小整数。
 - `void addBack(int num)` 如果正整数 `num` **不** 存在于无限集中，则将一个 `num` **添加** 到该无限集中。
 
-![2336](./imgs/leetcode/2336.jpg)
+![2336](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2336.jpg)
 
 ```java
 class SmallestInfiniteSet {
@@ -1078,7 +1083,7 @@ class SmallestInfiniteSet {
 
 请你找出所有满足条件的下标 `i` 和 `j` ，找出并返回 `nums[i] + nums[j]` 可以得到的 **最大值** _。_
 
-![2342](./imgs/leetcode/2342.jpg)
+![2342](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2342.jpg)
 
 ```java
 class Solution {
@@ -1107,7 +1112,7 @@ class Solution {
 
 返回正整数 k ，如果不存在这样的整数，返回 -1 。
 
-![与对应负数同时存在的最大正整数](./imgs/leetcode/2441.jpg)
+![与对应负数同时存在的最大正整数](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2441.jpg)
 
 > `[-9,-43,24,-23,-16,-30,-38,-30]`
 >
@@ -1139,7 +1144,7 @@ class Solution {
 
 请你找出 `arr` 中在 `mat` 的某一行或某一列上都被涂色且下标最小的元素，并返回其下标 `i` 。
  
-![2661](./imgs/leetcode/2661.jpg)
+![2661](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2661.jpg)
 
 ```java
 class Solution {
@@ -1178,7 +1183,7 @@ class Solution {
 
 注意 `nums[i, ..., j]` 表示 `nums` 的一个从下标 `i` 开始到下标 `j` 结束的子数组（包含下标 `i` 和 `j` 对应元素）。特别需要说明的是，如果 `i > j` ，则 `nums[i, ..., j]` 表示一个空子数组。
 
-![2670](./imgs/leetcode/2670.jpg)
+![2670](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2670.jpg)
 
 ```java
 class Solution {
@@ -1211,7 +1216,7 @@ class Solution {
 - `void deleteOne(int number)`：从数据结构中删除一个 `number` 。数据结构 **可能不包含** `number` ，在这种情况下不删除任何内容。
 - `bool hasFrequency(int frequency)`: 如果数据结构中存在出现 `frequency` 次的数字，则返回 `true`，否则返回 `false`。
 
-![2671](./imgs/leetcode/2671.jpg)
+![2671](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2671.jpg)
 
 ```java
 class FrequencyTracker {
@@ -1262,7 +1267,7 @@ class FrequencyTracker {
 
 请你返回一个长度为 `n` 的数组 `ans` ，其中 `ans[i]` 表示第 `i` 步操作后出现频率最高的 ID **数目** ，如果在某次操作后集合为空，那么 `ans[i]` 为 0 。
 
-![100258](./imgs/leetcode/100258.jpg)
+![100258](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/100258.jpg)
 
 ```java
 class Solution {
@@ -1327,7 +1332,7 @@ class Solution {
 
 返回 经过一些翻转后，行与行之间所有值都相等的最大行数 。
 
-![按列翻转得到最大值等行数](./imgs/leetcode/1072.png)
+![按列翻转得到最大值等行数](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1072.png)
 
 ```java
 class Solution {
@@ -1358,7 +1363,7 @@ class Solution {
 在步骤 1 删除的所有数字中找到最大的一个数字，将它添加到你的 分数 中。
 请你返回最后的 分数 。
 
-![2679. 矩阵中的和](./imgs/leetcode/2679.jpg)
+![2679. 矩阵中的和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2679.jpg)
 
 **枚举**
 
@@ -1418,7 +1423,7 @@ class Solution {
 
 **小扣初始血量为 1，且无上限**。假定小扣原计划按房间编号升序访问所有房间补血/打怪，**为保证血量始终为正值**，小扣需对房间访问顺序进行调整，**每次仅能将一个怪物房间（负数的房间）调整至访问顺序末尾**。请返回小扣最少需要调整几次，才能顺利访问所有房间。若调整顺序也无法访问完全部房间，请返回 -1。
 
-![LCP 30](./imgs/leetcode/lcp30.jpg)
+![LCP 30](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/lcp30.jpg)
 
 ```java
 class Solution {
@@ -1456,7 +1461,7 @@ class Solution {
 
 返回你最多可以修读的课程数目。
 
-![630. 课程表 III](./imgs/leetcode/630.jpg)
+![630. 课程表 III](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/630.jpg)
 
 ```java
 class Solution {
@@ -1488,7 +1493,7 @@ class Solution {
 
 给定一个非负整数，你至多可以交换一次数字中的任意两位。返回你能得到的最大值。
 
-![670](./imgs/leetcode/670.jpg)
+![670](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/670.jpg)
 
 ```java
 class Solution {
@@ -1523,7 +1528,7 @@ class Solution {
 
 请你重新排列这些条形码，使其中任意两个相邻的条形码不能相等。 你可以返回任何满足该要求的答案，此题保证存在答案。
 
-![距离相等的条形码](./imgs/leetcode/1054.jpg)
+![距离相等的条形码](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1054.jpg)
 
 ```java
 class Solution {
@@ -1566,7 +1571,7 @@ class Solution {
 
 你可以按 **任意** 顺序安排做菜的顺序，你也可以选择放弃做某些菜来获得更大的总和。
 
-![1402](./imgs/leetcode/1402.jpg)
+![1402](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1402.jpg)
 
 **思路：**可以任意顺序安排做菜的顺序，把 satisfaction 从大到小排序。f(k)=k⋅a[0]+(k−1)⋅a[1]+⋯+2⋅a[k−2]+a[k−1] -> f(k)=f(k−1)+(a[0]+a[1]+⋯+a[k−1])
 
@@ -1606,7 +1611,7 @@ class Solution {
 
 请注意，如果你选择抽干一个装满水的湖泊，它会变成一个空的湖泊。但如果你选择抽干一个空的湖泊，那么将无事发生。
 
-![1488](./imgs/leetcode/1488.jpg)
+![1488](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1488.jpg)
 
 **思路**
 
@@ -1654,7 +1659,7 @@ class Solution {
 
 请你按数组 _`horizontalCuts`_ 和 _`verticalCuts`_ 中提供的水平和竖直位置切割后，请你找出 **面积最大** 的那份蛋糕，并返回其 **面积** 。由于答案可能是一个很大的数字，因此需要将结果 **对** `109 + 7` **取余** 后返回。
 
-![1465](./imgs/leetcode/1465.jpg)
+![1465](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1465.jpg)
 
 **思路**
 
@@ -1688,7 +1693,7 @@ class Solution {
 注意 `finalSum` 不能拆分成 `(2 + 2 + 4 + 4)` ，因为拆分出来的整数必须互不相同。
 请你返回一个整数数组，表示将整数拆分成 最多 数目的正偶数数组。如果没有办法将 `finalSum` 进行拆分，请你返回一个 空 数组。你可以按 任意 顺序返回这些整数。
 
-![拆分成最多数目的正偶数之和](./imgs/leetcode/2178.jpg)
+![拆分成最多数目的正偶数之和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2178.jpg)
 
 ```java
 class Solution {
@@ -1723,7 +1728,7 @@ class Solution {
 - `num` 保证没有前导 0 。
 - `num1` 和 `num2` 中数位顺序可以与 `num` 中数位顺序不同。
 
-![2578](./imgs/leetcode/2578.jpg)
+![2578](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2578.jpg)
 
 ```java
 class Solution {
@@ -1758,7 +1763,7 @@ class Solution {
 
 请你返回将 `ranges` 划分成两个组的 **总方案数** 。由于答案可能很大，将它对 `109 + 7` **取余** 后返回。
 
-![2580](./imgs/leetcode/2580.jpg)
+![2580](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2580.jpg)
 
 ```java
 class Solution {
@@ -1795,7 +1800,7 @@ class Solution {
 
 现计划从这些物品中恰好选出 k 件物品。返回所有可行方案中，物品上所标记数字之和的最大值。
 
-![K 件物品的最大和](./imgs/leetcode/2600.jpg)
+![K 件物品的最大和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2600.jpg)
 
 ```java
 class Solution {
@@ -1815,7 +1820,7 @@ class Solution {
 
 数组的 **子序列** 是通过删除原始数组的一些（**可能不删除**）元素而形成的新的 **非空** 数组，删除过程不会改变剩余元素的相对位置。
 
-![2952](./imgs/leetcode/2952.jpg)
+![2952](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2952.jpg)
 
 **思路**
 
@@ -1856,7 +1861,7 @@ class Solution {
 
 你不能使用任何內建的用于处理大整数的库（比如 BigInteger）， 也不能直接将输入的字符串转换为整数形式。
 
-![字符串相加](./imgs/leetcode/415.jpg)
+![字符串相加](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/415.jpg)
 
 ```java
 class Solution {
@@ -1894,7 +1899,7 @@ class Solution {
 
 如果两个事件之间存在冲突，返回 true ；否则，返回 false 。
 
-![判断两个事件是否存在冲突](./imgs/leetcode/2446.jpg)
+![判断两个事件是否存在冲突](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2446.jpg)
 
 ```java
 class Solution {
@@ -1916,7 +1921,7 @@ class Solution {
 - 拆分可能形成两个以上的字符串。
 - 结果字符串必须保持初始相同的先后顺序。
 
-![2788](./imgs/leetcode/2788.jpg)
+![2788](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2788.jpg)
 
 ```java
 class Solution {
@@ -1953,7 +1958,7 @@ class Solution {
 
 在列表中插入一个新的区间，你需要确保列表中的区间仍然有序且不重叠（如果有必要的话，可以合并区间）。
 
-![57. 插入区间](./imgs/leetcode/57.jpg)
+![57. 插入区间](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/57.jpg)
 
 ```java
 class Solution {
@@ -1991,7 +1996,7 @@ class Solution {
 
 当且仅当你可以在所有给定的行程中接送所有乘客时，返回 `true`，否则请返回 `false`。
 
-![1094](./imgs/leetcode/1094.jpg) 
+![1094](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1094.jpg) 
 
 **使用差分数组的方法解决：使用`O(1)`时间复杂度实现，对数组中连续子数组的操作，转变成对差分数组 d 中两个数的操作**
 
@@ -2034,7 +2039,7 @@ class Solution {
   - 例如，如果一个机器人位于位置 0 并往右移动，另一个机器人位于位置 2 并往左移动，下一秒，它们都将占据位置 1，并改变方向。再下一秒钟后，第一个机器人位于位置 0 并往左移动，而另一个机器人位于位置 2 并往右移动。
   - 例如，如果一个机器人位于位置 0 并往右移动，另一个机器人位于位置 1 并往左移动，下一秒，第一个机器人位于位置 0 并往左行驶，而另一个机器人位于位置 1 并往右移动。
 
-![2731](./imgs/leetcode/2731.jpg)
+![2731](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2731.jpg)
 
 **思路**
 
@@ -2044,7 +2049,7 @@ class Solution {
 
 下图 表示在 O(n)复杂度, 求两两之间的距离和 (有序的)
 
-![2731_1](./imgs/leetcode/2731_1.jpg)
+![2731_1](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2731_1.jpg)
 
 ```java
 class Solution {
@@ -2077,7 +2082,7 @@ class Solution {
 
 假设你可以执行任意次操作，请返回收集所有类型巧克力所需的最小成本。
 
-![2735](./imgs/leetcode/2735.jpg)
+![2735](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2735.jpg)
 
 ```java
 class Solution {
@@ -2116,7 +2121,7 @@ class Solution {
 
 子数组是一个数组中一段连续 **非空** 的元素序列。
 
-![2765](./imgs/leetcode/2765.jpg)
+![2765](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2765.jpg)
 
 ```java
 class Solution {
@@ -2144,7 +2149,7 @@ class Solution {
 
 返回最大和，如果不存在满足题意的数字对，返回 -1 。
 
-![2815](./imgs/leetcode/2815.jpg)
+![2815](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2815.jpg)
 
 ```java
 class Solution {
@@ -2180,7 +2185,7 @@ class Solution {
 
 返回修改后链表的头节点 `head` 。
 
-![2487](./imgs/leetcode/2487.jpg)
+![2487](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2487.jpg)
 
 ```java
 /**
@@ -2225,7 +2230,7 @@ class Solution {
 
 将链表 翻倍 后，返回头节点 head 。
 
-![2816. 翻倍以链表形式表示的数字](./imgs/leetcode/2816.jpg)
+![2816. 翻倍以链表形式表示的数字](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2816.jpg)
 
 **翻转链表**
 
@@ -2304,7 +2309,7 @@ class Solution {
 
 你必须设计并实现时间复杂度为 `O(log n)` 的算法解决此问题。
 
-![34. 在排序数组中查找元素的第一个和最后一个位置](./imgs/leetcode/34.jpg)
+![34. 在排序数组中查找元素的第一个和最后一个位置](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/34.jpg)
 
 ```java
 class Solution {
@@ -2355,7 +2360,7 @@ class Solution {
 
 你必须设计一个时间复杂度为 O(log n) 的算法解决此问题。
 
-![153. 寻找旋转排序数组中的最小值](./imgs/leetcode/153.jpg)
+![153. 寻找旋转排序数组中的最小值](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/153.jpg)
 
 ```java
 class Solution {
@@ -2387,7 +2392,7 @@ class Solution {
 
 你所设计的解决方案必须只使用常量级的额外空间。
 
-![两数之和 II - 输入有序数组](./imgs/leetcode/167.jpg)
+![两数之和 II - 输入有序数组](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/167.jpg)
 
 ```java
 class Solution {
@@ -2416,7 +2421,7 @@ class Solution {
 
 请你设计并实现对数时间复杂度的算法解决此问题。
 
-![275](./imgs/leetcode/275.jpg)
+![275](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/275.jpg)
 
 ```java
 class Solution {
@@ -2442,7 +2447,7 @@ class Solution {
 
 请你返回一个大小为 `n` 的整数数组 `answer` ，其中 `answer[i]`是第 `i` 个人到达时在花期内花的 **数目** 。
 
-![2251](./imgs/leetcode/2251.jpg)
+![2251](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2251.jpg)
 
 ```java
 class Solution {
@@ -2494,7 +2499,7 @@ class Solution {
 
 返回小偷的 `最小` 窃取能力。
 
-![2560](./imgs/leetcode/2560.jpg)
+![2560](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2560.jpg)
 
 ```java
 class Solution {
@@ -2534,7 +2539,7 @@ class Solution {
 
 注意：所有机械工可以同时修理汽车。
 
-![2594. 修车的最少时间](./imgs/leetcode/2594.jpg)
+![2594. 修车的最少时间](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2594.jpg)
 
 ```java
 class Solution {
@@ -2570,7 +2575,7 @@ class Solution {
 
 请你返回一个整数，表示下标距离至少为 x 的两个元素之间的差值绝对值的 最小值 。
 
-![2817](./imgs/leetcode/2817.jpg)
+![2817](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2817.jpg)
 
 **二分法**
 
@@ -2643,7 +2648,7 @@ class Solution {
 
 > 注意：答案中不可以包含重复的三元组。
 
-![三数之和](./imgs/leetcode/15.jpg)
+![三数之和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/15.jpg)
 
 ```java
 class Solution {
@@ -2687,7 +2692,7 @@ class Solution {
 
 你可以按 任意顺序 返回答案 。
 
-![四数之和](./imgs/leetcode/18.jpg)
+![四数之和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/18.jpg)
 
 ```java
 class Solution {
@@ -2736,7 +2741,7 @@ class Solution {
 - `"a->b" ，如果 a != b`
 - `"a" ，如果 a == b`
 
-![228. 汇总区间](./imgs/leetcode/228.jpg)
+![228. 汇总区间](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/228.jpg)
 
 ```java
 class Solution {
@@ -2770,7 +2775,7 @@ class Solution {
 
 返回他到离他最近的人的最大距离。
 
-![849. 到最近的人的最大距离](./imgs/leetcode/849.jpg)
+![849. 到最近的人的最大距离](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/849.jpg)
 
 ```java
 class Solution {
@@ -2803,7 +2808,7 @@ class Solution {
 
 请你返回 **好** 子数组的最大可能 **分数** 。
 
-![1793](./imgs/leetcode/1793.jpg)
+![1793](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1793.jpg)
 
 同 [84. 柱状图中最大的矩形](https://leetcode.cn/problems/largest-rectangle-in-histogram/)
 
@@ -2867,7 +2872,7 @@ class Solution {
 
 如果在字符串 `a` 和 `b` 不同的第一个位置，字符串 `a` 中的字母在字母表中出现时间比字符串 `b` 对应的字母晚，则认为字符串 `a` 比字符串 `b` **字典序更大** 。如果字符串中前 `min(a.length, b.length)` 个字符都相同，那么较长的字符串字典序更大。
 
-![2182](./imgs/leetcode/2182.jpg)
+![2182](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2182.jpg)
 
 ```java
 class Solution {
@@ -2905,7 +2910,7 @@ class Solution {
 
 给你一个长度为 n 的整数数组，每次操作将会使 n - 1 个元素增加 1 。返回让数组所有元素相等的最小操作次数。
 
-![453. 最小操作次数使数组元素相等](./imgs/leetcode/453.jpg)
+![453. 最小操作次数使数组元素相等](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/453.jpg)
 
 ```java
 class Solution {
@@ -2932,11 +2937,11 @@ class Solution {
 
 请返回你需要拿出绿豆的 **最少数目**。
 
-![2171](./imgs/leetcode/2171.jpg)
+![2171](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2171.jpg)
 
 **思路**
 
-![2171_1](./imgs/leetcode/2171_1.jpg)
+![2171_1](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2171_1.jpg)
 
 ```java
 class Solution {
@@ -2966,7 +2971,7 @@ class Solution {
 
 返回所有数字及其对应符号的和。
 
-![交替数字和](./imgs/leetcode/2544.jpg)
+![交替数字和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2544.jpg)
 
 ```java
 class Solution {
@@ -2992,7 +2997,7 @@ class Solution {
 
 两个数的 **最大公约数** 是可以被两个数字整除的最大正整数。
 
-![2807](./imgs/leetcode/2807.jpg)
+![2807](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2807.jpg)
 
 ```java
 /**
@@ -3032,7 +3037,7 @@ class Solution {
 
 子数组 是数组中的一个连续部分。
 
-![最大子数组和](./imgs/leetcode/53.jpg)
+![最大子数组和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/53.jpg)
 
 ```java
 class Solution {
@@ -3053,7 +3058,7 @@ class Solution {
 
 返回符合要求的 最少分割次数 。
 
-![分割回文串 II](./imgs/leetcode/132.jpg)
+![分割回文串 II](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/132.jpg)
 
 ```java
 class Solution {
@@ -3095,7 +3100,7 @@ class Solution {
 
 **注意：**你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
 
-![188](./imgs/leetcode/188.jpg)
+![188](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/188.jpg)
 
 ```java
 class Solution {
@@ -3131,7 +3136,7 @@ class Solution {
 
 **注意：**你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
 
-![309](./imgs/leetcode/309.jpg)
+![309](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/309.jpg)
 
 ```java
 class Solution {
@@ -3178,7 +3183,7 @@ class Solution {
 
 你可以认为每种硬币的数量是无限的。
 
-![322](./imgs/leetcode/322.jpg)
+![322](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/322.jpg)
 
 ```java
 class Solution {
@@ -3207,7 +3212,7 @@ class Solution {
 
 给定二叉树的 root 。返回 `在不触动警报的情况下` ，小偷能够盗取的最高金额 。
 
-![337. 打家劫舍 III](./imgs/leetcode/337.jpg)
+![337. 打家劫舍 III](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/337.jpg)
 
 ```java
 /**
@@ -3255,7 +3260,7 @@ class Solution {
 
 题目数据保证结果符合 32 位带符号整数。
 
-![518](./imgs/leetcode/518.jpg)
+![518](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/518.jpg)
 
 ```java
 class Solution {
@@ -3282,7 +3287,7 @@ class Solution {
 
 **注意：**这里的一笔交易指买入持有并卖出股票的整个过程，每笔交易你只需要为支付一次手续费。
 
-![714](./imgs/leetcode/714.jpg)
+![714](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/714.jpg)
 
 ```java
 class Solution {
@@ -3321,7 +3326,7 @@ class Solution {
 
 满足条件的二叉树一共有多少个？答案可能很大，返回 对 109 + 7 取余 的结果。
 
-![823. 带因子的二叉树](./imgs/leetcode/823.jpg)
+![823. 带因子的二叉树](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/823.jpg)
 
 ```java
 class Solution {
@@ -3370,7 +3375,7 @@ class Solution {
 
 子数组 最多只能包含固定缓冲区 nums 中的每个元素一次。形式上，对于子数组 nums[i], nums[i + 1], ..., nums[j] ，不存在 i <= k1, k2 <= j 其中 k1 % n == k2 % n 。
 
-![环形子数组的最大和](./imgs/leetcode/918.jpg)
+![环形子数组的最大和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/918.jpg)
 
 ```java
 class Solution {
@@ -3395,7 +3400,7 @@ class Solution {
 
 下降路径 可以从第一行中的任何元素开始，并从每一行中选择一个元素。在下一行选择的元素和当前行所选元素最多相隔一列（即位于正下方或者沿对角线向左或者向右的第一个元素）。具体来说，位置`(row, col)`的下一个元素应当是 `(row + 1, col - 1)、(row + 1, col)` 或者` (row + 1, col + 1)` 。
 
-![931. 下降路径最小和](./imgs/leetcode/931.jpg)
+![931. 下降路径最小和](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/931.jpg)
 
 ```java
 class Solution {
@@ -3430,7 +3435,7 @@ class Solution {
 
 答案可能很大，你需要对 `109 + 7` **取模** 。
 
-![1155](./imgs/leetcode/1155.jpg)
+![1155](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1155.jpg)
 
 ```java
 class Solution {
@@ -3466,7 +3471,7 @@ class Solution {
 
 请你返回你能得到的 **最大得分** 。
 
-![1696](./imgs/leetcode/1696.jpg)
+![1696](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1696.jpg)
 
 **思路**
 
@@ -3526,7 +3531,7 @@ class Solution {
 
 请返回你访问完所有房间的第一天的日期编号。题目数据保证总是存在这样的一天。由于答案可能很大，返回对 `109 + 7` 取余后的结果。
 
-![1997](./imgs/leetcode/1997.jpg)
+![1997](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1997.jpg)
 
 ```java
 class Solution {
@@ -3560,7 +3565,7 @@ class Solution {
 
 **注意：**你可以在一个地点放下一位乘客，并在同一个地点接上另一位乘客。
 
-![2008](./imgs/leetcode/2008.jpg)
+![2008](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2008.jpg)
 
 ```java
 class Solution {
@@ -3606,7 +3611,7 @@ class Solution {
 
 如果数组 **至少** 存在一种有效划分，返回 `true` ，否则，返回 `false` 。
 
-![2369](./imgs/leetcode/2369.jpg)
+![2369](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2369.jpg)
 
 ```java
 class Solution {
@@ -3648,7 +3653,7 @@ class Solution {
 
 请你返回到达 **右下角** 格子 `(m - 1, n - 1)` 需要经过的最少移动格子数，如果无法到达右下角格子，请你返回 `-1` 。
 
-![2617](./imgs/leetcode/2617.jpg)
+![2617](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2617.jpg)
 
 **思路**
 
@@ -3722,7 +3727,7 @@ class Solution {
 
 返回你在矩阵中能够 **移动** 的 **最大** 次数。
 
-![2684](./imgs/leetcode/2684.jpg)
+![2684](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2684.jpg)
 
 ```java
 // 超出内存限制
@@ -3791,7 +3796,7 @@ class Solution {
 
 请你采取最优策略分割 `s` ，使剩下的字符 **最少** 。
 
-![2707](./imgs/leetcode/2707.jpg)
+![2707](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2707.jpg)
 
 ```java
 class Solution {
@@ -3827,7 +3832,7 @@ class Solution {
 
 子数组是数组中的一个连续 **非空** 元素序列。
 
-![2919](./imgs/leetcode/2919.jpg)
+![2919](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2919.jpg)
 
 **思路**
 定义 `dfs(i，j)`表示现在要处理 `nums[0]`到`nums[i]`这段子数组并且` nums[i]`右边有 j 个没有变大的数
@@ -3872,7 +3877,7 @@ class Solution {
 
 以数组形式返回对应查询的所有答案。
 
-![包含每个查询的最小区间](./imgs/leetcode/1851.jpg)
+![包含每个查询的最小区间](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1851.jpg)
 
 ```java
 class Solution {
@@ -3910,7 +3915,7 @@ class Solution {
 
 给你二叉树的根节点 `root` ，返回其节点值的 **层序遍历** 。 （即逐层地，从左到右访问所有节点）。
 
-![102](./imgs/leetcode/102.jpg)
+![102](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/102.jpg)
 
 ```java
 /**
@@ -3964,7 +3969,7 @@ class Solution {
 
 - 展开后的单链表应该同样使用 `TreeNode` ，其中 `right` 子指针指向链表中下一个结点，而左子指针始终为 `null` 。
 - 展开后的单链表应该与二叉树 [**先序遍历**](https://baike.baidu.com/item/先序遍历/6442839?fr=aladdin) 顺序相同。
-- ![114](./imgs/leetcode/114.jpg)
+- ![114](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/114.jpg)
 
 ```java
 /**
@@ -4008,7 +4013,7 @@ class Solution {
 
 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个节点 p、q，最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
 
-![236. 二叉树的最近公共祖先](./imgs/leetcode/236.jpg)
+![236. 二叉树的最近公共祖先](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/236.jpg)
 
 ```java
 /**
@@ -4049,7 +4054,7 @@ class Solution {
 
 > 注意: 合并过程必须从两个树的根节点开始。
 
-![617](./imgs/leetcode/617.jpg)
+![617](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/617.jpg)
 
 ```java
 /**
@@ -4089,7 +4094,7 @@ class Solution {
 
 如果存在多个答案，您可以返回其中 **任何** 一个。
 
-![889](./imgs/leetcode/889.jpg)
+![889](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/889.jpg)
 
 ```java
 /**
@@ -4139,7 +4144,7 @@ class Solution {
 
 **真二叉树** 是一类二叉树，树中每个节点恰好有 `0` 或 `2` 个子节点。
 
-![894](./imgs/leetcode/894.jpg)
+![894](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/894.jpg)
 
 ```java
 /**
@@ -4185,7 +4190,7 @@ class Solution {
 
 只有与值 `x` 和 `y` 对应的节点是堂兄弟节点时，才返回 `true` 。否则，返回 `false`。
 
-![993](./imgs/leetcode/993.jpg)
+![993](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/993.jpg)
 
 **BFS**
 
@@ -4290,7 +4295,7 @@ class Solution {
 - 树的根节点的 深度 为 0，如果某一节点的深度为 d，那它的子节点的深度就是 d+1
 - 如果我们假定 A 是一组节点 S 的 最近公共祖先，S 中的每个节点都在以 A 为根节点的子树中，且 A 的深度达到此条件下可能的最大值。
 
-![1123](./imgs/leetcode/1123.jpg)
+![1123](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1123.jpg)
 
 ```java
 /**
@@ -4344,7 +4349,7 @@ class Solution {
 - `FindElements(TreeNode* root)` 用受污染的二叉树初始化对象，你需要先把它还原。
 - `bool find(int target)` 判断目标值 `target` 是否存在于还原后的二叉树中并返回结果。
 
-![1261](./imgs/leetcode/1261.jpg)
+![1261](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1261.jpg)
 
 ```java
 /**
@@ -4400,7 +4405,7 @@ class FindElements {
 
 「好节点」X 定义为：从根到该节点 X 所经过的节点中，没有任何节点的值大于 X 的值。
 
-![1448. 统计二叉树中好节点的数目](./imgs/leetcode/1448.jpg)
+![1448. 统计二叉树中好节点的数目](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1448.jpg)
 
 ```java
 /**
@@ -4439,7 +4444,7 @@ class Solution {
 
 请你返回从根到叶子节点的所有路径中 **伪回文** 路径的数目。
 
-![1457](./imgs/leetcode/1457.jpg)
+![1457](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1457.jpg)
 
 ```java
 /**
@@ -4488,7 +4493,7 @@ class Solution {
 
 注意，节点 `0` **不** 会标记为受限节点。
 
-![2368](./imgs/leetcode/2368.jpg)
+![2368](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2368.jpg)
 
 ```java
 class Solution {
@@ -4540,7 +4545,7 @@ class Solution {
 
 节点的 **层数** 等于该节点到根节点之间的边数。
 
-![2415](./imgs/leetcode/2415.jpg)
+![2415](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2415.jpg)
 
 ```java
 /**
@@ -4587,7 +4592,7 @@ class Solution {
 
 返回数组 `answer` 。
 
-![2476](./imgs/leetcode/2476.jpg)
+![2476](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2476.jpg)
 
 ```java
 /**
@@ -4649,7 +4654,7 @@ class Solution {
 
 **注意**，如果两个节点与根节点的距离相同，则认为它们在同一层。
 
-![2583](./imgs/leetcode/2583.jpg)
+![2583](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2583.jpg)
 
 ```java
 /**
@@ -4708,7 +4713,7 @@ class Solution {
 
 > 一个节点的深度指的是从树根节点到这个节点经过的边数。
 
-![2641](./imgs/leetcode/2641.jpg)
+![2641](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2641.jpg)
 
 **方法一：两次 DFS**
 
@@ -4829,7 +4834,7 @@ class Solution {
 
 注意，连接城市 **_i_** 和 **_j_** 的路径的距离等于沿该路径的所有边的权重之和。
 
-![1334](./imgs/leetcode/1334.jpg)
+![1334](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1334.jpg)
 
 ```java
 class Solution {
@@ -4879,7 +4884,7 @@ class Solution {
 
 返回一个布尔数组 answer ，其中 answer[j] 是第 j 个查询的答案。
 
-![1462. 课程表 IV](./imgs/leetcode/1462.jpg)
+![1462. 课程表 IV](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1462.jpg)
 
 ```java
 class Solution {
@@ -4936,7 +4941,7 @@ class Solution {
 - `addEdge(int[] edge)` 向边集中添加一条边，其中 `edge = [from, to, edgeCost]` 。数据保证添加这条边之前对应的两个节点之间没有有向边。
 - `int shortestPath(int node1, int node2)` 返回从节点 `node1` 到 `node2` 的路径 **最小** 代价。如果路径不存在，返回 `-1` 。一条路径的代价是路径中所有边代价之和。
 
-![2642](./imgs/leetcode/2642.jpg)
+![2642](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2642.jpg)
 
 **邻接矩阵建图 + 朴素 `Dijkstra`**
 
@@ -5090,7 +5095,7 @@ class Graph {
 - `int maximum()` 返回股票 **最高价格** 。
 - `int minimum()` 返回股票 **最低价格** 。
 
-![2034](./imgs/leetcode/2034.jpg)
+![2034](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2034.jpg)
 
 ```java
 class StockPrice {
@@ -5158,7 +5163,7 @@ class StockPrice {
 - `1 <= i <= n`
 - `i * i` 的十进制表示的字符串可以分割成若干连续子字符串，且这些子字符串对应的整数值之和等于 `i` 。
 
-![2698](./imgs/leetcode/2698.jpg)
+![2698](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2698.jpg)
 
 ```java
 class Solution {
@@ -5200,7 +5205,7 @@ class Solution {
 
 请你返回每个格子恰好有一个石头的 **最少移动次数** 。
 
-![2850](./imgs/leetcode/2850.jpg)
+![2850](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2850.jpg)
 
 ```java
 class Solution {
@@ -5261,7 +5266,7 @@ class Solution {
 
 请你返回 **无法互相到达** 的不同 **点对数目** 。
 
-![2316](./imgs/leetcode/2316.jpg)
+![2316](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2316.jpg)
 
 **深度优先搜索**
 
@@ -5347,7 +5352,7 @@ class Solution {
 
 给你一个字符串数组 `words` ，找出并返回 `length(words[i]) * length(words[j])` 的最大值，并且这两个单词不含有公共字母。如果不存在这样的两个单词，返回 `0` 。
 
-![318](./imgs/leetcode/318.jpg)
+![318](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/318.jpg)
 
 ```java
 class Solution {
@@ -5387,7 +5392,7 @@ class Solution {
 
 题目数据 **保证** 每个城市在重新规划路线方向后都能到达城市 0 。
 
-![1466](./imgs/leetcode/1466.jpg)
+![1466](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1466.jpg)
 
 ```java
 class Solution {
@@ -5428,11 +5433,11 @@ class Solution {
 
 请你返回到达首都最少需要多少升汽油。
 
-![2477](./imgs/leetcode/2477.jpg)
+![2477](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2477.jpg)
 
 **思路**
 
-![2477A](./imgs/leetcode/2477A.jpg)
+![2477A](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2477A.jpg)
 
 ```java
 class Solution {
@@ -5474,7 +5479,7 @@ class Solution {
 
 请你返回从左上角走到右下角的最小 **体力消耗值** 。
 
-![1631](./imgs/leetcode/1631.jpg)
+![1631](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/1631.jpg)
 
 ```java
 class Solution {
@@ -5574,7 +5579,7 @@ class Solution {
 
 如果两个格子有共同边，那么它们为 **相邻** 格子。
 
-![2258](./imgs/leetcode/2258.jpg)
+![2258](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/2258.jpg)
 
 **思路**
 
@@ -5661,7 +5666,7 @@ class Solution {
 - `void update(int index, int val)` 将 `nums[index]` 的值 **更新** 为 `val`
 - `int sumRange(int left, int right)` 返回数组 `nums` 中索引 `left` 和索引 `right` 之间（ **包含** ）的 nums 元素的 **和** （即，`nums[left] + nums[left + 1], ..., nums[right]`）
 
-![307](./imgs/leetcode/307.jpg)
+![307](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/307.jpg)
 
 **思路**
 针对不同的题目，我们有不同的方案可以选择（假设我们有一个数组）：
@@ -5733,7 +5738,7 @@ class NumArray {
 
 请你返回一个整数数组 `ans` ，其中 `ans[i]`是 `wordsContainer`中与 `wordsQuery[i]` 有 **最长公共后缀** 字符串的下标。
 
-![100268](./imgs/leetcode/100268.jpg)
+![100268](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/leetcode/100268.jpg)
 
 ```java
 class Solution {

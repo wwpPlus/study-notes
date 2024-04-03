@@ -1,3 +1,8 @@
+---
+title: RocketMQ
+date: 2023-11-16 17:26:39
+permalink: /pages/a01b22/
+---
 # RocketMQ
 
 ## RocketMQ 概述
@@ -15,12 +20,12 @@ MQ，Message Queue，是一种提供消息队列服务的中间件，也称为�
 - 限流削峰
   - MQ 可以将系统的超量请求暂存其中，以便系统后期可以慢慢进行处理，从而避免了请求的丢失或系统被压垮。
 
-![说明](./imgs/RocketMQ/QQ截图20220208101908.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208101908.png "QQ截图20201229183512.png")
 
 - 异步解耦
   - 上游系统对下游系统的调用若为同步调用，则会大大降低系统的吞吐量与并发度，且系统耦合度太高。而异步调用则会解决这些问题。所以两层之间若要实现由同步到异步的转化，一般性做法就是，在这两层间添加一个 MQ 层。
 
-![说明](./imgs/RocketMQ/QQ截图20220208102000.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208102000.png "QQ截图20201229183512.png")
 
 - 数据收集
   - 分布式系统会产生海量级数据流，如：业务日志、监控数据、用户行为等。针对这些数据流进行实时或批量采集汇总，然后对这些数据流进行大数据分析，这是当前互联网平台的必备技术。通过 MQ 完成此类数据收集是最好的选择。
@@ -81,7 +86,7 @@ MQ，Message Queue，是一种提供消息队列服务的中间件，也称为�
 
 #### RocketMQ 发展历程
 
-![说明](./imgs/RocketMQ/QQ截图20220208103522.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208103522.png "QQ截图20201229183512.png")
 
 - 2007 年，阿里开始五彩石项目，Notify 作为项目中交易核心消息流转系统，应运而生。Notify 系统是 RocketMQ 的雏形。
 - 2010 年，B2B 大规模使用 ActiveMQ 作为阿里的消息内核。阿里急需一个具有海量堆积能力的消息系统。
@@ -101,7 +106,7 @@ MQ，Message Queue，是一种提供消息队列服务的中间件，也称为�
 
 #### 主题（Topic）
 
-![说明](./imgs/RocketMQ/QQ截图20220208103828.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208103828.png "QQ截图20201229183512.png")
 
 Topic 表示一类消息的集合，每个主题包含若干条消息，每条消息只能属于一个主题，是 RocketMQ 进行消息订阅的基本单位。 topic:message 1:n message:topic 1:1
 
@@ -130,11 +135,11 @@ Topic 是消息的一级分类，Tag 是消息的二级分类。
 
 一个 Topic 的 Queue 中的消息只能被一个消费者组中的一个消费者消费。一个 Queue 中的消息不允许同一个消费者组中的多个消费者同时消费。
 
-![说明](./imgs/RocketMQ/QQ截图20220208104018.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208104018.png "QQ截图20201229183512.png")
 
 在学习参考其它相关资料时，还会看到一个概念：分片（Sharding）。分片不同于分区。在 RocketMQ 中，分片指的是存放相应 Topic 的 Broker。每个分片中会创建出相应数量的分区，即 Queue，每个 Queue 的大小都是相同的。
 
-![说明](./imgs/RocketMQ/QQ截图20220208104611.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208104611.png "QQ截图20201229183512.png")
 
 #### 消息标识（MessageId/Key）
 
@@ -146,7 +151,7 @@ RocketMQ 中每个消息拥有唯一的 MessageId，且可以携带具有业务�
 
 ### 二、系统架构
 
-![说明](./imgs/RocketMQ/QQ截图20220208104741.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208104741.png "QQ截图20201229183512.png")
 
 RocketMQ 架构上主要分为四部分构成：
 
@@ -171,11 +176,11 @@ RocketMQ 中的消息生产者都是以生产者组（Producer Group）的形式
 
 RocketMQ 中的消息消费者都是以消费者组（Consumer Group）的形式出现的。消费者组是同一类消费者的集合，这类 Consumer 消费的是同一个 Topic 类型的消息。消费者组使得在消息消费方面，实现负载均衡（将一个 Topic 中的不同的 Queue 平均分配给同一个 Consumer Group 的不同的 Consumer，注意，并不是将消息负载均衡）和容错（一个 Consmer 挂了，该 Consumer Group 中的其它 Consumer 可以接着消费原 Consumer 消费的 Queue）的目标变得非常容易。
 
-![说明](./imgs/RocketMQ/QQ截图20220208105007.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208105007.png "QQ截图20201229183512.png")
 
 消费者组中 Consumer 的数量应该小于等于订阅 Topic 的 Queue 数量。如果超出 Queue 数量，则多出的 Consumer 将不能消费消息。
 
-![说明](./imgs/RocketMQ/QQ截图20220208105040.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208105040.png "QQ截图20201229183512.png")
 
 不过，一个 Topic 类型的消息可以被多个消费者组同时消费。
 
@@ -258,7 +263,7 @@ Broker 充当着消息中转角色，负责存储消息、转发消息。Broker 
 
 下图为 Broker Server 的功能模块示意图。
 
-![说明](./imgs/RocketMQ/QQ截图20220208110201.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208110201.png "QQ截图20201229183512.png")
 
 `Remoting Module`：整个 Broker 的实体，负责处理来自 clients 端的请求。而这个 Broker 实体则由以下模块构成。
 
@@ -272,7 +277,7 @@ Broker 充当着消息中转角色，负责存储消息、转发消息。Broker 
 
 ##### 集群部署
 
-![说明](./imgs/RocketMQ/QQ截图20220208110311.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208110311.png "QQ截图20201229183512.png")
 
 为了增强 Broker 性能与吞吐量，Broker 一般都是以集群形式出现的。各集群节点中可能存放着相同 Topic 的不同 Queue。不过，这里有个问题，如果某 Broker 节点宕机，如何保证数据不丢失呢？其解决方案是，将每个 Broker 集群节点进行横向扩展，即将 Broker 节点再建为一个 HA 集群，解决单点问题。
 
@@ -323,19 +328,19 @@ perm 用于设置对当前创建 Topic 的操作权限： 2 表示只写， 4 �
 
 **软硬件需求：系统要求是 64 位的，JDK 要求是 1.8 及其以上版本的。**
 
-![说明](./imgs/RocketMQ/QQ截图20220208110713.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208110713.png "QQ截图20201229183512.png")
 
 下载 RocketMQ 安装包
 
-![说明](./imgs/RocketMQ/QQ截图20220208110738.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208110738.png "QQ截图20201229183512.png")
 
 将下载的安装包上传到 Linux。
 
-![说明](./imgs/RocketMQ/QQ截图20220208110807.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208110807.png "QQ截图20201229183512.png")
 
 解压。
 
-![说明](./imgs/RocketMQ/QQ截图20220208110821.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208110821.png "QQ截图20201229183512.png")
 
 **修改初始内存**
 
@@ -343,13 +348,13 @@ perm 用于设置对当前创建 Topic 的操作权限： 2 表示只写， 4 �
 
 使用 vim 命令打开 bin/runserver.sh 文件。现将这些值修改为如下：
 
-![说明](./imgs/RocketMQ/QQ截图20220208110900.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208110900.png "QQ截图20201229183512.png")
 
 修改 runbroker.sh
 
 使用 vim 命令打开 bin/runbroker.sh 文件。现将这些值修改为如下：
 
-![说明](./imgs/RocketMQ/QQ截图20220208110924.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208110924.png "QQ截图20201229183512.png")
 
 **启动**
 
@@ -360,7 +365,7 @@ nohup sh bin/mqnamesrv &
 tail -f ~/logs/rocketmqlogs/namesrv.log
 ```
 
-![说明](./imgs/RocketMQ/QQ截图20220208111000.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208111000.png "QQ截图20201229183512.png")
 
 `如果出现mq启动报错ERROR: Please set the JAVA_HOME variable in your environment, We need java(x64)! !!`
 
@@ -377,7 +382,7 @@ nohup sh bin/mqbroker -n localhost:9876 &
 tail -f ~/logs/rocketmqlogs/broker.log
 ```
 
-![说明](./imgs/RocketMQ/QQ截图20220208111020.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208111020.png "QQ截图20201229183512.png")
 
 **发送/接收消息测试**
 
@@ -418,7 +423,7 @@ RocketMQ 有一个可视化的 dashboard，通过该控制台可以直观的查�
 
 下载地址：https://github.com/apache/rocketmq-externals/releases
 
-![说明](./imgs/RocketMQ/QQ截图20220208111255.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208111255.png "QQ截图20201229183512.png")
 
 **修改配置**
 
@@ -427,7 +432,7 @@ RocketMQ 有一个可视化的 dashboard，通过该控制台可以直观的查�
 - 原来的端口号为 8080 ，修改为一个不常用的
 - 指定 RocketMQ 的 name server 地址
 
-![说明](./imgs/RocketMQ/QQ截图20220208111351.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208111351.png "QQ截图20201229183512.png")
 
 **添加依赖**
 
@@ -462,25 +467,25 @@ RocketMQ 有一个可视化的 dashboard，通过该控制台可以直观的查�
 
 在 rocketmq-console 目录下运行 maven 的打包命令。
 
-![说明](./imgs/RocketMQ/QQ截图20220208111536.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208111536.png "QQ截图20201229183512.png")
 
-![说明](./imgs/RocketMQ/QQ截图20220208111646.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208111646.png "QQ截图20201229183512.png")
 
 **启动**
 
-![说明](./imgs/RocketMQ/QQ截图20220208111700.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208111700.png "QQ截图20201229183512.png")
 
 **访问**
 
-![说明](./imgs/RocketMQ/QQ截图20220208111724.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208111724.png "QQ截图20201229183512.png")
 
 ### 五、集群搭建理论
 
-![说明](./imgs/RocketMQ/QQ截图20220208111755.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208111755.png "QQ截图20201229183512.png")
 
 #### 数据复制与刷盘策略
 
-![说明](./imgs/RocketMQ/QQ截图20220208111822.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208111822.png "QQ截图20201229183512.png")
 
 ##### 复制策略
 
@@ -597,7 +602,7 @@ RAID 每一个等级代表一种实现方法和技术，等级之间并无高低
 
 **JBOD**
 
-![说明](./imgs/RocketMQ/QQ截图20220208113559.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208113559.png "QQ截图20201229183512.png")
 
 JBOD ，Just a Bunch of Disks，磁盘簇。表示一个没有控制软件提供协调控制的磁盘集合，这是 RAID 区别与 JBOD 的主要因素。 JBOD 将多个物理磁盘串联起来，提供一个巨大的逻辑磁盘。
 
@@ -609,7 +614,7 @@ JBOD 常指磁盘柜，而不论其是否提供 RAID 功能。不过，JBOD 并�
 
 **RAID0**
 
-![说明](./imgs/RocketMQ/QQ截图20220208113758.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208113758.png "QQ截图20201229183512.png")
 
 RAID0 是一种简单的、无数据校验的`数据条带化技术`。实际上不是一种真正的 RAID ，因为它并不提供任何形式的冗余策略。 RAID0 将所在磁盘条带化后组成大容量的存储空间，将数据分散存储在所有磁盘中，以独立访问方式实现多块磁盘的并读访问。
 
@@ -628,7 +633,7 @@ RAID0 具有低成本、高读写性能、 100% 的高存储空间利用率等�
 
 **RAID1**
 
-![说明](./imgs/RocketMQ/QQ截图20220208121758.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208121758.png "QQ截图20201229183512.png")
 
 RAID1 就是一种`镜像技术`，它将数据完全一致地分别写到工作磁盘和镜像磁盘，它的磁盘空间利用率为 50% 。 RAID1 在数据写入时，响应时间会有所影响，但是读数据的时候没有影响。 RAID1 提供了最佳的数据保护，一旦工作磁盘发生故障，系统将自动切换到镜像磁盘，不会影响使用。
 
@@ -638,13 +643,13 @@ RAID1 是为了增强数据安全性使两块磁盘数据呈现完全镜像，�
 
 **RAID10**
 
-![说明](./imgs/RocketMQ/QQ截图20220208122057.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208122057.png "QQ截图20201229183512.png")
 
 RAID10 是一个 RAID1 与 RAID0 的组合体，所以它继承了 RAID0 的快速和 RAID1 的安全。简单来说就是，先做条带，再做镜像。发即将进来的数据先分散到不同的磁盘，再将磁盘中的数据做镜像。
 
 **RAID01**
 
-![说明](./imgs/RocketMQ/QQ截图20220208122113.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208122113.png "QQ截图20201229183512.png")
 
 RAID01 是一个 RAID0 与 RAID1 的组合体，所以它继承了 RAID0 的快速和 RAID1 的安全。简单来说就是，先做镜像再做条带。即将进来的数据先做镜像，再将镜像数据写入到与之前数据不同的磁盘，即再做条带。
 
@@ -678,7 +683,7 @@ RAID01 是一个 RAID0 与 RAID1 的组合体，所以它继承了 RAID0 的快�
 
 要修改的配置文件在 rocketMQ 解压目录的 conf/2m-2s-async 目录中。
 
-![说明](./imgs/RocketMQ/QQ截图20220208122608.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208122608.png "QQ截图20201229183512.png")
 
 - **修改 broker-a.properties**
 
@@ -890,7 +895,7 @@ tail -f ~/logs/rocketmqlogs/broker.log
 
 使用 vim 命令打开 tools.sh 文件，并在 JAVA_OPT 配置的-Djava.ext.dirs 这一行的后面添加 ext 的路径。
 
-![说明](./imgs/RocketMQ/QQ截图20220208123848.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208123848.png "QQ截图20201229183512.png")
 
 ```shell
 JAVA_OPT="${JAVA_OPT} -server -Xms1g -Xmx1g -Xmn256m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=128m"
@@ -916,9 +921,9 @@ deleteTopic Delete topic from broker and NameServer.
 
 https://github.com/apache/rocketmq/blob/master/docs/cn/operation.md
 
-![说明](./imgs/RocketMQ/QQ截图20220208124241.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208124241.png "QQ截图20201229183512.png")
 
-![说明](./imgs/RocketMQ/QQ截图20220208124258.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208124258.png "QQ截图20201229183512.png")
 
 ## RocketMQ 工作原理
 
@@ -958,7 +963,7 @@ Producer 可以将消息写入到某 Broker 中的某 Queue 中，其经历了�
 
 RocketMQ 中的消息存储在本地文件系统中，这些相关文件默认在当前用户主目录下的 store 目录中。
 
-![说明](./imgs/RocketMQ/QQ截图20220208133814.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208133814.png "QQ截图20201229183512.png")
 
 - abort：该文件在 Broker 启动后会自动创建，正常关闭 Broker，该文件会自动消失。若在没有启动 Broker 的情况下，发现这个文件是存在的，则说明之前 Broker 的关闭是非正常关闭。
 - checkpoint：其中存储着 commitlog、consumequeue、index 文件的最后刷盘时间戳
@@ -988,7 +993,7 @@ commitlog 目录中存放着很多的 mappedFile 文件，当前 Broker 中的�
 
 ##### 消息单元
 
-![说明](./imgs/RocketMQ/QQ截图20220208134157.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208134157.png "QQ截图20201229183512.png")
 
 mappedFile 文件内容由一个个的`消息单元`构成。每个消息单元中包含消息总长度 MsgLen、消息的物理位置 physicalOffset、消息体内容 Body、消息体长度 BodyLength、消息主题 Topic、Topic 长度 TopicLength、消息生产者 BornHost、消息发送时间戳 BornTimestamp、消息所在的队列 QueueId、消息在 Queue 中存储的偏移量 QueueOffset 等近 20 余项消息相关属性。
 
@@ -998,11 +1003,11 @@ mappedFile 文件内容由一个个的`消息单元`构成。每个消息单元�
 
 #### consumequeue
 
-![说明](./imgs/RocketMQ/QQ截图20220208134355.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208134355.png "QQ截图20201229183512.png")
 
 ##### 目录与文件
 
-![说明](./imgs/RocketMQ/QQ截图20220208134415.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208134415.png "QQ截图20201229183512.png")
 
 为了提高效率，会为每个 Topic 在~/store/consumequeue 中创建一个目录，目录名为 Topic 名称。在该 Topic 目录下，会再为每个该 Topic 的 Queue 建立一个目录，目录名为 queueId。每个目录中存放着若干 consumequeue 文件，consumequeue 文件是 commitlog 的索引文件，可以根据 consumequeue 定位到具体的消息。
 
@@ -1010,7 +1015,7 @@ consumequeue 文件名也由 20 位数字构成，表示当前文件的第一个
 
 ##### 索引条目
 
-![说明](./imgs/RocketMQ/QQ截图20220208134454.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208134454.png "QQ截图20201229183512.png")
 
 每个 consumequeue 文件可以包含 30w 个索引条目，每个索引条目包含了三个消息重要属性：消息在 mappedFile 文件中的偏移量 CommitLog Offset、消息长度、消息 Tag 的 hashcode 值。这三个属性占 20 个字节，所以每个文件的大小是固定的 30w - 20 字节。
 
@@ -1018,7 +1023,7 @@ consumequeue 文件名也由 20 位数字构成，表示当前文件的第一个
 
 #### 对文件的读写
 
-![说明](./imgs/RocketMQ/QQ截图20220208134538.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208134538.png "QQ截图20201229183512.png")
 
 ##### 消息写入
 
@@ -1081,11 +1086,11 @@ RocketMQ 中的 commitlog 目录与 consumequeue 的结合就类似于 Kafka 中
 每个 Broker 中会包含一组 indexFile，每个 indexFile 都是以一个`时间戳`命名的（这个 indexFile 被创建时的时间戳）。每个 indexFile 文件由三部分构成：indexHeader，slots 槽位，indexes 索引数据。每个
 indexFile 文件中包含 500w 个 slot 槽。而每个 slot 槽又可能会挂载很多的 index 索引单元。
 
-![说明](./imgs/RocketMQ/QQ截图20220208135939.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208135939.png "QQ截图20201229183512.png")
 
 indexHeader 固定 40 个字节，其中存放着如下数据：
 
-![说明](./imgs/RocketMQ/QQ截图20220208135949.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208135949.png "QQ截图20201229183512.png")
 
 - beginTimestamp：该 indexFile 中第一条消息的存储时间
 - endTimestamp：该 indexFile 中最后一条消息存储时间
@@ -1096,7 +1101,7 @@ indexHeader 固定 40 个字节，其中存放着如下数据：
 
 indexFile 中最复杂的是 Slots 与 Indexes 间的关系。在实际存储时，Indexes 是在 Slots 后面的，但为了便于理解，将它们的关系展示为如下形式：
 
-![说明](./imgs/RocketMQ/QQ截图20220208140054.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208140054.png "QQ截图20201229183512.png")
 
 `key的hash值 % 500w`的结果即为 slot 槽位，然后将该 slot 值修改为该 index 索引单元的 indexNo，根据这个 indexNo 可以计算出该 index 单元在 indexFile 中的位置。不过，该取模结果的重复率是很高的，为了解决该问题，在每个 index 索引单元中增加了 preIndexNo，用于指定该 slot 中当前 index 索引单元的前一个 index 索引单元。而 slot 中始终存放的是其下最新的 index 索引单元的 indexNo，这样的话，只要找到了 slot 就可以找到其最新的 index 索引单元，而通过这个 index 索引单元就可以找到其之前的所有 index 索引单元。
 
@@ -1104,7 +1109,7 @@ indexFile 中最复杂的是 Slots 与 Indexes 间的关系。在实际存储时
 
 index 索引单元默写 20 个字节，其中存放着以下四个属性：
 
-![说明](./imgs/RocketMQ/QQ截图20220208140159.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208140159.png "QQ截图20201229183512.png")
 
 - keyHash：消息中指定的业务 key 的 hash 值
 - phyOffset：当前 key 对应的消息在 commitlog 中的偏移量 commitlog offset
@@ -1148,7 +1153,7 @@ index(m)位置 = 40 + 500w - 4 + (m - 1) - 20 (式子3)
 
 **具体查询流程如下：**
 
-![说明](./imgs/RocketMQ/QQ截图20220208140740.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208140740.png "QQ截图20201229183512.png")
 
 ### 四、消息的消费
 
@@ -1177,13 +1182,13 @@ Consumer 主动从 Broker 中拉取消息，主动权由 Consumer 控制。一�
 
 ##### 广播消费
 
-![说明](./imgs/RocketMQ/QQ截图20220208141005.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208141005.png "QQ截图20201229183512.png")
 
 广播消费模式下，相同 Consumer Group 的每个 Consumer 实例都接收同一个 Topic 的全量消息。即每条消息都会被发送到 Consumer Group 中的每个 Consumer。
 
 ##### 集群消费
 
-![说明](./imgs/RocketMQ/QQ截图20220208141053.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208141053.png "QQ截图20201229183512.png")
 
 集群消费模式下，相同 Consumer Group 的每个 Consumer 实例`平均分摊`同一个 Topic 的消息。即每条消息只会被发送到 Consumer Group 中的`某个`Consumer。
 
@@ -1192,7 +1197,7 @@ Consumer 主动从 Broker 中拉取消息，主动权由 Consumer 控制。一�
 - 广播模式：消费进度保存在 consumer 端。因为广播模式下 consumer group 中每个 consumer 都会消费所有消息，但它们的消费进度是不同。所以 consumer 各自保存各自的消费进度。
 - 集群模式：消费进度保存在 broker 中。consumer group 中的所有 consumer 共同消费同一个 Topic 中的消息，同一条消息只会被消费一次。消费进度会参与到了消费的负载均衡中，故消费进度是需要共享的。下图是 broker 中存放的各个 Topic 的各个 Queue 的消费进度。
 
-![说明](./imgs/RocketMQ/QQ截图20220208141202.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208141202.png "QQ截图20201229183512.png")
 
 #### Rebalance 机制
 
@@ -1202,7 +1207,7 @@ Rebalance 机制讨论的前提是：集群消费。
 
 Rebalance 即再均衡，指的是，将一个 Topic 下的多个 Queue 在同一个 Consumer Group 中的多个 Consumer 间进行重新分配的过程。
 
-![说明](./imgs/RocketMQ/QQ截图20220208141304.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208141304.png "QQ截图20201229183512.png")
 
 Rebalance 机制的本意是为了提升消息的并行消费能力。例如，一个 Topic 下 5 个队列，在只有 1 个消费者的情况下，这个消费者将负责消费这 5 个队列的消息。如果此时我们增加一个消费者，那么就可以给其中一个消费者分配 2 个队列，给另一个分配 3 个队列，从而提升消息的并行消费能力。
 
@@ -1261,7 +1266,7 @@ Kafka 中的 Rebalance 是由 Consumer Leader 完成的。而 RocketMQ 中的 Re
 
 ##### 平均分配策略
 
-![说明](./imgs/RocketMQ/QQ截图20220208142527.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208142527.png "QQ截图20201229183512.png")
 
 该算法是要根据`avg = QueueCount / ConsumerCount`的计算结果进行分配的。如果能够整除，则按顺序将 avg 个 Queue 逐个分配 Consumer；如果不能整除，则将多余出的 Queue 按照 Consumer 顺序逐个分配。
 
@@ -1269,7 +1274,7 @@ Kafka 中的 Rebalance 是由 Consumer Leader 完成的。而 RocketMQ 中的 Re
 
 ##### 环形平均策略
 
-![说明](./imgs/RocketMQ/QQ截图20220208142630.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208142630.png "QQ截图20201229183512.png")
 
 环形平均算法是指，根据消费者的顺序，依次在由 queue 队列组成的环形图中逐个分配。
 
@@ -1277,7 +1282,7 @@ Kafka 中的 Rebalance 是由 Consumer Leader 完成的。而 RocketMQ 中的 Re
 
 ##### 一致性 hash 策略
 
-![说明](./imgs/RocketMQ/QQ截图20220208142708.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208142708.png "QQ截图20201229183512.png")
 
 该算法会将 consumer 的 hash 值作为 Node 节点存放到 hash 环上，然后将 queue 的 hash 值也放到 hash 环上，通过顺时针方向，距离 queue 最近的那个 consumer 就是该 queue 要分配的 consumer。
 
@@ -1285,7 +1290,7 @@ Kafka 中的 Rebalance 是由 Consumer Leader 完成的。而 RocketMQ 中的 Re
 
 ##### 同机房策略
 
-![说明](./imgs/RocketMQ/QQ截图20220208142814.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208142814.png "QQ截图20201229183512.png")
 
 该算法会根据 queue 的部署机房位置和 consumer 的位置，过滤出当前 consumer 相同机房的 queue。然后按照平均分配策略或环形平均策略对同机房 queue 进行分配。如果没有同机房 queue，则按照平均分配策略或环形平均策略对所有 queue 进行分配。
 
@@ -1299,7 +1304,7 @@ Kafka 中的 Rebalance 是由 Consumer Leader 完成的。而 RocketMQ 中的 Re
 
 其可以有效减少由于消费者组扩容或缩容所带来的大量的 Rebalance。
 
-![说明](./imgs/RocketMQ/QQ截图20220208142905.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208142905.png "QQ截图20201229183512.png")
 
 一致性 hash 算法的应用场景：
 
@@ -1323,13 +1328,13 @@ RocketMQ 有一个原则：每条消息必须要被`成功消费`一次。
 
 多个消费者组订阅了多个 Topic，并且每个消费者组里的多个消费者实例的订阅关系保持了一致。
 
-![说明](./imgs/RocketMQ/QQ截图20220208143050.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208143050.png "QQ截图20201229183512.png")
 
 #### 错误订阅关系
 
 一个消费者组订阅了多个 Topic，但是该消费者组里的多个 Consumer 实例的订阅关系并没有保持一致。
 
-![说明](./imgs/RocketMQ/QQ截图20220208143107.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208143107.png "QQ截图20201229183512.png")
 
 ##### 订阅了不同 Topic
 
@@ -1461,7 +1466,7 @@ Broker 启动时会加载这个文件，并写入到一个双层 Map（ConsumerO
 
 在 Consumer 启动后，其要消费的第一条消息的起始位置常用的有三种，这三种位置可以通过枚举类型常量设置。这个枚举类型为 ConsumeFromWhere。
 
-![说明](./imgs/RocketMQ/QQ截图20220208143837.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208143837.png "QQ截图20201229183512.png")
 
 > CONSUME_FROM_LAST_OFFSET：从 queue 的当前最后一条消息开始消费<br>
 > CONSUME_FROM_FIRST_OFFSET：从 queue 的第一条消息开始消费<br>
@@ -1472,7 +1477,7 @@ Broker 启动时会加载这个文件，并写入到一个双层 Map（ConsumerO
 
 #### 重试队列
 
-![说明](./imgs/RocketMQ/QQ截图20220208143940.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208143940.png "QQ截图20201229183512.png")
 
 当 rocketMQ 对消息的消费出现异常时，会将发生异常的消息的 offset 提交到 Broker 中的重试队列。系统在发生消息消费异常时会为当前的 topic@group 创建一个重试队列，该队列以%RETRY%开头，到达重试时间后进行消费重试。
 
@@ -1582,7 +1587,7 @@ consumer.registerMessageListener(new MessageListenerConcurrently() {
 
 #### 产生原因分析
 
-![说明](./imgs/RocketMQ/QQ截图20220208144842.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208144842.png "QQ截图20201229183512.png")
 
 Consumer 使用长轮询 Pull 模式消费消息时，分为以下两个阶段：
 
@@ -1688,19 +1693,19 @@ Producer 对于消息的发送方式也有多种选择，不同的方式会产�
 
 同步发送消息是指，Producer 发出一条消息后，会在收到 MQ 返回的 ACK 之后才发下一条消息。该方式的消息可靠性最高，但消息发送效率太低。
 
-![说明](./imgs/RocketMQ/QQ截图20220208145933.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208145933.png "QQ截图20201229183512.png")
 
 ##### 异步发送消息
 
 异步发送消息是指，Producer 发出消息后无需等待 MQ 返回 ACK，直接发送下一条消息。该方式的消息可靠性可以得到保障，消息发送效率也可以。
 
-![说明](./imgs/RocketMQ/QQ截图20220208150004.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208150004.png "QQ截图20201229183512.png")
 
 ##### 单向发送消息
 
 单向发送消息是指，Producer 仅负责发送消息，不等待、不处理 MQ 的 ACK。该发送方式时 MQ 也不返回 ACK。该方式的消息发送效率最高，但消息可靠性较差。
 
-![说明](./imgs/RocketMQ/QQ截图20220208150023.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208150023.png "QQ截图20201229183512.png")
 
 #### 代码举例
 
@@ -1888,11 +1893,11 @@ public class SomeConsumer {
 
 消息发送到 MQ 中之后，Queue 的选择如果采用轮询策略，消息在 MQ 的存储可能如下：
 
-![说明](./imgs/RocketMQ/QQ截图20220208152040.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208152040.png "QQ截图20201229183512.png")
 
 这种情况下，我们希望 Consumer 消费消息的顺序和我们发送是一致的，然而上述 MQ 的投递和消费方式，我们无法保证顺序是正确的。对于顺序异常的消息，Consumer 即使设置有一定的状态容错，也不能完全处理好这么多种随机出现组合情况。
 
-![说明](./imgs/RocketMQ/QQ截图20220208152144.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208152144.png "QQ截图20201229183512.png")
 
 基于上述的情况，可以设计如下方案：对于相同订单号的消息，通过一定的策略，将其放置在一个 Queue 中，然后消费者再采用一定的策略（例如，一个线程独立处理一个 queue，保证处理消息的顺序性），能够保证消费的顺序性。
 
@@ -1902,7 +1907,7 @@ public class SomeConsumer {
 
 ##### 全局有序
 
-![说明](./imgs/RocketMQ/QQ截图20220208152224.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208152224.png "QQ截图20201229183512.png")
 
 当发送和消费参与的 Queue 只有一个时所保证的有序是整个 Topic 中消息的顺序， 称为`全局有序`。
 
@@ -1913,7 +1918,7 @@ public class SomeConsumer {
 
 ##### 分区有序
 
-![说明](./imgs/RocketMQ/QQ截图20220208152417.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208152417.png "QQ截图20201229183512.png")
 
 如果有多个 Queue 参与，其仅可保证在该 Queue 分区队列上的消息顺序，则称为`分区有序`。
 
@@ -1965,7 +1970,7 @@ public class OrderedProducer {
 
 延时消息的延迟时长`不支持随意时长`的延迟，是通过特定的延迟等级来指定的。延时等级定义在 RocketMQ 服务端的 MessageStoreConfig 类中的如下变量中：
 
-![说明](./imgs/RocketMQ/QQ截图20220208153410.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208153410.png "QQ截图20201229183512.png")
 
 即，若指定的延时等级为 3 ，则表示延迟时长为 10s，即延迟等级是从 1 开始计数的。
 
@@ -1977,13 +1982,13 @@ messageDelayLevel = 1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h 1
 
 #### 延时消息实现原理
 
-![说明](./imgs/RocketMQ/QQ截图20220208153523.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208153523.png "QQ截图20201229183512.png")
 
 **具体实现方案是：**
 
 ##### 修改消息
 
-![说明](./imgs/RocketMQ/QQ截图20220208153545.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208153545.png "QQ截图20201229183512.png")
 
 Producer 将消息发送到 Broker 后，Broker 会首先将消息写入到 commitlog 文件，然后需要将其分发到相应的 consumequeue。不过，在分发之前，系统会先判断消息中是否带有延时等级。若没有，则直接正常分发；若有则需要经历一个复杂的过程：
 
@@ -1993,7 +1998,7 @@ Producer 将消息发送到 Broker 后，Broker 会首先将消息写入到 comm
 > 延迟等级 delayLevel 与 queueId 的对应关系为 queueId = delayLevel -1<br>
 > 需要注意，在创建 queueId 目录时，并不是一次性地将所有延迟等级对应的目录全部创建完毕，而是用到哪个延迟等级创建哪个目录
 
-![说明](./imgs/RocketMQ/QQ截图20220208153635.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208153635.png "QQ截图20201229183512.png")
 
 - 修改消息索引单元内容。索引单元中的 Message Tag HashCode 部分原本存放的是消息的 Tag 的 Hash 值。现修改为消息的`投递时间`。投递时间是指该消息被重新修改为原 Topic 后再次被写入到 commitlog 中的时间。`投递时间 = 消息存储时间 + 延时等级时间`。消息存储时间指的是消息被发送到 Broker 时的时间戳。
 - 将消息索引写入到 SCHEDULE_TOPIC_XXXX 主题下相应的 consumequeue 中
@@ -2072,7 +2077,7 @@ public class OtherConsumer {
 
 我们可以使用同步消息来处理该需求场景：
 
-![说明](./imgs/RocketMQ/QQ截图20220208154429.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208154429.png "QQ截图20201229183512.png")
 
 - 工行系统发送一个给 B 增款 1 万元的同步消息 M 给 Broker
 - 消息被 Broker 成功接收后，向工行系统发送成功 ACK
@@ -2086,7 +2091,7 @@ public class OtherConsumer {
 
 解决思路是，让第 1 、 2 、 3 步具有原子性，要么全部成功，要么全部失败。即消息发送成功后，必须要保证扣款成功。如果扣款失败，则回滚发送成功的消息。而该思路即使用`事务消息`。这里要使用`分布式事务`解决方案。
 
-![说明](./imgs/RocketMQ/QQ截图20220208154545.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208154545.png "QQ截图20201229183512.png")
 
 **使用事务消息来处理该需求场景：**
 
@@ -2151,7 +2156,7 @@ public enum LocalTransactionState {
 
 ##### 消息回查
 
-![说明](./imgs/RocketMQ/QQ截图20220208155046.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208155046.png "QQ截图20201229183512.png")
 
 消息回查，即重新查询本地事务的执行状态。本例就是重新到 DB 中查看预扣款操作是否执行成功。
 
@@ -2200,7 +2205,7 @@ Resource Manager，资源管理器。管理分支事务处理的资源，与 TC 
 
 #### XA 模式架构
 
-![说明](./imgs/RocketMQ/QQ截图20220208155359.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208155359.png "QQ截图20201229183512.png")
 
 XA 模式是一个典型的 2PC，其执行原理如下：
 
@@ -2362,7 +2367,7 @@ public class SomeConsumer {
 
 ##### 生产者发送的消息大小
 
-![说明](./imgs/RocketMQ/QQ截图20220208160513.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208160513.png "QQ截图20201229183512.png")
 
 生产者通过 send()方法发送的 Message，并不是直接将 Message 序列化后发送到网络上的，而是通过这个 Message 生成了一个字符串发送出去的。这个字符串由四部分构成：Topic、消息 Body、消息日志（占 20 字节），及用于描述消息的一堆属性 key-value。这些属性中包含例如生产者地址、生产时间、要发送的 QueueId 等。最终写入到 Broker 中消息单元中的数据都是来自于这些属性。
 
@@ -2370,7 +2375,7 @@ public class SomeConsumer {
 
 ##### 修改批量属性
 
-![说明](./imgs/RocketMQ/QQ截图20220208160544.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208160544.png "QQ截图20201229183512.png")
 
 Consumer 的 MessageListenerConcurrently 监听接口的 consumeMessage()方法的第一个参数为消息列表，但默认情况下每次只能消费一条消息。若要使其一次可以消费多条消息，则可以通过修改 Consumer 的 consumeMessageBatchMaxSize 属性来指定。不过，该值不能超过 32 。因为默认情况下消费者每次可以拉取的消息最多是 32 条。若要修改一次拉取的最大值，则可通过修改 Consumer 的 pullBatchSize 属性来指定。
 
@@ -2774,7 +2779,7 @@ consumer.setMaxReconsumeTimes( 10 );
 > 1 ）这个重试队列是针对消息才组的，而不是针对每个 Topic 设置的（一个 Topic 的消息可以让多个消费者组进行消费，所以会为这些消费者组各创建一个重试队列）<br>
 > 2 ）只有当出现需要进行重试消费的消息时，才会为该消费者组创建重试队列
 
-![说明](./imgs/RocketMQ/QQ截图20220208163646.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208163646.png "QQ截图20201229183512.png")
 
 > 注意，消费重试的时间间隔与`延时消费`的`延时等级`十分相似，除了没有延时等级的前两个时间外，其它的时间都是相同的
 
@@ -2782,7 +2787,7 @@ Broker 对于重试消息的处理是通过`延时消息`实现的。先将消�
 
 #### 消费重试配置方式
 
-![说明](./imgs/RocketMQ/QQ截图20220208163740.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208163740.png "QQ截图20201229183512.png")
 
 集群消费方式下，消息消费失败后若希望消费重试，则需要在消息监听器接口的实现中明确进行如下三种方式之一的配置：
 
@@ -2792,7 +2797,7 @@ Broker 对于重试消息的处理是通过`延时消息`实现的。先将消�
 
 #### 消费不重试配置方式
 
-![说明](./imgs/RocketMQ/QQ截图20220208163826.png "QQ截图20201229183512.png")
+![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208163826.png "QQ截图20201229183512.png")
 
 集群消费方式下，消息消费失败后若不希望消费重试，则在捕获到异常后同样也返回与消费成功后的相同的结果，即 ConsumeConcurrentlyStatus.CONSUME_SUCCESS，则不进行消费重试。
 

@@ -1,3 +1,8 @@
+---
+title: Threejs
+date: 2023-11-16 17:26:40
+permalink: /pages/5f0e92/
+---
 # Three.js
 
 ## 练习案例
@@ -8,7 +13,7 @@
 
 ### three.js应用结构
 
-![图片](./imgs/threejs/three.js%20struct.jpg)
+![图片](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/threejs/three.js%20struct.jpg)
 
 - Renderer：three.js的主要对象。它会将摄像机视椎体中的三维场景渲染成一个二维图片显示在画布上。
 - Scene：定义场景图最基本的要素，并包含了背景色和雾等属性。这些对象通过一个层级关系明确的树状结构来展示出各自的位置和方向。子对象的位置和方向总是相对于父对象而言的。
@@ -28,7 +33,7 @@
 用于放置物体、灯光和摄像机
 2. 创建一个摄像机
 `const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);`
-![图片](./imgs/threejs/camera%20init.jpg)
+![图片](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/threejs/camera%20init.jpg)
 
 - fov：视野范围。
 - aspect：画布的宽高比。
@@ -37,7 +42,7 @@
 > 这四个参数定义了一个 "视椎(frustum)"。 视椎(frustum)是指一个像被削去顶部的金字塔形状。
 
 可以借助position属性调节摄像机的位置`camera.position.z = 2`
-![图片](./imgs/threejs/camer%20position.jpg)
+![图片](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/threejs/camer%20position.jpg)
 3. 创建一个渲染器
 
 渲染器负责将提供的所有数据渲染绘制到页面上。
@@ -139,7 +144,7 @@ renderer.render(scene, camera);
 requestAnimationFrame(durationRender);
 ```
 
-![图片](./imgs/threejs/demo1.jpg)
+![图片](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/threejs/demo1.jpg)
 
 > lookAt 函数让摄像机从它的位置“看向”我们传递 lookAt 的位置。
 > 渲染循环函数 requestAnimationFrame：可以使几何体进行旋转，requestAnimationFrame函数会告诉浏览器需要显示动画。传入一个函数作为回调函数。
@@ -158,7 +163,7 @@ requestAnimationFrame(durationRender);
 **节点中的元素只需要关注自身围绕这个局部空间的操作。**
 
 复杂场景图（太阳、地球、月球自转系统）的层次结构：
-![图片](./imgs/threejs/scene%20hierarchical.jpg)
+![图片](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/threejs/scene%20hierarchical.jpg)
 
 ## 材质
 

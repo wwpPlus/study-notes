@@ -1,3 +1,8 @@
+---
+title: experimental-platform
+date: 2023-11-16 17:26:40
+permalink: /pages/ef3306/
+---
 # 科研实践创新平台
 
 - 实现项目全流程管理
@@ -22,29 +27,29 @@
 
 - 创建项目，设置项目完成时间并添加项目资料
 
-  ![图片](./imgs/experimental-platform/创建项目.jpg)
+  ![图片](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/创建项目.jpg)
 
   新创建的项目处于待审核状态，经管理员审核通过后可进行后续操作，项目审核通过后，在成员列表下增加项目成员或删除项目成员，添加项目成员时可通过成员所属分组进行批量添加
 
-  ![图片](./imgs/experimental-platform/添加成员.jpg)
+  ![图片](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/添加成员.jpg)
 
 > 注: 项目成员权限为项目负责人权限，谨慎授权
 
 - 在项目附件管理中可以看到创建项目时添加的项目资料（项目必备资料文件夹中），也可在此追加项目资料
 
-  ![图片](./imgs/experimental-platform/追加项目资料.jpg)
+  ![图片](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/追加项目资料.jpg)
 
 - 项目可以细化为多个课题，在课题列表下管理课题的发布、版本迭代及版本配置
 
-  ![课题列表](./imgs/experimental-platform/课题列表.jpg)
+  ![课题列表](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/课题列表.jpg)
 
 - 项目资料和问题交流中可以进行项目相关问题的交流讨论，形成文字资料以便学习参考，使用时需要新增交流问题的分类，可以选择针对具体课题、具体版本
 
-  ![项目资料](./imgs/experimental-platform/项目资料.jpg)
+  ![项目资料](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/项目资料.jpg)
 
   项目动态查看整个项目的具体完成情况
 
-  ![项目动态](./imgs/experimental-platform/项目动态.jpg)
+  ![项目动态](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/项目动态.jpg)
 
 ### 课题与版本
 
@@ -54,7 +59,7 @@
 
   - 普通课题
 
-  ![创建课题](./imgs/experimental-platform/创建课题.jpg)
+  ![创建课题](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/创建课题.jpg)
 
   - 在线课题
     - 需要选择课题对应的实验环境，其中可以根据实验所需资源选择不同级别的运行时资源
@@ -62,11 +67,11 @@
     - 其中实验创建方式分为自定义创建和模板创建，在模板创建中可以使用已经成功分享的实验案例创建自己的实验模板
     - 数据集选择功能提供数据集平台中已存在的数据，选择添加数据集后，在实验环境目录下可以看到数据集文件，此时的数据集文件只是一个索引文件，不占用磁盘空间，只有实际使用到某一个具体数据文件时数据才会被拷贝到当前目录下
 
-  ![在线课题](./imgs/experimental-platform/在线课题.jpg)
+  ![在线课题](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/在线课题.jpg)
 
   发布课题，可以选择课题的有效期和发布时间，课题当前版本发布后可通过生成版本，自动生成下一个版本号进行版本迭代
 
-![发布课题](./imgs/experimental-platform/发布课题.jpg)
+![发布课题](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/发布课题.jpg)
 
 - 注: 同一课题下只能有一个未发布的版本
 
@@ -74,7 +79,7 @@
 
   - 配置在线课题，在此配置课题实验的模板，课题下的任务可在此模板基础上完成任务
 
-  ![配置在线课题](./imgs/experimental-platform/配置普通课题.jpg)
+  ![配置在线课题](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/配置普通课题.jpg)
 
   注: 此处普通课题可以配置开始和结束时间以及课题内容，在线课题则是进入实验页面进行实验的配置
 
@@ -82,24 +87,24 @@
 
 - 课题版本发布后，在任务管理中可以看到课题生成对应的任务，此时任务处于未完成状态，点击进入开始下发任务
 
-![任务管理](./imgs/experimental-platform/任务管理.jpg)
+![任务管理](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/任务管理.jpg)
 
 - 布置任务
   - 选择任务为公有或私有，私有任务可以下发到个人，公有任务则所有人可见
   - 通过团队搜索实现下发任务到多人，也可以进行用户搜索选择下发任务到具体个人，配置任务开始和结束时间以及汇报规则，方便查看任务进度
   - 任务下发后，在接受到任务的账号中查看对应任务并进行进度汇报
 
-![布置任务](./imgs/experimental-platform/布置任务.jpg)
+![布置任务](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/布置任务.jpg)
 
 - 查看任务进度
   - 在任务管理中查看已下发任务的实时进度
 
-![任务进度](./imgs/experimental-platform/任务进度.jpg)
+![任务进度](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/任务进度.jpg)
 
 - 审核任务
   - 学生在汇报任务时提交任务进度为 100%，任务进入待审核状态，老师进入任务管理在汇报成员详细信息中进行任务审核
 
-![审核任务](./imgs/experimental-platform/审核任务.jpg)
+![审核任务](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/审核任务.jpg)
 
 ### 首页动态使用
 
@@ -107,7 +112,7 @@
   - 进入首页查看当前账号下创建的项目、课题总数，以及已完成和进行中的任务数量
   - 查看项目动态和课题动态
 
-![首页](./imgs/experimental-platform/首页.jpg)
+![首页](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/首页.jpg)
 
 ### 配置在线课题
 
@@ -115,7 +120,7 @@
 - 在此处可以进行任务发布
 - 左侧数据集菜单可以选择本地上传或者是使用系统连通的数据集平台提供的数据集
 
-![配置在线课题](./imgs/experimental-platform/配置在线课题.jpg)
+![配置在线课题](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/配置在线课题.jpg)
 
 > 注: 发布任务时需要生成任务模板后才可发布
 
@@ -133,7 +138,7 @@
 
 利用实验室资源做实验
 
-![自主实验](./imgs/experimental-platform/自主实验.jpg)
+![自主实验](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/自主实验.jpg)
 
 - 创建实验
   - 选择环境类型
@@ -142,14 +147,14 @@
     - 远程桌面
   - 运行时环境（包含公开镜像和私有镜像）
   - 选择数据集（此处对接数据集平台，选择数据集后，数据集将通过网盘挂载的形式存放在实验项目目录中，具体呈现形式见下方实验环境）
-![创建实验](./imgs/experimental-platform/创建实验.jpg)
+![创建实验](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/创建实验.jpg)
 
 - 启动实验
   - 启动实验前需要选择运行资源即实验室提供的算力资源，根据算力高低，所需要的积分也是由低到高
   - 积分规则：每周日零点积分重置，积分为 0 时将无法使用 GPU 资源，可通过每日登录、汇报等方式获取积分
   - 积分记录：点击右侧积分记录查看实验过程中积分的使用情况
 
-![启动实验](./imgs/experimental-platform/启动实验.jpg)
+![启动实验](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/启动实验.jpg)
 
 ### 实验环境（VS Code）
 
@@ -162,7 +167,7 @@
 - 实验基本信息
 - 数据集查看
 
-![实验环境](./imgs/experimental-platform/实验环境.jpg)
+![实验环境](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/实验环境.jpg)
 
 #### 数据集相关功能
 
@@ -172,7 +177,7 @@
 
 3. 数据集菜单中提供数据集文档查看、数据集平台跳转等功能
 
-![数据集查看](./imgs/experimental-platform/数据集查看.jpg)
+![数据集查看](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/数据集查看.jpg)
 
 #### 模型部署相关功能
 
@@ -180,13 +185,13 @@
 
 2. 模型部署主要提供云端和边缘端部署，所谓云端部署即是将训练好的模型部署到云端服务器上，部署成功后服务器会返回一个 url 链接，此时，用户就可以通过请求该 url 使用模型进行预测；边缘端部署是将模型部署到物联网设备中，在实验页面下部署模型后，可以在模型库平台中看到部署的服务，然后在平台上进行后续配置即可使用模型。
 
-![模型部署](./imgs/experimental-platform/模型部署.jpg)
+![模型部署](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/模型部署.jpg)
 
 #### 代码助手
 
 1. 代码助手功能，通过调用 chatbot API 实现的代码助手，可以在实验过程中为我们提供不小的帮助，通过对话的形式解决实验过程中的问题。
 
-![代码助手](./imgs/experimental-platform/代码助手.png)
+![代码助手](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/代码助手.png)
 
 ### 分享实验
 
@@ -194,7 +199,7 @@
 
 2. 已分享的实验可以在实验页面下看到已分享的字样
 
-![分享实验](./imgs/experimental-platform/分享实验.jpg)
+![分享实验](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/分享实验.jpg)
 
 ### 私有镜像
 
@@ -204,7 +209,7 @@
     - 基础镜像：选择公开镜像
     - 依赖：根据需要的环境下载对应的依赖，依赖列表对应 pypi 库中的各个模块
 
-![私有镜像的制作](./imgs/experimental-platform/制作私有镜像.jpg)
+![私有镜像的制作](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/制作私有镜像.jpg)
 
 ### 任务汇报
 
@@ -215,17 +220,17 @@
   - 同时也可以看到汇报进度条，同时可以查看已完成的任务
   - 处于待审核状态的任务指的是学生在汇报时进度提交为 100%，此时需要老师进行任务审核，待审核通过后任务才会处于已完成状态，若审核不通过，需要继续当前任务
 
-![我的任务](./imgs/experimental-platform/我的任务.jpg)
+![我的任务](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/我的任务.jpg)
 
 - 任务汇报
   - 在任务汇报页中进行任务汇报，同时对于学生提交的历史汇报老师在查看时可以给予对应的回复
   - 点击右上角消息图标进入公开交流页进行问题讨论
   - 处于待审核状态的任务指的是学生在汇报时进度提交为 100%，此时需要老师进行任务审核，待审核通过后任务才会处于已完成状态，若审核不通过，需要继续当前任务
 
-![任务汇报](./imgs/experimental-platform/任务汇报.jpg)
+![任务汇报](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/任务汇报.jpg)
 
 ## 问题反馈
 
 若在使用平台的过程中有任何问题、优化建议或者有特殊镜像需求，点击账号左侧问题反馈按钮进行反馈，此处提交的问题或建议会得到即时处理。
 
-![问题反馈](./imgs/experimental-platform/问题反馈.jpg)
+![问题反馈](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/experimental-platform/问题反馈.jpg)

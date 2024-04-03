@@ -1,3 +1,8 @@
+---
+title: MySQL
+date: 2024-03-05 10:06:47
+permalink: /pages/236603/
+---
 # MySQL
 
 ## 前言
@@ -143,11 +148,11 @@
 
 理解： 第一范式强调数据表的原子性，是其他范式的基础。例如下表：
 
-![0](./imgs/MySQL/2100.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/2100.png)
 
 `name-age`列具有两个属性，一个name，一个 age不符合第一范式，把它拆分成两列
 
-![0](./imgs/MySQL/2102.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/2102.png)
 
 **第二范式**
 
@@ -157,13 +162,13 @@
 
 有两张表：订单表，产品表
 
-![0](./imgs/MySQL/2093.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/2093.png)
 
-![0](./imgs/MySQL/2101.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/2101.png)
 
 一个订单有多个产品，所以订单的主键为【订单ID】和【产品ID】组成的联合主键，这样2个组件不符合第二范式，而且产品ID和订单ID没有强关联，故，把订单表进行拆分为订单表与订单与商品的中间表
 
-![0](./imgs/MySQL/2088.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/2088.png)
 
 **第三范式**
 
@@ -171,9 +176,9 @@
 
 例如，存在一个部门信息表，其中每个部门有部门编号（dept_id）、部门名称、部门简介等信息。那么在员工信息表中列出部门编号后就不能再将部门名称、部门简介等与部门有关的信息再加入员工信息表中。如果不存在部门信息表，则根据第三范式（3NF）也应该构建它，否则就会有大量的数据冗余。
 
-![img](./imgs/MySQL/2094.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/2094.png)
 
-![img](./imgs/MySQL/2099.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/2099.png)
 
 其中
 
@@ -254,7 +259,7 @@
 
 ## MySQL内部结构
 
-![img](./imgs/MySQL/12570.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/12570.png)
 
 大体来说，MySQL 可以分为 Server 层和存储引擎层两部分。
 
@@ -286,11 +291,11 @@ mysql -h host[数据库地址] -u root[用户] -p root[密码] -P 3306
 
 在完成经典的 TCP 握手后，连接器就要开始认证身份。用户成功建立连接后，即使用管理员账号对这个用户的权限做了修改，也不会影响已经存在连接的权限。修改完成后，只有再新建的连接才会使用新的权限设置。用户的权限表在系统表空间的mysql的user表中。
 
-![img](./imgs/MySQL/12637.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/12637.png)
 
 连接完成后，如果没有后续的动作，这个连接就处于空闲状态，可以在 `show processlist` 命令中看到它。
 
-![img](./imgs/MySQL/12632.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/12632.png)
 
 > 客户端如果长时间不发送command到Server端，连接器就会自动将它断开。这个时间是由参数 `wait_timeout` 控制的，默认值是 8 小时。
 >
@@ -312,7 +317,7 @@ MySQL 需要对 SQL 语句做解析。
 
 下图是SQL词法分析的过程步骤：
 
-![img](./imgs/MySQL/12742.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/12742.png)
 
 **优化器**
 
@@ -368,7 +373,7 @@ reset master; 清空所有的bin-log日志
 
 binlog里的内容不具备可读性，所以需要我们自己去判断恢复的逻辑点位，怎么观察呢？看重点信息，比如`begin,commit`这种关键词信息，只要在binlog当中看到了，你就可以理解为begin-commit之间的信息是一个完整的事务逻辑,然后再根据位置position判断恢复即可。binlog内容如下：
 
-![img](./imgs/MySQL/12847.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/12847.png)
 
 **数据归档操作**
 
@@ -466,7 +471,7 @@ INSERT INTO `film_actor` (`id`, `film_id`, `actor_id`) VALUES (1,1,1),(2,1,2),(3
 explain select * from actor;
 ```
 
-![image-20240119170032583](./imgs/MySQL/image-20240119170032583.png)
+![image-20240119170032583](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119170032583.png)
 
 > 在查询中的每个表会输出一行，如果有两个表通过 join 连接查询，那么会输出两行
 
@@ -501,7 +506,7 @@ set session optimizer_switch='derived_merge=off';   # 关闭mysql5.7新特性对
 explain select (select 1 from actor where id = 1) from (select * from film where id = 1) der;
 ```
 
-![image-20240119170436480](./imgs/MySQL/image-20240119170436480.png)
+![image-20240119170436480](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119170436480.png)
 
 ```sql
 set session optimizer_switch='derived_merge=on';	#还原默认配置
@@ -513,7 +518,7 @@ set session optimizer_switch='derived_merge=on';	#还原默认配置
 explain select 1 union all select 1;
 ```
 
-![image-20240119170503645](./imgs/MySQL/image-20240119170503645.png)
+![image-20240119170503645](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119170503645.png)
 
 **3. table列**
 
@@ -537,7 +542,7 @@ explain select 1 union all select 1;
 explain select min(id) from film;
 ```
 
-![image-20240119170731360](./imgs/MySQL/image-20240119170731360.png)
+![image-20240119170731360](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119170731360.png)
 
 **const, system**：mysql能对查询的某部分进行优化并将其转化成一个常量（可以看`show warnings` 的结果）。用于 primary key 或 unique key 的所有列与常数比较时，所以表最多有一个匹配行，读取1次，速度比较快。**system是const的特例**，表里只有一条元组匹配时为system
 
@@ -545,13 +550,13 @@ explain select min(id) from film;
 explain extended select * from (select * from film where id = 1) tmp;
 ```
 
-![image-20240119170801219](./imgs/MySQL/image-20240119170801219.png)
+![image-20240119170801219](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119170801219.png)
 
 ```sql
 show warnings;
 ```
 
-![image-20240119170823446](./imgs/MySQL/image-20240119170823446.png)
+![image-20240119170823446](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119170823446.png)
 
 **eq_ref**：primary key 或 unique key 索引的所有部分被连接使用 ，最多只会返回一条符合条件的记录。这可能是在 const 之外最好的联接类型了，简单的 select 查询不会出现这种 type。
 
@@ -559,7 +564,7 @@ show warnings;
 explain select * from film_actor left join film on film_actor.film_id = film.id;
 ```
 
-![image-20240119170843948](./imgs/MySQL/image-20240119170843948.png)
+![image-20240119170843948](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119170843948.png)
 
 **ref**：相比 eq_ref，不使用唯一索引，而是使用普通索引或者唯一性索引的部分前缀，索引要和某个值相比较，可能会找到多个符合条件的行。
 
@@ -569,7 +574,7 @@ explain select * from film_actor left join film on film_actor.film_id = film.id;
 explain select * from film where name = 'film1';
 ```
 
-![image-20240119170938304](./imgs/MySQL/image-20240119170938304.png)
+![image-20240119170938304](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119170938304.png)
 
 2.关联表查询，idx_film_actor_id是film_id和actor_id的联合索引，这里使用到了film_actor的左边前缀film_id部分。
 
@@ -577,7 +582,7 @@ explain select * from film where name = 'film1';
 explain select film_id from film left join film_actor on film.id = film_actor.film_id;
 ```
 
-![image-20240119170952591](./imgs/MySQL/image-20240119170952591.png)
+![image-20240119170952591](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119170952591.png)
 
 **range**：范围扫描通常出现在 `in(), between ,> ,<, >=` 等操作中。使用一个索引来检索给定范围的行。
 
@@ -585,7 +590,7 @@ explain select film_id from film left join film_actor on film.id = film_actor.fi
 explain select * from actor where id > 1;
 ```
 
-![image-20240119171018445](./imgs/MySQL/image-20240119171018445.png)
+![image-20240119171018445](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119171018445.png)
 
 **index**：扫描全索引就能拿到结果，一般是扫描某个二级索引，这种扫描不会从索引树根节点开始快速查找，而是直接对二级索引的叶子节点遍历和扫描，速度还是比较慢的，这种查询一般为使用覆盖索引，二级索引一般比较小，所以这种通常比ALL快一些。
 
@@ -593,7 +598,7 @@ explain select * from actor where id > 1;
 explain select * from film;
 ```
 
-![image-20240119171049668](./imgs/MySQL/image-20240119171049668.png)
+![image-20240119171049668](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119171049668.png)
 
 **ALL**：即全表扫描，扫描你的聚簇索引的所有叶子节点。通常情况下这需要增加索引来进行优化了。
 
@@ -601,7 +606,7 @@ explain select * from film;
 explain select * from actor;
 ```
 
-![image-20240119171057757](./imgs/MySQL/image-20240119171057757.png)
+![image-20240119171057757](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119171057757.png)
 
 **5. possible_keys列**
 
@@ -627,7 +632,7 @@ explain 时可能出现 possible_keys 有列，而 key 显示 NULL 的情况，�
 explain select * from film_actor where film_id = 2;
 ```
 
-![image-20240119171742592](./imgs/MySQL/image-20240119171742592.png)
+![image-20240119171742592](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119171742592.png)
 
 key_len计算规则如下：
 
@@ -673,7 +678,7 @@ key_len计算规则如下：
 explain select film_id from film_actor where film_id = 1;
 ```
 
-![image-20240119171919125](./imgs/MySQL/image-20240119171919125.png)
+![image-20240119171919125](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119171919125.png)
 
 2）**Using where**：使用 where 语句来处理结果，并且查询的列未被索引覆盖
 
@@ -681,7 +686,7 @@ explain select film_id from film_actor where film_id = 1;
 explain select * from actor where name = 'a';
 ```
 
-![image-20240119171945765](./imgs/MySQL/image-20240119171945765.png)
+![image-20240119171945765](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119171945765.png)
 
 3）**Using index condition**：查询的列不完全被索引覆盖，where条件中是一个前导列的范围；
 
@@ -689,7 +694,7 @@ explain select * from actor where name = 'a';
 explain select * from film_actor where film_id > 1;
 ```
 
-![image-20240119172021404](./imgs/MySQL/image-20240119172021404.png)
+![image-20240119172021404](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119172021404.png)
 
 4）**Using temporary**：mysql需要创建一张临时表来处理查询。出现这种情况一般是要进行优化的，首先是想到用索引来优化。
 
@@ -699,7 +704,7 @@ explain select * from film_actor where film_id > 1;
 explain select distinct name from actor;
 ```
 
-![image-20240119172059358](./imgs/MySQL/image-20240119172059358.png)
+![image-20240119172059358](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119172059358.png)
 
 2. film.name建立了idx_name索引，此时查询时extra是using index，没有用临时表
 
@@ -707,7 +712,7 @@ explain select distinct name from actor;
 explain select distinct name from film;
 ```
 
-![image-20240119172151676](./imgs/MySQL/image-20240119172151676.png)
+![image-20240119172151676](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119172151676.png)
 
 5）**Using filesort**：将用外部排序而不是索引排序，数据较小时从内存排序，否则需要在磁盘完成排序。这种情况下一般也是要考虑使用索引来优化的。
 
@@ -717,7 +722,7 @@ explain select distinct name from film;
 explain select * from actor order by name;
 ```
 
-![image-20240119172230846](./imgs/MySQL/image-20240119172230846.png)
+![image-20240119172230846](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119172230846.png)
 
 2. film.name建立了idx_name索引,此时查询时extra是using index
 
@@ -725,7 +730,7 @@ explain select * from actor order by name;
 explain select * from film order by name;
 ```
 
-![image-20240119172254791](./imgs/MySQL/image-20240119172254791.png)
+![image-20240119172254791](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119172254791.png)
 
 6）**Select tables optimized away**：使用某些聚合函数（比如 max、min）来访问存在索引的某个字段时
 
@@ -733,7 +738,7 @@ explain select * from film order by name;
 explain select min(id) from film;
 ```
 
-![image-20240119172315772](./imgs/MySQL/image-20240119172315772.png)
+![image-20240119172315772](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119172315772.png)
 
 ## MySQL索引
 
@@ -749,7 +754,7 @@ explain select min(id) from film;
 
 3. 节点中的数据索引从左到右递增排列
 
-![image-20240119182449764](./imgs/MySQL/image-20240119182449764.png)
+![image-20240119182449764](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119182449764.png)
 
 **B+Tree**性质：
 
@@ -759,13 +764,13 @@ explain select min(id) from film;
 
 3. 叶子节点用指针连接，提高区间访问的性能
 
-![image-20240119182548156](./imgs/MySQL/image-20240119182548156.png)
+![image-20240119182548156](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119182548156.png)
 
 **MyISAM存储引擎索引实现**
 
 MyISAM索引文件和数据文件是分离的(非聚簇)
 
-![image-20240119182643155](./imgs/MySQL/image-20240119182643155.png)
+![image-20240119182643155](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119182643155.png)
 
 **InnoDB存储引擎索引实现**
 
@@ -778,15 +783,15 @@ InnoDB索引实现(聚簇)
 
 **主键索引**
 
-![image-20240119182749357](./imgs/MySQL/image-20240119182749357.png)
+![image-20240119182749357](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119182749357.png)
 
 **非主键索引（二级索引）**
 
-![image-20240119182752863](./imgs/MySQL/image-20240119182752863.png)
+![image-20240119182752863](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119182752863.png)
 
 **联合索引**
 
-![image-20240119182835797](./imgs/MySQL/image-20240119182835797.png)
+![image-20240119182835797](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119182835797.png)
 
 ### InnoDB中的索引
 
@@ -812,13 +817,13 @@ InnoDB中使用了聚簇索引，就是**将表的主键用来构造一棵B+树�
 
 > 如果没有定义主键，MySQL会使用唯一性索引，没有唯一性索引，MySQL也会创建一个隐含列RowID来做主键，然后用这个主键来建立聚簇索引。
 
-![0](./imgs/MySQL/2098.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/2098.png)
 
 **辅助索引/二级索引**
 
 对于辅助索引(Secondary Index，也称二级索引、非聚簇索引)，叶子节点并不包含行记录的全部数据。叶子节点除了包含键值以外，每个叶子节点中的索引行中还包含了相应行数据的聚簇索引键。
 
-![0](./imgs/MySQL/2096.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/2096.png)
 
 比如辅助索引`index(node)`，那么叶子节点中包含的数据就包括了`(主键、note)`。
 
@@ -833,7 +838,7 @@ InnoDB中使用了聚簇索引，就是**将表的主键用来构造一棵B+树�
 
 > 这个过程也被称为**回表**。也就是根据辅助索引的值查询一条完整的用户记录需要使用到2棵B+树：一次辅助索引，一次聚簇索引。
 
-![0](./imgs/MySQL/2086.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/2086.png)
 
 **MRR**
 
@@ -857,7 +862,7 @@ MySQL中提出了一个名为`Disk-Sweep Multi-Range Read` (MRR，多范围读�
 
 2. 在记录的note列相同的情况下，采用b列进行排序
 
-![0](./imgs/MySQL/2097.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/2097.png)
 
 **自适应哈希索引**
 
@@ -874,9 +879,9 @@ InnoDB存储引擎使用的哈希函数采用**除法散列方式**，其冲突�
 show engine innodb status\G;
 ```
 
-![0](./imgs/MySQL/2084.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/2084.png)
 
-![0](./imgs/MySQL/2090.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/2090.png)
 
 通过 `hash searches: non-hash searches`可以大概了解使用哈希索引后的效率。
 
@@ -980,19 +985,19 @@ INSERT INTO employees(name,age,position,hire_time) VALUES('Lucy',23,'dev',NOW())
 EXPLAIN SELECT * FROM employees WHERE name= 'LiLei';
 ```
 
-![image-20240119173019130](./imgs/MySQL/image-20240119173019130.png)
+![image-20240119173019130](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119173019130.png)
 
 ```sql
 EXPLAIN SELECT * FROM employees WHERE name= 'LiLei' AND age = 22;
 ```
 
-![image-20240119173027745](./imgs/MySQL/image-20240119173027745.png)
+![image-20240119173027745](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119173027745.png)
 
 ```sql
 EXPLAIN SELECT * FROM employees WHERE  name= 'LiLei' AND  age = 22 AND position ='manager';
 ```
 
-![image-20240119173037638](./imgs/MySQL/image-20240119173037638.png)
+![image-20240119173037638](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119173037638.png)
 
 #### 最左前缀法则
 
@@ -1004,7 +1009,7 @@ EXPLAIN SELECT * FROM employees WHERE age = 30 AND position = 'dev';
 EXPLAIN SELECT * FROM employees WHERE position = 'manager';
 ```
 
-![image-20240119173130722](./imgs/MySQL/image-20240119173130722.png)
+![image-20240119173130722](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119173130722.png)
 
 #### 索引列上不做任何操作
 
@@ -1015,7 +1020,7 @@ EXPLAIN SELECT * FROM employees WHERE name = 'LiLei';
 EXPLAIN SELECT * FROM employees WHERE left(name,3) = 'LiLei';
 ```
 
-![image-20240119173158544](./imgs/MySQL/image-20240119173158544.png)
+![image-20240119173158544](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119173158544.png)
 
 给hire_time增加一个普通索引：
 
@@ -1024,7 +1029,7 @@ ALTER TABLE `employees` ADD INDEX `idx_hire_time` (`hire_time`) USING BTREE ;
 EXPLAIN  select * from employees where date(hire_time) ='2018-09-30';
 ```
 
-![image-20240119173217332](./imgs/MySQL/image-20240119173217332.png)
+![image-20240119173217332](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119173217332.png)
 
 转化为日期范围查询，有可能会走索引：
 
@@ -1032,7 +1037,7 @@ EXPLAIN  select * from employees where date(hire_time) ='2018-09-30';
 EXPLAIN  select * from employees where hire_time >='2018-09-30 00:00:00'  and  hire_time <='2018-09-30 23:59:59';
 ```
 
-![image-20240119173237898](./imgs/MySQL/image-20240119173237898.png)
+![image-20240119173237898](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119173237898.png)
 
 还原最初索引状态
 
@@ -1047,7 +1052,7 @@ EXPLAIN SELECT * FROM employees WHERE name= 'LiLei' AND age = 22 AND position ='
 EXPLAIN SELECT * FROM employees WHERE name= 'LiLei' AND age > 22 AND position ='manager';
 ```
 
-![image-20240119173407346](./imgs/MySQL/image-20240119173407346.png)
+![image-20240119173407346](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119173407346.png)
 
 #### 尽量使用覆盖索引
 
@@ -1057,13 +1062,13 @@ EXPLAIN SELECT * FROM employees WHERE name= 'LiLei' AND age > 22 AND position ='
 EXPLAIN SELECT name,age FROM employees WHERE name= 'LiLei' AND age = 23 AND position ='manager';
 ```
 
-![image-20240119173530046](./imgs/MySQL/image-20240119173530046.png)
+![image-20240119173530046](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119173530046.png)
 
 ```sql
 EXPLAIN SELECT * FROM employees WHERE name= 'LiLei' AND age = 23 AND position ='manager';
 ```
 
-![image-20240119173612426](./imgs/MySQL/image-20240119173612426.png)
+![image-20240119173612426](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119173612426.png)
 
 #### 使用`!=,<>,not in,not exists`会导致全表扫描
 
@@ -1071,7 +1076,7 @@ EXPLAIN SELECT * FROM employees WHERE name= 'LiLei' AND age = 23 AND position ='
 EXPLAIN SELECT * FROM employees WHERE name != 'LiLei';
 ```
 
-![image-20240119173814256](./imgs/MySQL/image-20240119173814256.png)
+![image-20240119173814256](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119173814256.png)
 
 #### `is null,is not null` 一般情况下无法使用索引
 
@@ -1079,7 +1084,7 @@ EXPLAIN SELECT * FROM employees WHERE name != 'LiLei';
 EXPLAIN SELECT * FROM employees WHERE name is null
 ```
 
-![image-20240119173910946](./imgs/MySQL/image-20240119173910946.png)
+![image-20240119173910946](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119173910946.png)
 
 #### like以通配符开头导致全表扫描
 
@@ -1087,13 +1092,13 @@ EXPLAIN SELECT * FROM employees WHERE name is null
 EXPLAIN SELECT * FROM employees WHERE name like '%Lei'
 ```
 
-![image-20240119174035356](./imgs/MySQL/image-20240119174035356.png)
+![image-20240119174035356](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119174035356.png)
 
 ```sql
 EXPLAIN SELECT * FROM employees WHERE name like 'Lei%'
 ```
 
-![image-20240119174047983](./imgs/MySQL/image-20240119174047983.png)
+![image-20240119174047983](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119174047983.png)
 
 如何解决`like'%字符串%`失效的问题？
 
@@ -1103,7 +1108,7 @@ EXPLAIN SELECT * FROM employees WHERE name like 'Lei%'
 EXPLAIN SELECT name,age,position FROM employees WHERE name like '%Lei%';
 ```
 
-![image-20240119174236395](./imgs/MySQL/image-20240119174236395.png)
+![image-20240119174236395](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119174236395.png)
 
 2. 如果不能使用覆盖索引则可能需要借助搜索引擎，如`ElasticSearch`
 
@@ -1114,7 +1119,7 @@ EXPLAIN SELECT * FROM employees WHERE name = '1000';
 EXPLAIN SELECT * FROM employees WHERE name = 1000;
 ```
 
-![image-20240119174343623](./imgs/MySQL/image-20240119174343623.png)
+![image-20240119174343623](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119174343623.png)
 
 #### 少使用or或in
 
@@ -1124,7 +1129,7 @@ EXPLAIN SELECT * FROM employees WHERE name = 1000;
 EXPLAIN SELECT * FROM employees WHERE name = 'LiLei' or name = 'HanMeimei';
 ```
 
-![image-20240119174444026](./imgs/MySQL/image-20240119174444026.png)
+![image-20240119174444026](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119174444026.png)
 
 #### 范围查询优化
 
@@ -1135,7 +1140,7 @@ ALTER TABLE `employees` ADD INDEX `idx_age` (`age`) USING BTREE ;
 explain select * from employees where age >=1 and age <=2000;
 ```
 
-![image-20240119174527127](./imgs/MySQL/image-20240119174527127.png)
+![image-20240119174527127](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119174527127.png)
 
 没走索引原因：mysql内部优化器会根据检索比例、表大小等多个因素整体评估是否使用索引。比如这个例子，可能是由于单次数据量查询过大导致优化器最终选择不走索引
 
@@ -1146,7 +1151,7 @@ explain select * from employees where age >=1 and age <=1000;
 explain select * from employees where age >=1001 and age <=2000;
 ```
 
-![image-20240119174553731](./imgs/MySQL/image-20240119174553731.png)
+![image-20240119174553731](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119174553731.png)
 
 还原最初索引状态
 
@@ -1156,7 +1161,7 @@ ALTER TABLE `employees` DROP INDEX `idx_age`;
 
 #### 索引使用总结
 
-![image-20240119174623484](./imgs/MySQL/image-20240119174623484.png)
+![image-20240119174623484](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240119174623484.png)
 
 > `like KK%`相当于=常量，`%KK,%KK%` 相当于范围
 
@@ -1198,17 +1203,17 @@ SELECT * FROM information_schema.OPTIMIZER_TRACE;
 
 可以看见全表扫描的成本：**2.85**
 
-![image-20240122170500210](./imgs/MySQL/image-20240122170500210.png)
+![image-20240122170500210](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240122170500210.png)
 
 - 使用索引`idx_order_no`的成本为：**1.81**
 
 - 使用索引`idx_expire_time`的成本为：**2.01**
 
-![image-20240122170810730](./imgs/MySQL/image-20240122170810730.png)
+![image-20240122170810730](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240122170810730.png)
 
 最终MySQL使用了`idx_expire_no`作为这个SQL查询过程中索引：
 
-![image-20240122171050487](./imgs/MySQL/image-20240122171050487.png)
+![image-20240122171050487](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240122171050487.png)
 
 1. **I/O成本**
 
@@ -1266,7 +1271,7 @@ EXPLAIN SELECT * FROM employees WHERE name > 'LiLei' AND age = 22 AND position =
 
 ![0](https://note.youdao.com/yws/public/resource/d2e8a0ae8c9dc2a45c799b771a5899f6/xmlnote/8B6932DA0FCA46D0A473192F7832275B/98405.png)
 
-![0](./imgs/MySQL/98405.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98405.png)
 
 > 联合索引第一个字段就用范围查找不会走索引，mysql内部可能觉得第一个字段就用范围，结果集应该很大，回表效率不高，还不如就全表扫描
 
@@ -1276,7 +1281,7 @@ EXPLAIN SELECT * FROM employees WHERE name > 'LiLei' AND age = 22 AND position =
 EXPLAIN SELECT * FROM employees force index(idx_name_age_position) WHERE name > 'LiLei' AND age = 22 AND position ='manager'; 
 ```
 
-![0](./imgs/MySQL/98401.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98401.png)
 
 > 虽然使用了强制走索引让联合索引第一个字段范围查找也走索引，扫描的行rows看上去也少了点，但是最终查找效率不一定比全表扫描高，因为回表效率不高
 
@@ -1298,7 +1303,7 @@ SELECT * FROM employees force index(idx_name_age_position) WHERE name > 'LiLei';
 EXPLAIN SELECT name,age,position FROM employees WHERE name > 'LiLei' AND age = 22 AND position ='manager';
 ```
 
-![0](./imgs/MySQL/98402.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98402.png)
 
 **4、in和or在表数据量比较大的情况会走索引，在表记录不多的情况下会选择全表扫描**
 
@@ -1306,13 +1311,13 @@ EXPLAIN SELECT name,age,position FROM employees WHERE name > 'LiLei' AND age = 2
 EXPLAIN SELECT * FROM employees WHERE name in ('LiLei','HanMeimei','Lucy') AND age = 22 AND position ='manager';
 ```
 
-![img](./imgs/MySQL/98400-170547754227750.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98400-170547754227750.png)
 
 ```sql
 EXPLAIN SELECT * FROM employees WHERE (name = 'LiLei' or name = 'HanMeimei') AND age = 22 AND position ='manager';
 ```
 
-![0](./imgs/MySQL/98400.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98400.png)
 
 做一个小实验，将employees 表复制一张employees_copy的表，里面保留两三条记录
 
@@ -1320,13 +1325,13 @@ EXPLAIN SELECT * FROM employees WHERE (name = 'LiLei' or name = 'HanMeimei') AND
  EXPLAIN SELECT * FROM employees_copy WHERE name in ('LiLei','HanMeimei','Lucy') AND age = 22 AND position ='manager';
  ```
 
-![0](./imgs/MySQL/98406.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98406.png)
 
 ```sql
 EXPLAIN SELECT * FROM employees_copy WHERE (name = 'LiLei' or name = 'HanMeimei') AND age = 22 AND position ='manager';
 ```
 
-![0](./imgs/MySQL/98408.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98408.png)
 
 **5、like KK% 一般情况都会走索引**
 
@@ -1334,13 +1339,13 @@ EXPLAIN SELECT * FROM employees_copy WHERE (name = 'LiLei' or name = 'HanMeimei'
 EXPLAIN SELECT * FROM employees WHERE name like 'LiLei%' AND age = 22 AND position ='manager';
 ```
 
-![0](./imgs/MySQL/98404.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98404.png)
 
 ```sql
 EXPLAIN SELECT * FROM employees_copy WHERE name like 'LiLei%' AND age = 22 AND position ='manager'; 
 ```
 
-![0](./imgs/MySQL/98407.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98407.png)
 
 这里补充一个概念，**索引下推（Index Condition Pushdown，ICP）**, `like KK%`其实就是用到了索引下推优化
 
@@ -1370,7 +1375,7 @@ MySQL 5.6引入了索引下推优化，**可以在索引遍历过程中，对索
 EXPLAIN select * from employees where name > 'a';
 ```
 
-![0](./imgs/MySQL/75942.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/75942.png)
 
 如果用name索引需要遍历name字段联合索引树，然后还需要根据遍历出来的主键值去主键索引树里再去查出最终数据，成本比全表扫描还高，可以用覆盖索引优化，这样只需要遍历name字段的联合索引树就能拿到所有结果，如下：
 
@@ -1378,13 +1383,13 @@ EXPLAIN select * from employees where name > 'a';
 EXPLAIN select name,age,position from employees where name > 'a' ;
 ```
 
-![0](./imgs/MySQL/75945.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/75945.png)
 
 ```sql
 EXPLAIN select * from employees where name > 'zzz' ;
 ```
 
-![0](./imgs/MySQL/75948.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/75948.png)
 
 对于上面这两种 `name>'a'` 和 `name>'zzz'` 的执行结果，mysql最终是否选择走索引或者一张表涉及多个索引，mysql最终如何选择索引，我们可以用**trace工具**来一查究竟，开启trace工具会影响mysql性能，所以只能临时分析sql使用，用完之后立即关闭
 
@@ -1611,53 +1616,53 @@ set session optimizer_trace="enabled=off";    --关闭trace
 
 Case1：
 
-![0](./imgs/MySQL/75983.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/75983.png)
 
 > 利用最左前缀法则：中间字段不能断，因此查询用到了name索引，从key_len=74也能看出，age索引列用在排序过程中，因为Extra字段里没有using filesort
 
 Case 2：
 
-![0](./imgs/MySQL/75979.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/75979.png)
 
 > 从explain的执行结果来看：key_len=74，查询使用了name索引，由于用了position进行排序，跳过了age，出现了Using filesort。
 
 Case 3：
 
-![0](./imgs/MySQL/75993.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/75993.png)
 
 > 查找只用到索引name，age和position用于排序，无Using filesort。
 
 Case 4：
 
-![0](./imgs/MySQL/76003.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/76003.png)
 
 > 和Case 3中explain的执行结果一样，但是出现了Using filesort，因为索引的创建顺序为name,age,position，但是排序的时候age和position颠倒位置了。
 
 Case 5：
 
-![0](./imgs/MySQL/76025.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/76025.png)
 
 > 与Case 4对比，在Extra中并未出现Using filesort，因为age为常量，在排序中被优化，所以索引未颠倒，不会出现Using filesort。
 
 Case 6：
 
-![0](./imgs/MySQL/76038.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/76038.png)
 
 > 虽然排序的字段列与索引顺序一样，且order by默认升序，这里position desc变成了降序，导致与索引的排序方式不同，从而产生Using filesort。Mysql8以上版本有降序索引可以支持该种查询方式。
 
 Case 7：
 
-![0](./imgs/MySQL/76049.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/76049.png)
 
 > 对于排序来说，多个相等条件也是范围查询
 
 Case 8：
 
-![0](./imgs/MySQL/76074.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/76074.png)
 
 > 可以用覆盖索引优化
 
-![0](./imgs/MySQL/76079.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/76079.png)
 
 **优化总结：**
 
@@ -1712,7 +1717,7 @@ select * from employees limit 10000,10;
 select * from employees limit 90000,5;
 ```
 
-![0](./imgs/MySQL/100109.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100109.png)
 
 该 SQL 表示查询从第 90001开始的五行数据，没添加单独 order by，表示通过**主键排序**。我们再看表 employees ，因为主键是自增并且连续的，所以可以改写成按照主键去查询从第 90001开始的五行数据，如下：
 
@@ -1720,7 +1725,7 @@ select * from employees limit 90000,5;
 select * from employees where id > 90000 limit 5;
 ```
 
-![0](./imgs/MySQL/100108.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100108.png)
 
 查询的结果是一致的。我们再对比一下执行计划：
 
@@ -1728,21 +1733,21 @@ select * from employees where id > 90000 limit 5;
 EXPLAIN select * from employees limit 90000,5;
 ```
 
-![0](./imgs/MySQL/100117.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100117.png)
 
 ```sql
 EXPLAIN select * from employees where id > 90000 limit 5;
 ```
 
-![0](./imgs/MySQL/100113.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100113.png)
 
 显然改写后的 SQL 走了索引，而且扫描的行数大大减少，执行效率更高。 
 
 但是，这条改写的SQL 在很多场景并不实用，因为表中可能某些记录被删后，主键空缺，导致结果不一致，如下图试验所示（先删除一条前面的记录，然后再测试原 SQL 和优化后的 SQL）：
 
-![0](./imgs/MySQL/100105.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100105.png)
 
-![0](./imgs/MySQL/100103.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100103.png)
 
 两条 SQL 的结果并不一样，因此，如果主键不连续，不能使用上面描述的优化方法。
 
@@ -1759,13 +1764,13 @@ EXPLAIN select * from employees where id > 90000 limit 5;
 select * from employees ORDER BY name limit 90000,5;
 ```
 
-![0](./imgs/MySQL/100110.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100110.png)
 
 ```mysql
 EXPLAIN select * from employees ORDER BY name limit 90000,5;
 ```
 
-![0](./imgs/MySQL/100107.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100107.png)
 
 发现并没有使用 name 字段的索引（key 字段对应的值为 null），具体原因上节课讲过：**扫描整个索引并查找到没索引的行(可能要遍历多个索引树)的成本比扫描全表的成本更高，所以优化器放弃使用索引**。
 
@@ -1777,11 +1782,11 @@ EXPLAIN select * from employees ORDER BY name limit 90000,5;
 select * from employees e inner join (select id from employees order by name limit 90000,5) ed on e.id = ed.id;
 ```
 
-![0](./imgs/MySQL/100106.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100106.png)
 
 需要的结果与原 SQL 一致，执行时间减少了一半以上，我们再对比优化前后sql的执行计划：
 
-![0](./imgs/MySQL/100104.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100104.png)
 
 原 SQL 使用的是 filesort 排序，而优化后的 SQL 使用的是索引排序。
 
@@ -1845,7 +1850,7 @@ call insert_t2();
 EXPLAIN select * from t1 inner join t2 on t1.a= t2.a;
 ```
 
-![0](./imgs/MySQL/100112.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100112.png)
 
 从执行计划中可以看到这些信息：
 
@@ -1872,7 +1877,7 @@ EXPLAIN select * from t1 inner join t2 on t1.a= t2.a;
 EXPLAIN select * from t1 inner join t2 on t1.b= t2.b;
 ```
 
-![0](./imgs/MySQL/100111.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100111.png)
 
 Extra 中 的Using join buffer (Block Nested Loop)说明该关联查询使用的是 BNL 算法。
 
@@ -1966,7 +1971,7 @@ EXPLAIN select count(*) from employees;
 
 > 注意：以上4条sql只有根据某个字段count不会统计字段为null值的数据行
 
-![0](./imgs/MySQL/100116.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100116.png)
 
 **四个sql的执行计划一样，说明这四个sql执行效率应该差不多**
 
@@ -1986,7 +1991,7 @@ EXPLAIN select count(*) from employees;
 
 对于**myisam存储引擎**的表做不带where条件的`count查询`性能是很高的，因为myisam存储引擎的表的总行数会被mysql存储在磁盘上，查询不需要计算
 
-![0](./imgs/MySQL/100114.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100114.png)
 
 对于**innodb存储引擎**的表mysql不会存储表的总记录行数**(因为有MVCC机制)**，`count查询`需要实时计算
 
@@ -1994,7 +1999,7 @@ EXPLAIN select count(*) from employees;
 
 如果只需要知道表总行数的估计值可以用如下sql查询，性能很高
 
-![0](./imgs/MySQL/100115.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100115.png)
 
 **3、将总数维护到Redis里**
 
@@ -2018,7 +2023,7 @@ MySQL 通过比较系统变量 `max_length_for_sort_data`(**默认1024字节**) 
 
 **示例验证下各种排序方式：**
 
-![0](./imgs/MySQL/76138.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/76138.png)
 
 查看下这条sql对应trace结果如下(只展示排序部分)：
 
@@ -2387,7 +2392,7 @@ select xx from user where sex = 'female'  order by score limit xx,xx
 
 以上就是给大家讲的一些索引设计的思路了，核心思想就是，尽量利用一两个复杂的多字段联合索引，抗下你80%以上的查询，然后用一两个辅助索引尽量抗下剩余的一些非典型查询，保证这种大数据量表的查询尽可能多的都能充分利用索引，这样就能保证你的查询速度和性能了！
 
-![img](./imgs/MySQL/127322-17056503928981.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/127322-17056503928981.png)
 
 ## MySQL事务与锁机制
 
@@ -2522,13 +2527,13 @@ unlock tables;
 
 **案例分析(加读锁）**
 
-![img](./imgs/MySQL/98805-17057216865341.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98805-17057216865341.png)
 
 当前session和其他session都可以读该表，当前session中插入或者更新锁定的表都会报错，其他session插入或更新则会等待。
 
 **案例分析(加写锁）**
 
-![0](./imgs/MySQL/98803.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98803.png)
 
 当前session对该表的增删改查都没有问题，其他session对该表的所有操作被阻塞
 
@@ -2579,19 +2584,19 @@ INSERT INTO `test`.`account` (`name`, `balance`) VALUES ('lucy', '2400');
 set tx_isolation='read-uncommitted';              
 ```
 
-![0](./imgs/MySQL/98804.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98804.png)
 
 2. 在客户端A的事务提交之前，打开另一个客户端B，更新表account：
 
-![0](./imgs/MySQL/98791.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98791.png)
 
 3. 这时，虽然客户端B的事务还没提交，但是客户端A就可以查询到B已经更新的数据： 
 
-![0](./imgs/MySQL/98792.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98792.png)
 
 4. 一旦客户端B的事务因为某种原因回滚，所有的操作都将会被撤销，那客户端A查询到的数据其实就是**脏数据**： 
 
-![0](./imgs/MySQL/98794.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98794.png)
 
 5. 在客户端A执行更新语句
 
@@ -2601,7 +2606,7 @@ update account set balance = balance - 50 where id =1
 
 lilei的balance没有变成350，居然是400，是不是很奇怪，数据不一致啊，如果你这么想就太天真 了，在应用程序中，我们会用400-50=350，并不知道其他会话回滚了，要想解决这个问题可以采用读已提交的隔离级别
 
-![0](./imgs/MySQL/98790.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98790.png)
 
 ##### 读已提交
 
@@ -2611,23 +2616,23 @@ lilei的balance没有变成350，居然是400，是不是很奇怪，数据不�
 set tx_isolation='read-committed';
 ```
 
-![0](./imgs/MySQL/98796.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98796.png)
 
 2. 在客户端A的事务提交之前，打开另一个客户端B，更新表account： 
 
-![0](./imgs/MySQL/98795.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98795.png)
 
 3. 这时，客户端B的事务还没提交，客户端A不能查询到B已经更新的数据，解决了脏读问题： 
 
-![0](./imgs/MySQL/98799.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98799.png)
 
 4. 客户端B的事务提交
 
-![0](./imgs/MySQL/98797.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98797.png)
 
 5. 客户端A执行与上一步相同的查询，结果与上一步不一致，即产生了不可重复读的问题
 
-![0](./imgs/MySQL/98798.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98798.png)
 
 ##### 可重复读
 
@@ -2637,15 +2642,15 @@ set tx_isolation='read-committed';
 set tx_isolation='repeatable-read';
 ```
 
-![0](./imgs/MySQL/98800.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98800.png)
 
 2. 在客户端A的事务提交之前，打开另一个客户端B，更新表account并提交
 
-![0](./imgs/MySQL/98789.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98789.png)
 
 3. 在客户端A查询表account的所有记录，与步骤1 查询结果一致，没有出现不可重复读的问题
 
-![0](./imgs/MySQL/98793.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98793.png)
 
 4. 在客户端A，接着执行
 
@@ -2655,15 +2660,15 @@ update account set balance = balance - 50 where id = 1
 
 balance没有变成400-50=350，lilei的balance值用的是步骤2中的350来算的，所以是300，数据的一致性倒是没有被破坏。可重复读的隔离级别下使用了**MVCC(multi-version concurrency control)**机制，`select`操作不会更新版本号，是快照读（历史版本）；`insert、update、delete`会更新版本号，是当前读（当前版本）。
 
-![0](./imgs/MySQL/98787.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98787.png)
 
 5. 重新打开客户端B，插入一条新数据后提交
 
-![0](./imgs/MySQL/98788.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98788.png)
 
 6. 在客户端A查询表account的所有记录，没有查出新增数据，所以没有出现幻读
 
-![0](./imgs/MySQL/98802.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98802.png)
 
 7. 验证幻读
 
@@ -2675,7 +2680,7 @@ update account set balance=888 where id = 4;
 
 能更新成功，再次查询能查到客户端B新增的数据
 
-![0](./imgs/MySQL/98801.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98801.png)
 
 ##### 串行化
 
@@ -2685,7 +2690,7 @@ update account set balance=888 where id = 4;
 set tx_isolation='**serializable**';
 ```
 
-![0](./imgs/MySQL/98830.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98830.png)
 
 2. 打开一个客户端B，并设置当前事务模式为`serializable`，更新相同的id为1 的记录会被阻塞等待，更新id为2的记录可以成功，说明在串行模式下`innodb`的查询也会被加上行锁。
 
@@ -2693,7 +2698,7 @@ set tx_isolation='**serializable**';
 
 这种隔离级别并发性极低，开发中很少会用到。  
 
-![0](./imgs/MySQL/98844.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98844.png)
 
 ##### 间隙锁(Gap Lock)
 
@@ -2701,7 +2706,7 @@ set tx_isolation='**serializable**';
 
 假设account表里数据如下：
 
-![0](./imgs/MySQL/98874.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/98874.png)
 
 那么间隙就有 id 为 `(3,10)，(10,20)，(20,正无穷)` 这三个区间，
 
@@ -2829,7 +2834,7 @@ MySQL在读已提交和可重复读隔离级别下都实现了MVCC机制。
 
 **undo日志版本链**是指一行数据被多个事务依次修改过后，在每个事务修改完后，MySQL会保留修改前的数据**undo回滚日志**，并且用两个隐藏字段`trx_id`和`roll_pointer`把这些undo日志串联起来形成一个历史记录版本链
 
-![0](./imgs/MySQL/99285.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/99285.png)
 
 在**可重复读隔离级别**，当事务开启，执行任何查询sql时会生成当前事务的**一致性视图read-view，**该视图在事务结束之前都不会变化(**如果是读已提交隔离级别在每次执行查询sql时都会重新生成**)，这个视图由执行查询时所有未提交事务id数组（数组里最小的id为`min_id`）和已创建的最大事务id（`max_id`）组成，事务里的任何sql查询结果需要从对应版本链里的最新数据开始逐条跟`read-view`做比对从而得到最终的快照结果。
 
@@ -2851,7 +2856,7 @@ MySQL在读已提交和可重复读隔离级别下都实现了MVCC机制。
 
 **实例分析**
 
-![image-20240122111555523](./imgs/MySQL/image-20240122111555523.png)
+![image-20240122111555523](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240122111555523.png)
 
 **总结：**
 
@@ -2859,7 +2864,7 @@ MySQL在读已提交和可重复读隔离级别下都实现了MVCC机制。
 
 ### Innodb的BufferPool缓存机制
 
-![0](./imgs/MySQL/99001.png)
+![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/99001.png)
 
 **为什么Mysql不能直接更新磁盘上的数据而且设置这么一套复杂的机制来执行SQL？**
 
@@ -2888,7 +2893,7 @@ CREATE TABLE 表名 (列的信息) ROW_FORMAT=行格式名称
 
 `Compact`行格式：记录头信息，由固定的 5 个字节组成
 
-![image-20240123101443393](./imgs/MySQL/image-20240123101443393.png)
+![image-20240123101443393](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240123101443393.png)
 
 | 字段名            | 长度 | 描述                                                         |
 | ----------------- | ---- | ------------------------------------------------------------ |
@@ -2923,7 +2928,7 @@ InnoDB 表对主键的生成策略是
 
  InnoDB 管理存储空间的基本单位是页，一 个页的大小一般是 16KB。
 
-![image-20240123103756125](./imgs/MySQL/image-20240123103756125.png)
+![image-20240123103756125](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240123103756125.png)
 
 | 块类型             | 长度   | 描述                                   |
 | ------------------ | ------ | -------------------------------------- |
@@ -2947,7 +2952,7 @@ InnoDB 表对主键的生成策略是
 
 **Page Directory**
 
-![image-20240123104854014](./imgs/MySQL/image-20240123104854014.png)
+![image-20240123104854014](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240123104854014.png)
 
 `Page Directory` 主要是解决记录链表的查找问题。
 
@@ -2958,15 +2963,15 @@ InnoDB 表对主键的生成策略是
 
 ###  InnoDB的体系结构
 
-![image-20240123105510491](./imgs/MySQL/image-20240123105510491.png)
+![image-20240123105510491](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240123105510491.png)
 
 简化图
 
-![image-20240123105622217](./imgs/MySQL/image-20240123105622217.png)
+![image-20240123105622217](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240123105622217.png)
 
 ### InnoDB 的表空间
 
-![image-20240123105809510](./imgs/MySQL/image-20240123105809510.png)
+![image-20240123105809510](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240123105809510.png)
 
 
 
@@ -2997,7 +3002,7 @@ show engine innodb status；
 
 `Buffer Pool`中默认的缓存页大小和在磁盘上默认的页大小是一样的，都是16KB。
 
-![image-20240123111011316](./imgs/MySQL/image-20240123111011316.png)
+![image-20240123111011316](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240123111011316.png)
 
 对于free 链表中已经没有多余的空闲缓存页的情况，需要把某些旧的缓存页从 `Buffer Pool` 中移除，然后再把新的页放进来
 
@@ -3008,7 +3013,7 @@ InnoDB 把这个 **LRU** 链表按照一定比例分成两截，分别是：
 1.  一部分存储使用频率非常高的缓存页，所以这一部分链表也叫做热数据，或 者称 young 区域，褐色部分。 
 2. 另一部分存储使用频率不是很高的缓存页，所以这一部分链表也叫做冷数据， 或者称 old 区域，绿色部分，占比37%。
 
-![image-20240123112258867](./imgs/MySQL/image-20240123112258867.png)
+![image-20240123112258867](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240123112258867.png)
 
 **多个 Buffer Pool 实例**
 
@@ -3026,7 +3031,7 @@ show variables like 'innodb_buffer_pool_instances';
 
 把所有空闲的缓存页对应的控制 块作为一个节点放到一个链表中，这个链表被称作 free 链表。
 
-![image-20240123111307687](./imgs/MySQL/image-20240123111307687.png)
+![image-20240123111307687](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240123111307687.png)
 
 用表空间号 + 页号作为 key，缓存页作为 value 创建一个**哈希表**，用来判断页是否在`Buffer Pool`中。
 
@@ -3036,7 +3041,7 @@ show variables like 'innodb_buffer_pool_instances';
 
 MySQL对脏页的处理是：每次修改缓存页后，并不会立即把修改同步到磁盘上，而是在未来的某个时间点进行同步。 这个时候需要创建一个存储脏页的链表，凡是修改过的缓存页对应的控制块都会作为一个节点加入到一个链表中。这就是 flush 链表。
 
-![image-20240123111904428](./imgs/MySQL/image-20240123111904428.png)
+![image-20240123111904428](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240123111904428.png)
 
 **刷新脏页到磁盘**
 
@@ -3084,7 +3089,7 @@ MySQL对脏页的处理是：每次修改缓存页后，并不会立即把修改
 
 **redo 日志格式**
 
-![image-20240123150344630](./imgs/MySQL/image-20240123150344630.png)
+![image-20240123150344630](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240123150344630.png)
 
 type：该条 redo 日志的类型，redo 日志设计大约有 53 种不同的类型日志。 
 
@@ -3141,7 +3146,7 @@ InnoDB 为了更好的进行系统崩溃恢复，把 redo 日志都放在了大�
 
 MySQL 的事务主要主要是通过 `Redo Log` 和 `Undo Log` 实现的。 MySQL 事务执行流程如下图
 
-![image-20240123152901105](./imgs/MySQL/image-20240123152901105.png)
+![image-20240123152901105](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240123152901105.png)
 
 可以看出，MySQL 在事务执行的过程中，会记录相应 SQL 语句的 `UndoLog` 和 `Redo Log`，然后在内存中更新数据并形成数据脏页。接下来 `RedoLog` 会根据一定规则触发刷盘操作，`Undo Log` 和数据脏页则通过刷盘机制刷盘。事务提交时， 会将当前事务相关的所有 `Redo Log` 刷盘，只有当前事务相关的所有 `Redo Log` 刷 盘成功，事务才算提交成功。
 
@@ -3149,7 +3154,7 @@ MySQL 的事务主要主要是通过 `Redo Log` 和 `Undo Log` 实现的。 MySQ
 
 如果一切正常，则 MySQL 事务会按照上图中的顺序执行。如果 MySQL 由于某种原因崩溃或者宕机，当然进行数据的恢复或者回滚操作。 如果事务在执行第 8 步,即事务提交之前，MySQL 崩溃或者宕机，此时会先使用 `Redo Log` 恢复数据，然后使用 `Undo Log` 回滚数据。 如果在执行第8步之后MySQL崩溃或者宕机，此时会使用`Redo Log`恢复数据， 大体流程如下图所示。
 
-![image-20240123152930717](./imgs/MySQL/image-20240123152930717.png)
+![image-20240123152930717](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240123152930717.png)
 
 很明显，MySQL 崩溃恢复后，首先会获取日志检查点信息，随后根据日志检查点信息使用 `Redo Log` 进行恢复。MySQL 崩溃或者宕机时事务未提交，则接下来使用 `Undo Log` 回滚数据。如果在 MySQL 崩溃或者宕机时事务已经提交，则用 `Redo Log` 恢复数据即可。
 

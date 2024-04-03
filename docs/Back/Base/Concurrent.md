@@ -1,3 +1,8 @@
+---
+title: Concurrent
+date: 2024-03-05 10:54:54
+permalink: /pages/7419ce/
+---
 # Java并发
 
 [并发导图](https://www.processon.com/view/link/615d4a610e3e74663e97fa0e.png)
@@ -42,7 +47,7 @@
 
 但 Intel 引入超线程技术后，产生了逻辑处理器的概念，使核心数与线程数形成 1:2 的关系。可以从 Windows 看到，内核数是 14 而逻辑处理器数是 20。
 
-![image-20240311141417726](./imgs/Concurrent/image-20240311141417726.png)
+![image-20240311141417726](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240311141417726.png)
 
 在 Java 中提供了 `Runtime.getRuntime().availableProcessors()`，可以获取当前的 CPU 核心数， 注意这个核心数指的是逻辑处理器数。
 
@@ -239,7 +244,7 @@ Java 中线程的状态分为 6 种：
 
 状态之间的变迁图如下
 
-![image-20240311154147683](./imgs/Concurrent/image-20240311154147683.png)
+![image-20240311154147683](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240311154147683.png)
 
 **线程的优先级**
 
@@ -434,7 +439,7 @@ Java线程之间的通信由Java内存模型（`Java Memory Model`，简称`JMM`
 
 根据JMM的规定，**线程对共享变量的所有操作都必须在自己的本地内存中进行，不能直接从主内存中读取**。
 
-![img](./imgs/Concurrent/64428.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/64428.png)
 
 从图中看，线程A和线程B之间要通信的话，必须经历以下两个步骤：
 
@@ -459,7 +464,7 @@ Java线程之间的通信由Java内存模型（`Java Memory Model`，简称`JMM`
 - store（存储）：作用于工作内存的变量，把工作内存中的一个变量的值传送到主内存中，以便随后的write的操作。
 - write（写入）：作用于主内存的变量，它把store操作从工作内存中得到的变量的值放入主内存的变量中。
 
-![img](./imgs/Concurrent/64516.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/64516.png)
 
 Java内存模型还规定了在执行上述八种基本操作时，必须满足如下规则：
 
@@ -477,7 +482,7 @@ Java内存模型还规定了在执行上述八种基本操作时，必须满足�
 
 **主内存和工作内存的交互过程**
 
-![img](./imgs/Concurrent/66690.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/66690.png)
 
 Java中可见性底层有两种实现：
 
@@ -501,7 +506,7 @@ Java中可见性底层有两种实现：
 
 **volatile禁止重排序规则**：为了实现`volatile`的内存语义，**`JMM`会限制编译器重排序**，JMM针对编译器制定了`volatile`重排序规则表。
 
-![img](./imgs/Concurrent/64566.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/64566.png)
 
 由表中可以看出，**volatile禁止重排序场景**：
 
@@ -565,7 +570,7 @@ A 线程正在 `syn` 同步块中执行`single = new Single();`，此时 B 线�
 
 上述内存屏障的插入策略非常保守，但它可以保证在任意处理器平台，任意程序中都能得到正确的`volatile`内存语义。
 
-![img](./imgs/Concurrent/64594.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/64594.png)
 
 由于不同的处理器有不同的松紧度的处理器内存模型，内存屏障的插入还可以根据具体的处理器内存模型继续优化。以x86处理器为例，x86不会对读-读、读-写、写-写操作做重排序，因此在x86处理器中会省略这3类操作对应的内存屏障，**仅会对写-读操作做重排序**。
 
@@ -712,7 +717,7 @@ public class Test1 {
 
 3. 条件满足则执行对应的逻辑。
 
-![image-20240311172728297](./imgs/Concurrent/image-20240311172728297.png)
+![image-20240311172728297](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240311172728297.png)
 
 通知方遵循如下原则。
 
@@ -722,7 +727,7 @@ public class Test1 {
 
 3. 通知所有等待在对象上的线程。
 
-![image-20240311172745935](./imgs/Concurrent/image-20240311172745935.png)
+![image-20240311172745935](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240311172745935.png)
 
 在调用 `wait()、notify()`方法之前，线程必须要获得该对象的对象级别锁，即只能在同步方法或同步块中调用 `wait() 、notify()`方法，进入`wait()`方法后，当前线程释放锁，在从`wait()`返回前，线程与其他线程竞争重新获得锁，如果其中一个线程获得了该对象锁，它就会继续往下执行，在它退出 `synchronized` 代码块，释放锁后，其他的已经被唤醒的线程将会继续竞争获取该锁，一直进行下去，直到所有被唤醒的线程都执行完毕。
 
@@ -787,7 +792,7 @@ count--
 
 这个时候消费者刚决定睡觉，还没睡，所以这个通知就会被丢掉。紧接着，消费者就睡过去了。这就是**lost wake up  问题**。
 
-![image-20240311174357527](./imgs/Concurrent/image-20240311174357527.png)
+![image-20240311174357527](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240311174357527.png)
 
 **解决方案**
 
@@ -917,7 +922,7 @@ public class FutureTest {
 
 - **创建异步任务**
 
-![image-20240311182237884](./imgs/Concurrent/image-20240311182237884.png)
+![image-20240311182237884](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240311182237884.png)
 
 1. `supplyAsync`执行`CompletableFuture`任务，支持返回值
 
@@ -965,7 +970,7 @@ supply666
 
 - **任务异步回调**
 
-![image-20240311182223754](./imgs/Concurrent/image-20240311182223754.png)
+![image-20240311182223754](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240311182223754.png)
 
 1. `thenRun/thenRunAsync`：**做完第一个任务后，再做第二个任务**。某个任务执行完成后，执行回调方法；但是前后两个任务**没有参数传递，第二个任务也没有返回值**
 
@@ -1180,7 +1185,7 @@ aaa
 
 - **多个任务组合处理**
 
-![image-20240311182200264](./imgs/Concurrent/image-20240311182200264.png)
+![image-20240311182200264](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240311182200264.png)
 
 1. AND组合关系
 
@@ -1306,11 +1311,11 @@ CompletableFuture.get(5, TimeUnit.SECONDS);
 
 **场景一**
 
-![img](./imgs/Concurrent/64917.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/64917.png)
 
 **场景二**
 
-![img](./imgs/Concurrent/64922.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/64922.png)
 
 在CPU多核缓存架构中，每个处理器都有一个单独的缓存，共享数据可能有多个副本：一个副本在主内存中，一个副本在请求它的每个处理器的本地缓存中。当数据的一个副本发生更改时，其他副本必须反映该更改。**CPU多核缓存架构要保证缓存一致性**。
 
@@ -1405,7 +1410,7 @@ CompletableFuture.get(5, TimeUnit.SECONDS);
 
 因为每个线程所拥有的变量的副本数是不定的，所以线程内部存放变量副本需要一个容器，而且容器要支持快速存取，这就可以在每个线程内部设置一个 Map 来支持多个变量副本，这个 Map 被称为`ThreadLocalMap`。
 
-![img](./imgs/Concurrent/6446.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/6446.png)
 
 ```java
 public class Test2 {
@@ -1507,7 +1512,7 @@ public class ThreadLocalMemoryLeak {
 
 因此使用了 `ThreadLocal` 后，引用链如图所示，图中的虚线表示弱引用。
 
-![img](./imgs/Concurrent/6461.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/6461.png)
 
 这样，当把 `Threadlocal` 变量置为 `null` 以后，没有任何强引用指向 `Threadlocal` 实例，所以 `Threadlocal` 将会被 `GC` 回收。这样一来，`ThreadLocalMap` 中就会出现 key 为 `null` 的 `Entry`，就没有办法访问访问到这些 key 对应的 value，如果当前一直不结束的话，这些 key 为 `null` 的 `Entry` 的 value 就会一直存在一条**强引用链**（`Thread Ref -> Thread -> ThreaLocalMap -> Entry -> value`），而这些 value 永远不会被访问到，所以存在着**内存泄露**。
 
@@ -1812,7 +1817,7 @@ JDK1.8 时，Java提供了一个新的原子类：`LongAdder`。根据 Oracle �
 
 **MESA模型**
 
-![img](./imgs/Concurrent/65523.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/65523.png)
 
 管程中引入了条件变量的概念，而且每个条件变量都对应有一个等待队列。条件变量和等待队列的作用是解决线程之间的同步问题。
 
@@ -1888,7 +1893,7 @@ AQS 依赖`CLH`同步队列来完成同步状态的管理：
 - 当同步状态释放时，会把首节点唤醒（公平锁），使其再次尝试获取同步状态。
 - 通过`signal`或`signalAll`将条件队列中的节点转移到同步队列。（由条件队列转化为同步队列）
 
-![img](./imgs/Concurrent/62905.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/62905.png)
 
 #### 条件等待队列
 
@@ -1920,7 +1925,7 @@ public class ReentrantLockTest {
 
 `ReentrantLock`源码分析流程
 
-![image-20240313152337401](./imgs/Concurrent/image-20240313152337401.png)
+![image-20240313152337401](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240313152337401.png)
 
 ## 读写锁
 
@@ -2099,7 +2104,7 @@ public void processData() {
 
 #### 读写锁设计思路
 
-![img](./imgs/Concurrent/62887.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/62887.png)
 
 **读写状态的设计**
 
@@ -2116,7 +2121,7 @@ public void processData() {
 
 代码实现：`java.util.concurrent.locks.ReentrantReadWriteLock.Sync`
 
-![img](./imgs/Concurrent/62889.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/62889.png)
 
 - `exclusiveCount(int c)`：获得持有写状态的锁的次数；
 - `sharedCount(int c) `：获得持有读状态的锁的数量。不同于写锁，读锁可以同时被多个线程持有。而每个线程持有的读锁支持重入的特性，所以需要对每个线程持有的读锁的数量单独计数，这就需要用到 `HoldCounter` 计数器。
@@ -2130,7 +2135,7 @@ public void processData() {
 
 只有当线程获取共享锁后才能对共享锁进行释放、重入操作。
 
-![img](./imgs/Concurrent/62890.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/62890.png)
 
 通过 `ThreadLocalHoldCounter` 类，`HoldCounter`与线程进行绑定。`HoldCounter` 是绑定线程的一个计数器，而 `ThreadLocalHoldCounter` 则是线程绑定的 `ThreadLocal`。
 
@@ -2278,7 +2283,7 @@ class Point {
 }
 ```
 
-![img](./imgs/Concurrent/65554.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/65554.png)
 
 **在缓存中的应用**
 
@@ -2384,7 +2389,7 @@ Java的集合容器框架中，主要有四大类别：`List、Set、Queue、Map
 
 因此为了解决同步容器的性能问题。`java.util.concurrent`包中提供了多种并发类容器：
 
-![img](./imgs/Concurrent/65679.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/65679.png)
 
 **CopyOnWriteArrayList**
 
@@ -2516,13 +2521,13 @@ public class CopyOnWriteArrayListDemo {
 }
 ```
 
-![img](./imgs/Concurrent/65778.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/65778.png)
 
 #### 实现原理
 
 `CopyOnWriteArrayList`内部使用了一种称为**“写时复制”**的机制。**当需要进行写操作时，它会创建一个新的数组，并将原始数组的内容复制到新数组中，然后进行写操作**。因此，读操作不会被写操作阻塞，读操作返回的结果可能不是最新的，但是对于许多应用场景来说，这是可以接受的。此外，由于读操作不需要加锁，因此它可以支持更高的并发度。
 
-![img](./imgs/Concurrent/64355.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/64355.png)
 
 **`CopyOnWriteArrayList` 的缺陷**
 
@@ -2630,19 +2635,19 @@ public class ConcurrentHashMapDemo {
 
 `HashTable`结构
 
-![img](./imgs/Concurrent/64121.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/64121.png)
 
 **JDK1.7 中的`ConcurrentHashMap`**
 
 在jdk1.7及其以下的版本中，结构是用**`Segments`数组 + `HashEntry`数组 + 链表**实现（写分散）
 
-![img](./imgs/Concurrent/64122.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/64122.png)
 
 **JDK1.8中的`ConcurrentHashMap`**
 
 jdk1.8抛弃了**`Segments`分段锁**的方案，而是改用了和`HashMap`一样的结构操作，也就是**数组 + 链表 + 红黑树**结构，比jdk1.7中的`ConcurrentHashMap`提高了效率，在并发方面，使用了`cas + synchronized`的方式保证数据的一致性
 
-![img](./imgs/Concurrent/64123.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/64123.png)
 
 链表转化为红黑树需要满足2个条件:
 
@@ -2666,7 +2671,7 @@ static final int MIN_TREEIFY_CAPACITY = 64;
 
 跳表是一种基于有序链表的数据结构，支持快速插入、删除、查找操作，其时间复杂度为`O(log n)`，比普通链表的`O(n)`更高效。
 
-![img](./imgs/Concurrent/64154.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/64154.png)
 
 **跳表的特性：**
 
@@ -2766,7 +2771,7 @@ public class ConcurrentSkipListMapDemo {
 
 在生产者-消费者模型中，生产者向队列中添加元素，消费者从队列中取出元素进行处理。阻塞队列可以很好地解决生产者和消费者之间的并发问题，避免线程间的竞争和冲突。
 
-![img](./imgs/Concurrent/65142.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/65142.png)
 
 3. 消息队列
 
@@ -2810,7 +2815,7 @@ Object object = queue.take();   //从队列中取出元素
 
 **`ArrayBlockingQueue`的原理**
 
-![img](./imgs/Concurrent/65816.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/65816.png)
 
 `ArrayBlockingQueue`使用独占锁`ReentrantLock`实现线程安全，入队和出队操作使用同一个锁对象，也就是只能有一个线程可以进行入队或者出队操作；这也就意味着生产者和消费者无法并行操作，在高并发场景下会成为性能瓶颈。
 
@@ -2907,7 +2912,7 @@ private E dequeue() {
 }
 ```
 
-![img](./imgs/Concurrent/65165.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/65165.png)
 
 #### LinkedBlockingQueue
 
@@ -2924,7 +2929,7 @@ BlockingQueue<Integer> unboundedQueue = new LinkedBlockingQueue<>();
 
 `LinkedBlockingQueue`内部由单链表实现，只能从`head`取元素，从tail添加元素。`LinkedBlockingQueue`采用**两把锁的锁分离技术实现入队出队互不阻塞，添加元素和获取元素都有独立的锁**，也就是说`LinkedBlockingQueue`是读写分离的，读写操作可以并行执行。
 
-![img](./imgs/Concurrent/65795.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/65795.png)
 
 ```java
 // 容量,指定容量就是有界队列
@@ -3135,11 +3140,11 @@ public class DelayQueueExample {
 
 由于每个订单都有不同的延迟时间，因此它们将会按照延迟时间的顺序被取出。当延迟时间到达时，对应的订单对象将会被从队列中取出，并被处理。
 
-![img](./imgs/Concurrent/65810.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/65810.png)
 
 **DelayQueue原理**
 
-![img](./imgs/Concurrent/65177.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/65177.png)
 
 ```java
 //用于保证队列操作的线程安全
@@ -3268,7 +3273,7 @@ public E take() throws InterruptedException {
 
 JDK提供了比`synchronized`更加高级的各种同步工具，包括`ReentrantLock、Semaphore、CountDownLatch、CyclicBarrier`等，可以实现更加丰富的多线程操作。
 
-![image-20240313111616862](./imgs/Concurrent/image-20240313111616862.png)
+![image-20240313111616862](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240313111616862.png)
 
 ### ReentrantLock
 
@@ -3284,9 +3289,9 @@ JDK提供了比`synchronized`更加高级的各种同步工具，包括`Reentran
 
 它的主要应用场景是在多线程环境下对共享资源进行独占式访问，以保证数据的一致性和安全性。
 
-![image-20240313111554999](./imgs/Concurrent/image-20240313111554999.png)
+![image-20240313111554999](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240313111554999.png)
 
-![image-20240313111602386](./imgs/Concurrent/image-20240313111602386.png)
+![image-20240313111602386](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240313111602386.png)
 
 #### 常用API
 
@@ -3388,11 +3393,11 @@ public class ReentrantLockDemo {
 
 不加锁的效果： 出现超卖的问题
 
-![image-20240313112102531](./imgs/Concurrent/image-20240313112102531.png)
+![image-20240313112102531](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240313112102531.png)
 
 加锁效果： 正常，两个人抢票失败
 
-![image-20240313112108788](./imgs/Concurrent/image-20240313112108788.png)
+![image-20240313112108788](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240313112108788.png)
 
 **公平锁和非公平锁**
 
@@ -3408,7 +3413,7 @@ ReentrantLock lock = new ReentrantLock(true); //公平锁
 
 比如买票的时候就有可能出现插队的场景，允许插队就是非公平锁，如下图：
 
-![image-20240313112204001](./imgs/Concurrent/image-20240313112204001.png)
+![image-20240313112204001](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240313112204001.png)
 
 **可重入锁**
 
@@ -3565,7 +3570,7 @@ class Customer implements Runnable {
 
 `Semaphore`（信号量）是一种用于多线程编程的同步工具，用于控制同时访问某个资源的线程数量。
 
-![image-20240313140822601](./imgs/Concurrent/image-20240313140822601.png)   
+![image-20240313140822601](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240313140822601.png)   
 
 `Semaphore`维护了一个计数器，线程可以通过调用`acquire()`方法来获取`Semaphore`中的许可证，当计数器为0时，调用`acquire()`的线程将被阻塞，直到有其他线程释放许可证；线程可以通过调用`release()`方法来释放Semaphore中的许可证，这会使`Semaphore`中的计数器增加，从而允许更多的线程访问共享资源。
 
@@ -3766,7 +3771,7 @@ class Connect {
 
 `CountDownLatch`（闭锁）是一个同步协助类，允许一个或多个线程等待，直到其他线程完成操作集。
 
-![image-20240313141605103](./imgs/Concurrent/image-20240313141605103.png)
+![image-20240313141605103](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240313141605103.png)
 
 `CountDownLatch`使用给定的计数值（`count`）初始化。`await`方法会阻塞直到当前的计数值（`count`），由于`countDown`方法的调用达到0，`count`为0之后所有等待的线程都会被释放，并且随后对`await`方法的调用都会立即返回。这是一个一次性现象 —— count不会被重置。
 
@@ -3865,7 +3870,7 @@ public class CountDownLatchDemo2 {
 
 `CyclicBarrier`（回环栅栏或循环屏障），是 Java 并发库中的一个同步工具，通过它可以实现让一组线程等待至某个状态（屏障点）之后再全部同时执行。叫做回环是因为当所有等待线程都被释放以后，`CyclicBarrier`可以被重用。
 
-![image-20240313142547754](./imgs/Concurrent/image-20240313142547754.png)
+![image-20240313142547754](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240313142547754.png)
 
 #### 常用API
 
@@ -3884,7 +3889,7 @@ public int await(long timeout, TimeUnit unit) throws InterruptedException, Broke
 public void reset()
 ```
 
-![image-20240313142627746](./imgs/Concurrent/image-20240313142627746.png)
+![image-20240313142627746](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240313142627746.png)
 
 #### CyclicBarrier使用
 
@@ -4004,7 +4009,7 @@ class CyclicBarrierBatchProcessor {
 
 `Exchanger`是一个用于线程间协作的工具类，用于两个线程间交换数据。具体交换数据是通过`exchange`方法来实现的，如果一个线程先执行`exchange`方法，那么它会同步等待另一个线程也执行`exchange`方法，这个时候两个线程就都达到了同步点，两个线程就可以交换数据。
 
-![image-20240313143027923](./imgs/Concurrent/image-20240313143027923.png)
+![image-20240313143027923](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240313143027923.png)
 
 #### 常用API
 
@@ -4180,7 +4185,7 @@ public class ExchangerDemo3 {
 
 `Phaser`（阶段协同器）是一个Java实现的并发工具类，用于协调多个线程的执行。它提供了一些方便的方法来管理多个阶段的执行，可以让程序员灵活地控制线程的执行顺序和阶段性的执行。`Phaser`可以被视为`CyclicBarrier`和`CountDownLatch`的进化版，它能够自适应地调整并发线程数，可以动态地增加或减少参与线程的数量。所以`Phaser`特别适合使用在重复执行或者重用的情况。
 
-![image-20240313143548132](./imgs/Concurrent/image-20240313143548132.png)
+![image-20240313143548132](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240313143548132.png)
 
 #### 常用API
 
@@ -4472,7 +4477,7 @@ public Future<?> submit(Runnable task) {
 
 `execute(Runnable command)`方法执行时会分为三步：
 
-![img](./imgs/Concurrent/8974.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/8974.png)
 
 >**提交一个`Runnable`时，不管当前线程池中的线程是否空闲，只要数量小于核心线程数就会创建新线程。**
 >
@@ -4656,7 +4661,7 @@ try {
 
 在源码中，当执行任务时出现异常时，最终会执行`processWorkerExit()`，执行完这个方法后，当前线程也就自然消亡了，但是！`processWorkerExit()`方法中会额外再新增一个线程，这样就能维持住固定的核心线程数。
 
-![img](./imgs/Concurrent/8975.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/8975.png)
 
 #### Tomcat中的自定义线程池
 
@@ -4838,7 +4843,7 @@ private boolean compareAndDecrementWorkerCount(int expect) {
 
 #### execute方法
 
-![image-20240316164855450](./imgs/Concurrent/image-20240316164855450.png)
+![image-20240316164855450](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/image-20240316164855450.png)
 
 **源码部分**
 
@@ -5446,7 +5451,7 @@ void interruptIfStarted() {
 
 回顾一下Java线程的生命周期：
 
-![img](./imgs/Concurrent/66299.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/66299.png)
 
 `Java` 线程进入终止状态的前提是线程进入 `RUNNABLE` 状态，而实际上线程也可能处在休眠状态，也就是说，我们要想终止一个线程，首先要把线程的状态从休眠状态转换到 `RUNNABLE` 状态。**利用java线程中断机制的`interrupt()` 方法，可以让线程从休眠状态转换到`RUNNABLE` 状态。**
 
@@ -5849,7 +5854,7 @@ try {
 
 **生产者 - 消费者模式的核心是一个任务队列**，生产者线程生产任务，并将任务添加到任务队列中，而消费者线程从任务队列中获取任务并执行。
 
-![img](./imgs/Concurrent/63993.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/63993.png)
 
 ```java
 public class BlockingQueueExample {
@@ -5901,27 +5906,27 @@ public class BlockingQueueExample {
 
 场景：用户注册后，需要发注册邮件和注册短信。传统的做法有两种 1.串行的方式；2.并行方式
 
-![img](./imgs/Concurrent/63994.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/63994.png)
 
 引入消息队列，将不是必须的业务逻辑异步处理
 
-![img](./imgs/Concurrent/63995.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/63995.png)
 
 **解耦**
 
 场景：用户下单后，订单系统需要通知库存系统扣减库存。
 
-![img](./imgs/Concurrent/63996.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/63996.png)
 
 **可以消除生产者生产与消费者消费之间速度差异**
 
-![img](./imgs/Concurrent/63997.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/63997.png)
 
 在计算机当中，创建的线程越多，CPU进行上下文切换的成本就越大，所以我们在编程的时候创建的线程并不是越多越好，而是适量即可，采用生产者和消费者模式就可以很好的支持我们使用适量的线程来完成任务。
 
 如果在某一段业务高峰期的时间里生产者“生产”任务的速率很快，而消费者“消费”任务速率很慢，由于中间的任务队列的存在，也可以起到缓冲的作用，我们在使用`MQ`中间件的时候，经常说的**削峰填谷**也就是这个意思。
 
-![img](./imgs/Concurrent/63998.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/63998.png)
 
 #### 过饱问题解决方案
 
@@ -5941,7 +5946,7 @@ public class BlockingQueueExample {
 
 原因：生产者没法限流，因为要一天内处理完，只能消费者加机器
 
-![img](./imgs/Concurrent/64000.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/64000.png)
 
 - **场景二：消费者每天能处理的量比生产者生产的多。系统高峰期生产者速度太快，把队列塞爆了**
 
@@ -5949,7 +5954,7 @@ public class BlockingQueueExample {
 
 原因：消费者一天的消费能力已经高于生产者，那说明一天之内肯定能处理完，保证高峰期别把队列塞满就好
 
-![img](./imgs/Concurrent/64001.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/64001.png)
 
 场景三：消费者每天能处理的量比生产者生产的多。条件有限或其他原因，**队列没法设置特别大**。系统高峰期生产者速度太快，把队列塞爆了
 
@@ -5957,4 +5962,4 @@ public class BlockingQueueExample {
 
 原因：消费者一天的消费能力高于生产者，说明一天内能处理完，队列又太小，那只能限流生产者，让高峰期塞队列的速度慢点
 
-![img](./imgs/Concurrent/64002.png)
+![img](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/Concurrent/64002.png)

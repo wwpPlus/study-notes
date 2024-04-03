@@ -1,3 +1,8 @@
+---
+title: git
+date: 2023-11-16 17:26:40
+permalink: /pages/6d4d7f/
+---
 # git 常用命令
 
 ## 创建SSH Key
