@@ -637,7 +637,7 @@ export class ButtonWrapper {
 
 > 参考答案：
 >
-> 在 *JavaScript* 中，数据类型整体上来讲可以分为两大类：**基本类型**和**引用数据类型**
+> 在 *JavaScript* 中，数据类型整体上来讲可以分为两大类**：基本类型**和**引用数据类型**
 >
 > 基本数据类型，一共有 *8* 种：
 >
@@ -697,13 +697,13 @@ export class ButtonWrapper {
 >
 > 在 *JavaScript* 里面，作用域一共有 4 种：全局作用域，局部作用域、函数作用域以及 *eval* 作用域。
 >
-> **全局作用域：**这个是默认的代码运行环境，一旦代码被载入，引擎最先进入的就是这个环境。
+> **全局作用域**：这个是默认的代码运行环境，一旦代码被载入，引擎最先进入的就是这个环境。
 >
-> **局部作用域：**当使用 *let* 或者 *const* 声明变量时，这些变量在一对花括号中存在局部作用域，只能够在花括号内部进行访问使用。
+> **局部作用域**：当使用 *let* 或者 *const* 声明变量时，这些变量在一对花括号中存在局部作用域，只能够在花括号内部进行访问使用。
 >
-> **函数作用域：**当进入到一个函数的时候，就会产生一个函数作用域。函数作用域里面所声明的变量只在函数中提供访问使用。
+> **函数作用域**：当进入到一个函数的时候，就会产生一个函数作用域。函数作用域里面所声明的变量只在函数中提供访问使用。
 >
-> ***eval* 作用域：**当调用 *eval( )* 函数的时候，就会产生一个 *eval* 作用域。
+> ***eval* 作用域**：当调用 *eval( )* 函数的时候，就会产生一个 *eval* 作用域。
 
 ## 28. *undefined==null* 返回的结果是什么？*undefined* 与 *null* 的区别在哪？
 
@@ -1172,7 +1172,7 @@ console.log(a instanceof B); // true of false ?
 > 排序的分类分为**内部排序**和**外部排序法**。
 >
 > - 内部排序：指将需要处理的所有数据都加载到**内部存储器(内存)**中进行排序。
-> - 外部排序：**数据量过大**，无法全部加载到内存中，需要借助**外部存储(文件等)**进行排序。
+> - 外部排序**：数据量过大**，无法全部加载到内存中，需要借助**外部存储(文件等)**进行排序。
 >
 > <img src="https://xiejie-typora.oss-cn-chengdu.aliyuncs.com/2021-08-13-054747.png" alt="image-20210813134746501" style="zoom:50%;" />
 
@@ -1614,20 +1614,20 @@ try {
 >
 > 基本类型和引用类型的主要区别有以下几点：
 >
-> **存放位置：**
+> **存放位置**：
 >
 > - 基本数据类型：基本类型值在内存中占据固定大小，直接存储在**栈内存**中的数据
 > - 引用数据类型：引用类型在栈中存储了指针，这个指针指向堆内存中的地址，真实的数据存放在**堆内存**里。
 >
 > <img src="https://xiejie-typora.oss-cn-chengdu.aliyuncs.com/2021-08-13-074040.png" alt="image-20210813154040287" style="zoom:50%;" />
 >
-> **值的可变性：**
+> **值的可变性**：
 >
 > - 基本数据类型： 值不可变，*javascript* 中的原始值（*undefined、null*、布尔值、数字和字符串）是不可更改的
 >
 > - 引用数据类型：引用类型是可以直接改变其值的
 >
-> **比较：**
+> **比较**：
 >
 > - 基本数据类型： 基本类型的比较是值的比较，只要它们的值相等就认为他们是相等的
 >
@@ -2149,7 +2149,7 @@ try {
 >
 > 模块化的整个发展历史如下：
 >
-> **IIFE**： 使用自执行函数来编写模块化，特点：**在一个单独的函数作用域中执行代码，避免变量冲突**。
+> **IIFE**： 使用自执行函数来编写模块化，特点**：在一个单独的函数作用域中执行代码，避免变量冲突**。
 >
 > ```js
 > (function () {
@@ -2159,7 +2159,7 @@ try {
 > })();
 > ```
 >
-> **AMD**： 使用 requireJS 来编写模块化，特点：**依赖必须提前声明好**。
+> **AMD**： 使用 requireJS 来编写模块化，特点**：依赖必须提前声明好**。
 >
 > ```js
 > define("./index.js", function (code) {
@@ -2167,7 +2167,7 @@ try {
 > });
 > ```
 >
-> **CMD**： 使用 seaJS 来编写模块化，特点：**支持动态引入依赖文件**。
+> **CMD**： 使用 seaJS 来编写模块化，特点**：支持动态引入依赖文件**。
 >
 > ```js
 > define(function (require, exports, module) {
@@ -3266,7 +3266,7 @@ console.log(child.hasOwnProperty('sayName'))//false
 
 > 参考答案：
 >
-> 在 *JavaScript* 中，数据类型整体上来讲可以分为两大类：**基本类型**和**引用数据类型**
+> 在 *JavaScript* 中，数据类型整体上来讲可以分为两大类**：基本类型**和**引用数据类型**
 >
 > 基本数据类型，一共有 *7* 种：
 >
@@ -5574,7 +5574,7 @@ Promise.resolve()
 
 > 参考答案：
 >
-> 方法一：**instanceof 操作符判断**
+> 方法一**：instanceof 操作符判断**
 >
 > **用法：arr instanceof Array**
 >
@@ -5587,7 +5587,7 @@ Promise.resolve()
 >
 > 缺点：instanceof 是判断类型的 prototype 是否出现在对象的原型链中，但是对象的原型可以随意修改，所以这种判断并不准确。并且也不能判断对象和数组的区别
 >
-> 方法二：**对象构造函数的 constructor 判断**
+> 方法二**：对象构造函数的 constructor 判断**
 >
 > **用法：arr.constructor === Array**
 >
@@ -5598,7 +5598,7 @@ Promise.resolve()
 > console.log(arr.constructor === Array); // true
 > ```
 >
-> 方法三：**Array 原型链上的 isPrototypeOf**
+> 方法三**：Array 原型链上的 isPrototypeOf**
 >
 > **用法：Array.prototype.isPrototypeOf(arr**)
 >
@@ -5611,7 +5611,7 @@ Promise.resolve()
 > console.log(Array.prototype.isPrototypeOf(arr)); // true
 > ```
 >
-> 方法四：**Object.getPrototypeOf**
+> 方法四**：Object.getPrototypeOf**
 >
 > **用法：Object.getPrototypeOf(arr) === Array.prototype**
 >
@@ -5624,7 +5624,7 @@ Promise.resolve()
 > console.log(Object.getPrototypeOf(arr) === Array.prototype); // true
 > ```
 >
-> 方法五：**Object.prototype.toString**
+> 方法五**：Object.prototype.toString**
 >
 > **用法：Object.prototype.toString.call(arr) === '[object Array]'**
 >
@@ -5637,7 +5637,7 @@ Promise.resolve()
 >
 > 缺点：不能精准判断自定义对象，对于自定义对象只会返回[object Object]
 >
-> 方法六：**Array.isArray**
+> 方法六**：Array.isArray**
 >
 > **用法：Array.isArray(arr)**
 >
@@ -5914,7 +5914,7 @@ Promise.resolve()
 > - *proxy* 返回的是一个新对象， 可以通过操作返回的新的对象达到目的
 > - *proxy* 有多达 *13* 种拦截方法
 >
-> **总结：**
+> **总结**：
 >
 > - *Object.defineProperty* 无法监控到数组下标的变化，导致通过数组下标添加元素，不能实时响应
 > - *Object.defineProperty* 只能劫持对象的属性，从而需要对每个对象，每个属性进行遍历，如果，属性值是对象，还需要深度遍历。*Proxy* 可以劫持整个对象，并返回一个新的对象。
@@ -6164,7 +6164,7 @@ Promise.resolve()
 > mycars[2] = "wangwu";
 > ```
 >
-> 类数组对象：**对于一个普通的对象来说，如果它的所有 property 名均为正整数，同时也有相应的 length 属性，那么虽然该对象并不是由 Array 构造函数所创建的，它依然呈现出数组的行为，在这种情况下，这些对象被称为“类数组对象”。**
+> 类数组对象**：对于一个普通的对象来说，如果它的所有 property 名均为正整数，同时也有相应的 length 属性，那么虽然该对象并不是由 Array 构造函数所创建的，它依然呈现出数组的行为，在这种情况下，这些对象被称为“类数组对象”。**
 >
 > **两者区别**
 >
@@ -6260,7 +6260,7 @@ sayHi();
 - C: *ReferenceError* 和 *21*
 - D: *undefined* 和 *ReferenceError*
 
-> **分析：**
+> **分析**：
 >
 > 在 *sayHi* 函数内部，通过 *var* 声明的变量 *name* 会发生变量提升，*var name* 会提升到函数作用域的顶部，其默认值为 *undefined*。因此输出 *name* 时得到的值为 *undefined*；
 >
@@ -6310,7 +6310,7 @@ shape.perimeter();
 - C: *20* 和 *63*
 - D: *NaN* 和 *63*
 
-> **分析：**
+> **分析**：
 >
 > *diameter* 作为对象的方法，其内部的 *this* 指向调用该方法的对象，因此 *this.raduus* 获取到的是 *shape.radius* 的值 *10*，再乘以 *2* 输出的值即为 *20*；
 >
@@ -6327,7 +6327,7 @@ shape.perimeter();
 - B: *false* 和 *NaN*
 - C: *false* 和 *false*
 
-> **分析：**
+> **分析**：
 >
 > 一元加号会将数据隐式转换为 *number* 类型，*true* 转换为数值为 *1*；
 >
@@ -6351,7 +6351,7 @@ const mouse = {
 - C: *mouse[bird["size"]]*
 - D: 以上选项都对
 
-> **分析：**
+> **分析**：
 >
 > *mouse* 对象中没有 *bird* 属性，当访问一个对象不存在的属性时值为 *undefined*，因此 *mouse.bird* 的值为 *undefined*，而 *undefined* 作为原始数据类型没有 *size* 属性，因此再访问 *undefined.size* 时会报错。
 
@@ -6371,7 +6371,7 @@ console.log(d.greeting);
 - C: *ReferenceError*
 - D: *TypeError*
 
-> **分析：**
+> **分析**：
 >
 > 在 *JavaScript* 中，复杂类型数据在进行赋值操作时，进行的是`引用传递`，因此变量 *d* 和 *c* 指向的是同一个引用。当 *c* 通过引用去修改了数据后，*d* 再通过引用去访问数据，获取到的实际就是 *c* 修改后的数据。
 
@@ -6392,7 +6392,7 @@ console.log(b === c);
 - C: *true* *false* *false*
 - D: *false* *true* *true*
 
-> **分析：**
+> **分析**：
 >
 > *new Number()* 是 *JavaScript* 中一个内置的构造函数。变量 *b* 虽然看起来像一个数字，但它并不是一个真正的数字：它有一堆额外的功能，是一个对象。
 >
@@ -6438,7 +6438,7 @@ console.log(greetign);
 - B: *ReferenceError: greetign is not defined*
 - C: *undefined*
 
-> **分析：**
+> **分析**：
 >
 > 控制台会输出空对象，因为我们刚刚在全局对象上创建了一个空对象！
 >
@@ -6459,7 +6459,7 @@ bark.animal = "dog";
 - C: *undefined*
 - D: *ReferenceError*
 
-> **分析：**
+> **分析**：
 >
 > 因为函数也是对象！（原始类型之外的所有东西都是对象）
 >
@@ -6484,7 +6484,7 @@ console.log(member.getFullName());
 - C: *Lydia Hallie*
 - D: *undefined* *undefined*
 
-> **分析：**
+> **分析**：
 >
 > *Person.getFullName* 是将方法添加到了函数身上，因此当我们通过实例对象 *member* 去调用该方法时并不能找到该方法。
 
@@ -6508,7 +6508,7 @@ console.log(sarah);
 - C: *Person { firstName: "Lydia", lastName: "Hallie" }* 和 *{}*
 - D: *Person { firstName: "Lydia", lastName: "Hallie" }* 和 *ReferenceError*
 
-> **分析：**
+> **分析**：
 >
 > *lydia* 是调用构造函数后得到的实例对象，拥有 *firstName* 和 *lastName* 属性；
 >
@@ -6536,7 +6536,7 @@ sum(1, "2");
 - C: *"12"*
 - D: *3*
 
-> **分析：**
+> **分析**：
 >
 > 任意数据类型在跟 *String* 做 + 运算时，都会隐式转换为 *String* 类型。
 >
@@ -6556,7 +6556,7 @@ console.log(number);
 - C: *0 2 2*
 - D: *0 1 2*
 
-> **分析：**
+> **分析**：
 >
 > ++ 后置时，先输出，后加 *1*；++ 前置时，先加 *1*，后输出；
 >
@@ -6585,7 +6585,7 @@ getPersonInfo`${person} is ${age} years old`;
 - B: *["", "is", "years old"]* *Lydia* *21*
 - C: *Lydia* *["", "is", "years old"]* *21*
 
-> **分析：**
+> **分析**：
 >
 > 如果使用标记的模板字符串，则第一个参数的值始终是字符串值的数组。 其余参数获取传递到模板字符串中的表达式的值！
 
@@ -6609,7 +6609,7 @@ checkAge({ age: 18 });
 - B: *You are still an adult.*
 - C: *Hmm.. You don't have an age I guess*
 
-> **分析：**
+> **分析**：
 >
 > 在比较相等性时，原始类型通过它们的值进行比较，而对象通过它们的引用进行比较。
 >
@@ -6630,7 +6630,7 @@ getAge(21);
 - C: *"object"*
 - D: *"NaN"*
 
-> **分析：**
+> **分析**：
 >
 > *ES6* 中的不定参数（…*args*）返回的是一个数组。
 >
@@ -6653,7 +6653,7 @@ getAge();
 - C: *ReferenceError*
 - D: *TypeError*
 
-> **分析：**
+> **分析**：
 >
 > *"use strict"* 严格模式中，使用未声明的变量会引发报错。
 
@@ -6668,7 +6668,7 @@ const sum = eval("10*10+5");
 - C: *TypeError*
 - D: *"10\*10+5"*
 
-> **分析：**
+> **分析**：
 >
 > *eval* 方法会将字符串当作 *JavaScript* 代码进行解析。
 
@@ -6683,7 +6683,7 @@ sessionStorage.setItem("cool_secret", 123);
 - C：当用户关闭整个浏览器时，不仅是选项卡。
 - D：用户关闭计算机时。
 
-> **分析：**
+> **分析**：
 >
 > *sessionStorage* 是会话级别的本地存储，当窗口关闭，则会话结束，数据删除。
 
@@ -6701,7 +6701,7 @@ console.log(num);
 - C: *SyntaxError*
 - D: *ReferenceError*
 
-> **分析：**
+> **分析**：
 >
 > *var* 声明的变量允许重复声明，但后面的值会覆盖前面的值。
 
@@ -6734,7 +6734,7 @@ console.log(obj);
 - C: *{ a: "three", b: "two" }*
 - D: *SyntaxError*
 
-> **分析：**
+> **分析**：
 >
 > 如果对象有两个具有相同名称的键，则后面的将替前面的键。它仍将处于第一个位置，但具有最后指定的值。
 
@@ -6752,7 +6752,7 @@ for (let i = 1; i < 5; i++) {
 - C: *1 2 4*
 - D: *1 3 4*
 
-> **分析：**
+> **分析**：
 >
 > 当 *i* 的值为 *3* 时，进入 *if* 语句执行 *continue*，结束本次循环，立即进行下一次循环。
 
@@ -6773,7 +6773,7 @@ name.giveLydiaPizza();
 - C: *SyntaxError*
 - D: *undefined*
 
-> **分析：**
+> **分析**：
 >
 > *String* 是一个内置的构造函数，我们可以为它添加属性。 我们给它的原型添加了一个方法。 原始类型的字符串自动转换为字符串对象，由字符串原型函数生成。 因此，所有字符串（字符串对象）都可以访问该方法！
 >
@@ -6801,7 +6801,7 @@ console.log(a[b]);
 - C: *undefined*
 - D: *ReferenceError*
 
-> **分析：**
+> **分析**：
 >
 > 当 *b* 和 *c* 作为一个对象的键时，会自动转换为字符串，而对象自动转换为字符串化时，结果都为 *[Object object]*。因此 *a[b]* 和 *a[c]* 其实都是同一个属性 *a["Object object"]*。
 >
@@ -6824,7 +6824,7 @@ baz();
 - C: *Second* *First* *Third*
 - D: *Second* *Third* *First*
 
-> **分析：**
+> **分析**：
 >
 > *bar* 函数中执行的是一段异步代码，按照 *JavaScript* 中的事件循环机制，主线程中的所有同步代码执行完成后才会执行异步代码。因此 *"Second"* 最后输出。
 
@@ -6843,7 +6843,7 @@ baz();
 - C: *button*
 - D: 所有嵌套元素的数组
 
-> **分析：**
+> **分析**：
 >
 > *event.target* 指向的是事件目标，即触发事件的元素。因此点击 *\<button>* 触发事件的也就是 *\<button>*。
 
@@ -6860,7 +6860,7 @@ baz();
 - C: *p*
 - D: *div*
 
-> **分析：**
+> **分析**：
 >
 > *onclick* 绑定的事件为冒泡型事件。因此当点击 *p* 标签时，事件会从事件目标开始依次往外触发。
 
@@ -6882,7 +6882,7 @@ sayHi.bind(person, 21);
 - C: *Lydia is 21* *Lydia is 21*
 - D: *Lydia is 21* *function*
 
-> **分析：**
+> **分析**：
 >
 > *call* 和 *bind* 都可以修改 *this* 的指向，但区别在于 *call* 方法会立即执行，而 *bind* 会返回一个修改后的新函数。
 
@@ -6901,7 +6901,7 @@ typeof sayHi();
 - C: *"function"*
 - D: *"undefined"*
 
-> **分析：**
+> **分析**：
 >
 > *return* 后是一个 *IIFE*，其返回值是 *0*，因此 *sayHi* 函数中返回的是一个 *0*。*typeof* 检测 *sayHi* 返回值类型即为 *number*。
 
@@ -6921,7 +6921,7 @@ undefined;
 - C: *0* *""* *new Boolean(false)* *undefined*
 - D: 所有都是假值。
 
-> **分析：**
+> **分析**：
 >
 > *JavaScript* 中假值只有 *6* 个：*false*、*""*、*null*、*undefined*、*NaN*、*0*
 
@@ -6953,7 +6953,7 @@ console.log(numbers);
 - C: *[1, 2, 3, 7 x empty, 11]*
 - D: *SyntaxError*
 
-> **分析：**
+> **分析**：
 >
 > 当你为数组中的元素设置一个超过数组长度的值时，*JavaScript* 会创建一个名为“空插槽”的东西。 这些位置的值实际上是 *undefined*，但你会看到类似的东西：
 >
@@ -6984,7 +6984,7 @@ console.log(numbers);
 - C: *1* *1* *2*
 - D: *1* *undefined* *undefined*
 
-> **分析：**
+> **分析**：
 >
 > *catch* 块接收参数 *x*。当我们传递参数时，这与变量的 *x* 不同。这个变量 *x* 是属于 *catch* 作用域的。
 >
@@ -7022,7 +7022,7 @@ console.log(numbers);
 - C: *[1, 2, 0, 1, 2, 3]*
 - D: *[1, 2, 6]*
 
-> **分析：**
+> **分析**：
 >
 > *[1,2]* 是我们的初始值。 这是我们开始执行 *reduce* 函数的初始值，以及第一个 *acc* 的值。 在第一轮中，*acc* 是 *[1,2]*，*cur* 是 *[0,1]*。 我们将它们连接起来，结果是 *[1,2,0,1]*。
 >
@@ -7041,7 +7041,7 @@ console.log(numbers);
 - C: *false* *true* *true*
 - D: *true* *true* *false*
 
-> **分析：**
+> **分析**：
 >
 > *null* 是假值。 *!null* 返回 *true*。 *!true* 返回 *false*。
 >
@@ -7060,7 +7060,7 @@ setInterval(() => console.log("Hi"), 1000);
 - C：传递的函数
 - D：*undefined*
 
-> **分析：**
+> **分析**：
 >
 > 它返回一个唯一的 *id*。 此 *id* 可用于使用 *clearInterval()* 函数清除该定时器。
 
@@ -7075,7 +7075,7 @@ setInterval(() => console.log("Hi"), 1000);
 - C: *[[], "Lydia"]*
 - D: *[["L", "y", "d", "i", "a"]]*
 
-> **分析：**
+> **分析**：
 >
 > 字符串是可迭代的。 扩展运算符将迭代的每个字符映射到一个元素。
 

@@ -88,7 +88,7 @@ console.log(reactive(proxy) === proxy) // true
 </template>
 ```
 
-**局限性：**
+**局限性**：
 
 1. **有限的值类型**：它只能用于对象类型 (对象、数组和如 `Map`、`Set` 这样的[集合类型](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects#keyed_collections))。它不能持有如 `string`、`number` 或 `boolean` 这样的[原始类型](https://developer.mozilla.org/en-US/docs/Glossary/Primitive)。
 
@@ -188,7 +188,7 @@ const { id } = object
 
 在模板中需要不止一次计算，推荐使用**计算属性**来描述依赖响应式状态的复杂逻辑。
 
-- Getter 不应有副作用：**不要在 getter 中做异步请求或者更改 DOM**！getter 的职责应该仅为计算和返回该值。
+- Getter 不应有副作用**：不要在 getter 中做异步请求或者更改 DOM**！getter 的职责应该仅为计算和返回该值。
 - 避免直接修改计算属性值
 
 #### 基础示例
@@ -273,7 +273,7 @@ const fullName = computed({
 
 #### 绑定 HTML class
 
-1. **绑定对象：**给 `:class` (`v-bind:class` 的缩写) 传递一个对象来动态切换 class
+1. **绑定对象**：给 `:class` (`v-bind:class` 的缩写) 传递一个对象来动态切换 class
 
 ```vue
 <script setup>
@@ -303,7 +303,7 @@ const classObjectC = computed(() => ({
 </template>
 ```
 
-2. **绑定数组：**给 `:class` 绑定一个数组来渲染多个 CSS class
+2. **绑定数组**：给 `:class` 绑定一个数组来渲染多个 CSS class
 
 ```vue
 <script setup>
@@ -317,7 +317,7 @@ const errorClass = ref('text-danger')
 </template>
 ```
 
-3. **在组件上使用：**对于只有一个根元素的组件，当你使用了 `class` attribute 时，这些 class 会被添加到根元素上并与该元素上已有的 class 合并
+3. **在组件上使用**：对于只有一个根元素的组件，当你使用了 `class` attribute 时，这些 class 会被添加到根元素上并与该元素上已有的 class 合并
 
 ```vue
 <!-- 在使用组件时 -->
@@ -333,7 +333,7 @@ const errorClass = ref('text-danger')
 
 #### 绑定内联样式
 
-1. **绑定对象：**`:style` 支持绑定 JavaScript 对象值，对应的是 [HTML 元素的 `style` 属性](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style)
+1. **绑定对象**：`:style` 支持绑定 JavaScript 对象值，对应的是 [HTML 元素的 `style` 属性](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style)
 
 ```vue
 <script setup>
@@ -352,7 +352,7 @@ const styleObject = reactive({
 </template>
 ```
 
-2. **绑定数组：**`:style` 绑定一个包含多个样式对象的数组。这些对象会被合并后渲染到同一元素上
+2. **绑定数组**：`:style` 绑定一个包含多个样式对象的数组。这些对象会被合并后渲染到同一元素上
 
 ```vue
 <div :style="[baseStyles, overridingStyles]"></div>
@@ -433,7 +433,7 @@ Vue 能够侦听响应式数组的变更方法，并在它们被调用时触发�
 - `concat()`
 - `slice()`
 
-1. **替换一个数组：**将旧数组替换为新数组
+1. **替换一个数组**：将旧数组替换为新数组
 
 ```js
 // `items` 是一个数组的 ref
@@ -442,7 +442,7 @@ items.value = items.value.filter((item) => item.message.match(/Foo/))
 
 > 这并不会导致 Vue 丢弃现有的 DOM 并重新渲染整个列表。Vue通过虚拟DOM、组件化开发、列表渲染和虚拟列表等技术手段，有效地最大化了对DOM元素的重用，因此用另一个包含部分重叠对象的数组来做替换，仍会是一种非常高效的操作。
 
-2. **展示过滤或排序后的结果：**创建返回已过滤或已排序数组的计算属性
+2. **展示过滤或排序后的结果**：创建返回已过滤或已排序数组的计算属性
 
 ```vue
 <script setup>
@@ -1880,7 +1880,7 @@ provide('key', count)
 
 提供的响应式状态使后代组件可以由此和提供者建立响应式的联系。
 
-**应用层 Provide：**在应用级别提供的数据在该应用内的所有组件中都可以注入。
+**应用层 Provide**：在应用级别提供的数据在该应用内的所有组件中都可以注入。
 
 ```js
 import { createApp } from 'vue'
@@ -2145,13 +2145,13 @@ url.value = '/new-url'
 
 #### 约定和最佳实践
 
-1. **命名：**组合式函数约定用驼峰命名法命名，并以“use”作为开头。
-2. **输入参数：**即便不依赖于 ref 或 getter 的响应性，组合式函数也可以接收它们作为参数。如果你正在编写一个可能被其他开发者使用的组合式函数，最好处理一下输入参数是 ref 或 getter 而非原始值的情况。可以利用 [`toValue()`](https://cn.vuejs.org/api/reactivity-utilities.html#tovalue) 工具函数来实现。
-3. **返回值：**组合式函数始终返回一个包含多个 ref 的普通的非响应式对象，这样该对象在组件中被解构为 ref 之后仍可以保持响应性。
-4. **副作用：**在组合式函数中的确可以执行副作用：
+1. **命名**：组合式函数约定用驼峰命名法命名，并以“use”作为开头。
+2. **输入参数**：即便不依赖于 ref 或 getter 的响应性，组合式函数也可以接收它们作为参数。如果你正在编写一个可能被其他开发者使用的组合式函数，最好处理一下输入参数是 ref 或 getter 而非原始值的情况。可以利用 [`toValue()`](https://cn.vuejs.org/api/reactivity-utilities.html#tovalue) 工具函数来实现。
+3. **返回值**：组合式函数始终返回一个包含多个 ref 的普通的非响应式对象，这样该对象在组件中被解构为 ref 之后仍可以保持响应性。
+4. **副作用**：在组合式函数中的确可以执行副作用：
    1. 如果应用用到了[服务端渲染](https://cn.vuejs.org/guide/scaling-up/ssr.html) (SSR)，请确保在组件挂载后才调用的生命周期钩子中执行 DOM 相关的副作用，例如：`onMounted()`。这些钩子仅会在浏览器中被调用，因此可以确保能访问到 DOM。
    2. 确保在 `onUnmounted()` 时清理副作用。举例来说，如果一个组合式函数设置了一个事件监听器，它就应该在 `onUnmounted()` 中被移除。当然也可以像之前的 `useEventListener()` 示例那样，使用一个组合式函数来自动帮你做这些事。
-5. **使用限制：**组合式函数只能在 `<script setup>` 或 `setup()` 钩子中被调用。在这些上下文中，它们也只能被**同步**调用。
+5. **使用限制**：组合式函数只能在 `<script setup>` 或 `setup()` 钩子中被调用。在这些上下文中，它们也只能被**同步**调用。
 
 #### 与其他模式的比较
 

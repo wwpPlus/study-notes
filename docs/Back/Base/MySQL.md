@@ -532,7 +532,7 @@ explain select 1 union all select 1;
 
 这一列表示**关联类型或访问类型**，即MySQL决定如何查找表中的行，查找数据行记录的大概范围。
 
-依次从最优到最差分别为：**system > const > eq_ref > ref > range > index > ALL**
+依次从最优到最差分别为**：system > const > eq_ref > ref > range > index > ALL**
 
 一般来说，**得保证查询达到range级别，最好达到ref**
 
@@ -1201,13 +1201,13 @@ SELECT * FROM order_exp WHERE order_no IN ('DD00_10S', 'DD00_15S', 'DD00_16S') A
 SELECT * FROM information_schema.OPTIMIZER_TRACE;
 ```
 
-可以看见全表扫描的成本：**2.85**
+可以看见全表扫描的成本**：2.85**
 
 ![image-20240122170500210](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240122170500210.png)
 
-- 使用索引`idx_order_no`的成本为：**1.81**
+- 使用索引`idx_order_no`的成本为**：1.81**
 
-- 使用索引`idx_expire_time`的成本为：**2.01**
+- 使用索引`idx_expire_time`的成本为**：2.01**
 
 ![image-20240122170810730](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240122170810730.png)
 
@@ -1393,7 +1393,7 @@ EXPLAIN select * from employees where name > 'zzz' ;
 
 对于上面这两种 `name>'a'` 和 `name>'zzz'` 的执行结果，mysql最终是否选择走索引或者一张表涉及多个索引，mysql最终如何选择索引，我们可以用**trace工具**来一查究竟，开启trace工具会影响mysql性能，所以只能临时分析sql使用，用完之后立即关闭
 
-**trace工具用法：**
+**trace工具用法**：
 
 ```sh
 set session optimizer_trace="enabled=on",end_markers_in_json=on;  --开启trace select * from employees where name > 'a' order by position;
@@ -1664,7 +1664,7 @@ Case 8：
 
 ![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/76079.png)
 
-**优化总结：**
+**优化总结**：
 
 1. MySQL支持两种方式的排序`filesort`和`index`，Using index是指MySQL扫描索引本身完成排序。index效率高，filesort效率低。
 
@@ -1707,7 +1707,7 @@ select * from employees limit 10000,10;
 
 表示从表 employees 中取出从 10001 行开始的 10 行记录。看似只查询了 10 条记录，实际这条 SQL 是先读取 10010 条记录，然后抛弃前 10000 条记录，然后读到后面 10 条想要的数据。因此要查询一张大表比较靠后的数据，执行效率是非常低的。
 
-**常见的分页场景优化技巧：**
+**常见的分页场景优化技巧**：
 
 **1、根据自增且连续的主键排序的分页查询**
 
@@ -1772,7 +1772,7 @@ EXPLAIN select * from employees ORDER BY name limit 90000,5;
 
 ![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/100107.png)
 
-发现并没有使用 name 字段的索引（key 字段对应的值为 null），具体原因上节课讲过：**扫描整个索引并查找到没索引的行(可能要遍历多个索引树)的成本比扫描全表的成本更高，所以优化器放弃使用索引**。
+发现并没有使用 name 字段的索引（key 字段对应的值为 null），具体原因上节课讲过**：扫描整个索引并查找到没索引的行(可能要遍历多个索引树)的成本比扫描全表的成本更高，所以优化器放弃使用索引**。
 
 知道不走索引的原因，那么怎么优化呢？
 
@@ -1858,7 +1858,7 @@ EXPLAIN select * from t1 inner join t2 on t1.a= t2.a;
 - 当使用left join时，左表是驱动表，右表是被驱动表，当使用right join时，右表时驱动表，左表是被驱动表，当使用join时，mysql会选择数据量比较小的表作为驱动表，大表作为被驱动表。
 - 使用了 NLJ算法。一般 join 语句中，如果执行计划 Extra 中未出现 **Using join buffer** 则表示使用的 join 算法是 NLJ。
 
-**上面sql的大致流程如下：**
+**上面sql的大致流程如下**：
 
 1. 从表 t2 中读取一行数据（如果t2表有查询过滤条件的，用先用条件过滤完，再从过滤结果里取出一行数据）；
 2. 从第 1 步的数据中，取出关联字段 a，到表 t1 中查找；
@@ -1881,7 +1881,7 @@ EXPLAIN select * from t1 inner join t2 on t1.b= t2.b;
 
 Extra 中 的Using join buffer (Block Nested Loop)说明该关联查询使用的是 BNL 算法。
 
-**上面sql的大致流程如下：**
+**上面sql的大致流程如下**：
 
 1. 把 t2 的所有数据放入到 **join_buffer** 中
 2. 把表 t1 中每一行取出来，跟 join_buffer 中的数据做对比
@@ -1926,9 +1926,9 @@ select * from t2 straight_join t1 on t2.a = t1.a;
 
 #### in和exsits优化
 
-原则：**小表驱动大表**，即小的数据集驱动大的数据集
+原则**：小表驱动大表**，即小的数据集驱动大的数据集
 
-**in：**当B表的数据集小于A表的数据集时，in优于exists
+**in**：当B表的数据集小于A表的数据集时，in优于exists
 
 ```sql
 select * from A where id in (select id from B)
@@ -1938,7 +1938,7 @@ for(select id from B){
 }              
 ```
 
-**exists：**当A表的数据集小于B表的数据集时，exists优于in
+**exists**：当A表的数据集小于B表的数据集时，exists优于in
 
 将主查询A的数据，放到子查询B中做条件验证，根据验证结果（true或false）来决定主查询的数据是否保留
 
@@ -2021,7 +2021,7 @@ MySQL 通过比较系统变量 `max_length_for_sort_data`(**默认1024字节**) 
 - 如果字段的总长度小于`max_length_for_sort_data` ，使用单路排序模式；
 - 如果字段的总长度大于`max_length_for_sort_data` ，使用双路排序模式。
 
-**示例验证下各种排序方式：**
+**示例验证下各种排序方式**：
 
 ![0](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/76138.png)
 
@@ -2556,7 +2556,7 @@ InnoDB与MYISAM的最大不同有两点：
 
 一个session开启事务更新不提交，另一个session更新同一条记录会阻塞，更新不同记录不会阻塞
 
-**总结：**
+**总结**：
 
 InnoDB在执行查询语句`SELECT`时(非串行隔离级别)，不会加锁。但是`update、insert、delete`操作会加行锁。
 
@@ -2838,7 +2838,7 @@ MySQL在读已提交和可重复读隔离级别下都实现了MVCC机制。
 
 在**可重复读隔离级别**，当事务开启，执行任何查询sql时会生成当前事务的**一致性视图read-view，**该视图在事务结束之前都不会变化(**如果是读已提交隔离级别在每次执行查询sql时都会重新生成**)，这个视图由执行查询时所有未提交事务id数组（数组里最小的id为`min_id`）和已创建的最大事务id（`max_id`）组成，事务里的任何sql查询结果需要从对应版本链里的最新数据开始逐条跟`read-view`做比对从而得到最终的快照结果。
 
-**版本链比对规则：**
+**版本链比对规则**：
 
 1. 如果 row 的 trx_id 落在绿色部分`(trx_id<min_id)`，表示这个版本是已提交的事务生成的，这个数据是可见的；
 
@@ -2858,7 +2858,7 @@ MySQL在读已提交和可重复读隔离级别下都实现了MVCC机制。
 
 ![image-20240122111555523](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/MySQL/image-20240122111555523.png)
 
-**总结：**
+**总结**：
 
 `MVCC`机制的实现就是通过`read-view`机制与`undo版本链`比对机制，使得不同的事务会根据数据版本链对比规则读取同一条数据在版本链上的不同版本数据。
 

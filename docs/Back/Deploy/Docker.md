@@ -958,7 +958,7 @@ docker run -d -P --name nginx02 -v nginxconfig:/etc/nginx:rw nginx
 
 > DockerFile 是用来构建 Docker 镜像的构建文件，是由一些列命令和参数构成的脚本。
 
-**测试：**
+**测试**：
 
 ```shell
 ## 1、我们在宿主机 /home 目录下新建一个 docker-test-volume文件夹
@@ -1159,7 +1159,7 @@ total 0
 > 启动两个 tomcat 容器观察：
 > tomcat01 --- linux 主机 vethc8584ea@if122 ---- 容器内 eth0@if123
 > tomcat02 --- linux 主机 veth021eeea@if124 ---- 容器内 eth0@if125
-> 结论：**容器和容器之间可以通过 ip 互相访问的。**
+> 结论**：容器和容器之间可以通过 ip 互相访问的。**
 
 **网络模型图**
 

@@ -1284,7 +1284,7 @@ permalink: /pages/478903/
 >
 > 3. 方法三：为 inline-block 元素添加样式 float:left
 >
-> 缺点：**float 布局会有高度塌陷**问题
+> 缺点**：float 布局会有高度塌陷**问题
 >
 > 4. 方法四：设置子元素 margin 值为负数
 >

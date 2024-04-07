@@ -154,7 +154,7 @@ requestAnimationFrame(durationRender);
 ## 图元
 
 图元就是一些 3D 的形状，在运行时根据大量参数生成。
-官网案例（参数可调）：**<https://threejs.org/manual/#zh/primitives>**
+官网案例（参数可调）**：<https://threejs.org/manual/#zh/primitives>**
 
 ## 场景图
 

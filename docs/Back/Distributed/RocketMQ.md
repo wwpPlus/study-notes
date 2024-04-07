@@ -58,7 +58,7 @@ MQ，Message Queue，是一种提供消息队列服务的中间件，也称为�
 
 #### MQ 常见协议
 
-**一般情况下 MQ 的实现是要遵循一些常规性协议的。常见的协议如下：**
+**一般情况下 MQ 的实现是要遵循一些常规性协议的。常见的协议如下**：
 
 **JMS**
 
@@ -826,7 +826,7 @@ namesrvAddr=192.168.59.164:9876;192.168.59.165:9876
 
 修改 broker-a-s.properties
 
-- **将该配置文件内容修改为如下：**
+- **将该配置文件内容修改为如下**：
 
 ```shell
 brokerClusterName=DefaultCluster
@@ -1151,7 +1151,7 @@ index(m)位置 = 40 + 500w - 4 + (m - 1) - 20 (式子3)
 > 40 为 indexFile 中 indexHeader 的字节数<br>
 > 500w - 4 是所有 slots 所占的字节数
 
-**具体查询流程如下：**
+**具体查询流程如下**：
 
 ![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208140740.png "QQ截图20201229183512.png")
 
@@ -1984,7 +1984,7 @@ messageDelayLevel = 1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h 1
 
 ![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208153523.png "QQ截图20201229183512.png")
 
-**具体实现方案是：**
+**具体实现方案是**：
 
 ##### 修改消息
 
@@ -2093,7 +2093,7 @@ public class OtherConsumer {
 
 ![说明](https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/RocketMQ/QQ截图20220208154545.png "QQ截图20201229183512.png")
 
-**使用事务消息来处理该需求场景：**
+**使用事务消息来处理该需求场景**：
 
 - 事务管理器 TM 向事务协调器 TC 发起指令，开启全局事务
 - 工行系统发一个给 B 增款 1 万元的事务消息 M 给 TC
@@ -2670,7 +2670,7 @@ public class FilterBySQLConsumer {
 
 Producer 对发送失败的消息进行重新发送的机制，称为消息发送重试机制，也称为消息重投机制。
 
-**对于消息重投，需要注意以下几点：**
+**对于消息重投，需要注意以下几点**：
 
 - 生产者在发送消息时，若采用同步或异步发送方式，发送失败会重试，但 oneway 消息发送方式发送失败是没有重试机制的
 - 只有普通消息具有发送重试机制，顺序消息是没有的
@@ -2812,7 +2812,7 @@ Broker 对于重试消息的处理是通过`延时消息`实现的。先将消�
 
 #### 死信队列的特征
 
-**死信队列具有如下特征：**
+**死信队列具有如下特征**：
 
 - 死信队列中的消息不会再被消费者正常消费，即 DLQ 对于消费者是不可见的
 - 死信存储有效期与正常消息相同，均为 3 天（commitlog 文件的过期时间）， 3 天后会被自动删除
