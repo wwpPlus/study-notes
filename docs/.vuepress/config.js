@@ -8,7 +8,7 @@ module.exports = {
   // theme: require.resolve('../../vdoing'), // 使用本地主题 (先将vdoing主题文件下载到本地：https://github.com/xugaoyi/vuepress-theme-vdoing)
 
   title: 'PZ文档',
-  description: '小白到P7的技术文档',
+  description: 'Java技术文档',
   // base: '/', // 默认'/'。如果你想将你的网站部署到如 https://foo.github.io/bar/，那么 base 应该被设置成 '/bar/',（否则页面将失去样式等文件）
   head: [ // 注入到页面<head> 中的标签，格式[tagName, { attrName: attrValue }, innerHTML?]
     ['link', { rel: 'icon', href: '/img/logo.png' }], //favicons，资源放在public文件夹
@@ -48,9 +48,10 @@ module.exports = {
       // },
       {
         text: '前端',
+        link: '/pages/d2f50e/',
         items: [
           {
-            text: '前端基础', 
+            text: '前端基础',
             items: [
               { text: 'HTML', link: '/pages/d2f50e/' },
               { text: 'CSS', link: '/pages/fea2d7/' },
@@ -92,6 +93,7 @@ module.exports = {
       },
       {
         text: 'Java基础',
+        link: '/pages/7419ce/',
         items: [
           { text: 'Linux', link: '/pages/00ce2a/' },
           { text: '设计模式', link: '/pages/c81b2a/' },
@@ -103,6 +105,7 @@ module.exports = {
       },
       {
         text: '分布式',
+        link: '/pages/6e924b/',
         items: [
           { text: 'Redis', link: '/pages/6e924b/' },
           { text: 'Zookeeper', link: '/pages/6a436f/' },
@@ -114,18 +117,21 @@ module.exports = {
       },
       {
         text: '微服务',
+        link: '/pages/debdbe/',
         items: [
           { text: 'SpringBoot', link: '/pages/debdbe/' }
         ]
       },
       {
         text: '运维',
+        link: '/pages/28c483/',
         items: [
           { text: 'Docker', link: '/pages/28c483/' }
         ]
       },
       {
-        text: '算法',
+        text: '算法笔试',
+        link: '/pages/4b7495/',
         items: [
           { text: 'LeetCode', link: '/pages/4dde8d/' },
           { text: 'Acwing', link: '/pages/b9c7ad/' },
@@ -135,6 +141,7 @@ module.exports = {
       },
       {
         text: 'AI',
+        link: '/pages/a2ac81/',
         items: [
           { text: 'Colossal-AI', link: '/pages/a2ac81/' },
           { text: 'YOLO', link: '/pages/d067ec/' },
@@ -143,6 +150,7 @@ module.exports = {
       },
       {
         text: '项目经历',
+        link: '/pages/1e0b40/',
         items: [
           { text: '简历', link: '/pages/1e0b40/' },
           { text: '软件杯', link: '/pages/13921d/' },
@@ -154,6 +162,7 @@ module.exports = {
       },
       {
         text: '工具',
+        link: '/pages/6d4d7f/',
         items: [
           { text: 'git', link: '/pages/6d4d7f/' },
           { text: '快捷键', link: '/pages/be1cd8/' }
@@ -162,7 +171,7 @@ module.exports = {
     ],
     sidebarDepth: 2, // 侧边栏显示深度，默认1，最大2（显示到h3标题）
     logo: '/img/logo.png', // 导航栏logo
-    repo: 'https://gitee.com/star_wwp', // 导航栏右侧生成Github链接
+    repo: 'wwpPlus', // 导航栏右侧生成Github链接
     searchMaxSuggestions: 10, // 搜索结果显示最大数
     lastUpdated: '上次更新', // 更新的时间，及前缀文字   string | boolean (取值为git提交时间)
 

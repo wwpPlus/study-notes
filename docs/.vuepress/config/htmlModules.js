@@ -47,9 +47,9 @@ module.exports = {
   `,
   // 赞助商广告
   sidebarT: `
-  <a href="http://apifox.cn/a103xugaoyi" target="_blank">
-    <img src="https://jsd.cdn.zzko.cn/gh/xugaoyi/blog-gitalk-comment@master/img/431669861564_.2470ykdcpbds.jpg" alt="npm" class="no-zoom" style="width: 100%;border-radius: 2px;">
-    <p style="text-align: center;margin: 0;color: #999;font-size: 12px;">(进入注册为作者充电)</p>
+  <a href="https://gitee.com/star_wwp" target="_blank">
+    <img src="https://wwp-study-notes.oss-cn-nanjing.aliyuncs.com/imgs/gitee.png" alt="npm" class="no-zoom" style="width: 100%;border-radius: 2px;">
+    <p style="text-align: center;margin: 0;color: #999;font-size: 12px;">(和作者交流)</p>
   </a>`,
 
 
