@@ -19,7 +19,7 @@ features: # 可选的
 postList: none
 ---
 
-## ⚡ 反馈与交流
+<!-- ## ⚡ 反馈与交流
 
 在使用过程中有任何问题和想法，请给我提 [Issue](https://github.com/xugaoyi/vuepress-theme-vdoing/issues)。
 你也可以在Issue查看别人提的问题和给出解决方案。
@@ -39,7 +39,7 @@ postList: none
       </td>
     </tr>
   </tbody>
-</table>
+</table> -->
 
 <!-- AD -->
 <div class="wwads-cn wwads-horizontal page-wwads" data-id="136"></div>
