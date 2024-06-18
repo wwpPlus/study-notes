@@ -14,7 +14,7 @@
 
 ## 🌐 地址
 
-- [项目地址](https://gitee.com/star_wwp/study-notes)
+- [项目地址](https://github.com/wwpPlus/study-notes)
 
 ## 📦️ 启动方式
 
