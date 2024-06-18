@@ -16,7 +16,7 @@ export default ({
       docReady(function () {
         setTimeout(function () {
           if (window._AdBlockInit === undefined) {
-            ABDetected();
+            // ABDetected();
           }
         }, 3000);
       });
