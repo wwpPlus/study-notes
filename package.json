@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "node --max_old_space_size=4096 ./node_modules/vuepress/cli.js dev docs",
-    "build": "node --max_old_space_size=4096 ./node_modules/vuepress/cli.js build docs",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && npm run build",
+    "deploy": "NODE_OPTIONS=--openssl-legacy-provider bash deploy.sh",
     "predev": "node utils/check.js dev && vdoing",
     "prebuild": "node utils/check.js build && vdoing",
     "updateTheme": "yarn remove vuepress-theme-vdoing && rm -rf node_modules && yarn && yarn add vuepress-theme-vdoing -D",
